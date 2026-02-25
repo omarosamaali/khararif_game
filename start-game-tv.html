@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انتظار المغامرين - TV</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300..900&family=El+Messiri:wght@400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #bgVideo {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .overlay-dark {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.6) 0%,
+                    rgba(0, 0, 0, 0.25) 45%,
+                    rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        .page {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ══ النصف العلوي: فيديو الانتظار ══ */
+        .top-half {
+            width: 100%;
+            height: 46vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 20px 8px;
+            flex-shrink: 0;
+        }
+
+        .wait-video-wrap {
+            position: relative;
+            height: 100%;
+            aspect-ratio: 16/9;
+            max-width: 72vw;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(99, 200, 255, 0.06);
+        }
+
+        #waitVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wait-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 18px 24px 12px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+            text-align: center;
+        }
+
+        .wait-title-text {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: clamp(0.75rem, 1.3vw, 1rem);
+            letter-spacing: 3px;
+            font-family: 'El Messiri', sans-serif;
+        }
+
+        /* ══ النصف السفلي: الفرق ══ */
+        .bottom-half {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 32px 18px;
+            gap: 10px;
+        }
+
+        .bottom-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .teams-title {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: clamp(0.65rem, 1vw, 0.85rem);
+            letter-spacing: 4px;
+            font-family: 'El Messiri', sans-serif;
+        }
+
+        .teams-counter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4px 14px;
+        }
+
+        .counter-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 1.4s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5
+            }
+        }
+
+        .counter-text {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+        }
+
+        /* ── شبكة الفرق ── */
+        .teams-grid {
+            display: grid;
+            gap: 12px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* ── كارد الفريق ── */
+        .team-card {
+            background: rgba(0, 0, 0, 0.55);
+            border: 1.5px solid var(--tc, rgba(255, 255, 255, 0.1));
+            border-radius: 14px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+            position: relative;
+            animation: cardIn 0.5s ease both;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--tc), transparent);
+        }
+
+        .team-card.present {
+            box-shadow: 0 0 20px color-mix(in srgb, var(--tc) 20%, transparent);
+        }
+
+        .team-card.withdrawn {
+            opacity: 0.45;
+            filter: grayscale(0.7);
+        }
+
+        /* هيدر الفريق */
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .team-emoji {
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            line-height: 1;
+        }
+
+        .team-name {
+            color: var(--tc, #fff);
+            font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+            font-weight: 700;
+            font-family: 'El Messiri', sans-serif;
+            flex: 1;
+        }
+
+        .team-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-waiting {
+            background: rgba(180, 120, 0, 0.2);
+            border: 1px solid rgba(220, 160, 0, 0.3);
+            color: rgba(255, 200, 80, 0.85);
+        }
+
+        .badge-present {
+            background: rgba(0, 100, 0, 0.25);
+            border: 1px solid rgba(0, 180, 0, 0.4);
+            color: #6dcc6d;
+        }
+
+        .badge-withdrawn {
+            background: rgba(150, 0, 0, 0.25);
+            border: 1px solid rgba(220, 50, 50, 0.4);
+            color: #ff7070;
+        }
+
+        .badge-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .badge-waiting .badge-dot {
+            animation: dotBlink 1.2s ease-in-out infinite;
+        }
+
+        @keyframes dotBlink {
+
+            0%,
+            100% {
+                opacity: .3
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        /* ── قائمة الأعضاء ── */
+        .members-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .member-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.2s;
+            animation: memberIn 0.4s ease both;
+        }
+
+        .member-row:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes memberIn {
+            from {
+                opacity: 0;
+                transform: translateX(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* أفاتار العضو */
+        .member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1.5px solid var(--tc, rgba(255, 255, 255, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--tc, #fff);
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* نقطة الحضور على الأفاتار */
+        .member-avatar.online::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 9px;
+            height: 9px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 1.5px solid #000;
+        }
+
+        .member-avatar.withdrawn-dot::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 9px;
+            height: 9px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 1.5px solid #000;
+        }
+
+        .member-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .member-name {
+            color: #fff;
+            font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .member-level {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.55rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            margin-top: 1px;
+        }
+
+        /* حالة العضو */
+        .member-status {
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        /* الفانوس */
+        .lantern {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99;
+            width: 65px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video id="bgVideo" autoplay muted loop playsinline>
+        <source src="./assets/background.mp4" type="video/mp4">
+    </video>
+    <div class="overlay-dark"></div>
+    <img src="images/animated-logo2.gif" class="lantern" alt="">
+
+    <div class="page">
+
+        <!-- ══ فيديو الانتظار ══ -->
+        <div class="top-half">
+            <div class="wait-video-wrap">
+                <video id="waitVideo" muted loop autoplay playsinline>
+                    <source src="./images/waiting.mp4" type="video/mp4">
+                </video>
+                <div class="wait-title">
+                    <div class="wait-title-text">بانتظار دخول جميع المغامرين</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ الفرق ══ -->
+        <div class="bottom-half">
+            <div class="bottom-header">
+                <div class="teams-title">حالة الفرق والمغامرين</div>
+                <div class="teams-counter">
+                    <div class="counter-dot"></div>
+                    <div class="counter-text" id="counterText">0 / 0 انضموا</div>
+                </div>
+            </div>
+            <div class="teams-grid" id="teamsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        // ── بيانات من localStorage ──
+        const numTeams = parseInt(localStorage.getItem('game_teams')) || 4;
+        const numPlayers = parseInt(localStorage.getItem('game_players')) || 2;
+
+        // ── بيانات الفرق (تجريبية — استبدلها ببيانات السيرفر) ──
+        const TEAMS = [
+            {
+                name: 'الفريق الأحمر', emoji: '🔴', color: '#ef4444', code: 'K1',
+                status: 'present',
+                members: [
+                    { name: 'أحمد محمد', level: 'خبير', avatar: null, initials: 'أم', status: 'online' },
+                    { name: 'سارة علي', level: 'متوسط', avatar: null, initials: 'سع', status: 'waiting' },
+                ]
+            },
+            {
+                name: 'الفريق الأخضر', emoji: '🟢', color: '#22c55e', code: 'K2',
+                status: 'waiting',
+                members: [
+                    { name: 'يوسف الأمين', level: 'متقدم', avatar: null, initials: 'يأ', status: 'waiting' },
+                    { name: 'ريم الفيصل', level: 'مبتدئ', avatar: null, initials: 'رف', status: 'waiting' },
+                ]
+            },
+            {
+                name: 'الفريق الأزرق', emoji: '🔵', color: '#3b82f6', code: 'K3',
+                status: 'present',
+                members: [
+                    { name: 'محمود صالح', level: 'خبير', avatar: null, initials: 'مص', status: 'online' },
+                    { name: 'فيصل النمر', level: 'متوسط', avatar: null, initials: 'فن', status: 'online' },
+                ]
+            },
+            {
+                name: 'الفريق الأصفر', emoji: '🟡', color: '#eab308', code: 'K4',
+                status: 'withdrawn',
+                members: [
+                    { name: 'نورة خالد', level: 'متقدم', avatar: null, initials: 'نخ', status: 'withdrawn' },
+                    { name: 'عمر راشد', level: 'مبتدئ', avatar: null, initials: 'عر', status: 'withdrawn' },
+                ]
+            },
+        ];
+
+        const statusLabel = { waiting: 'بانتظار الدخول', present: 'انضم ✓', withdrawn: 'انسحب ✗' };
+        const statusClass = { waiting: 'badge-waiting', present: 'badge-present', withdrawn: 'badge-withdrawn' };
+        const memberStatusIcon = { online: '✓', waiting: '…', withdrawn: '✗' };
+
+        function buildTeams() {
+            const grid = document.getElementById('teamsGrid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${numTeams}, 1fr)`;
+
+            let presentCount = 0;
+
+            for (let i = 0; i < numTeams; i++) {
+                const t = TEAMS[i];
+                if (!t) continue;
+                if (t.status === 'present') presentCount++;
+
+                // ── الأعضاء ──
+                const membersHTML = t.members.slice(0, numPlayers).map((m, mi) => {
+                    const avatarContent = m.avatar
+                        ? `<img src="${m.avatar}" alt="${m.name}">`
+                        : m.initials;
+                    const dotClass = m.status === 'online' ? 'online' : m.status === 'withdrawn' ? 'withdrawn-dot' : '';
+                    return `
+                        <div class="member-row" style="animation-delay:${0.3 + mi * 0.08}s">
+                            <div class="member-avatar ${dotClass}" style="--tc:${t.color}">
+                                ${avatarContent}
+                            </div>
+                            <div class="member-info">
+                                <div class="member-name">${m.name}</div>
+                                <span class="member-level">${m.level}</span>
+                            </div>
+                            <div class="member-status">${memberStatusIcon[m.status] || '…'}</div>
+                        </div>`;
+                }).join('');
+
+                const card = document.createElement('div');
+                card.className = `team-card ${t.status === 'withdrawn' ? 'withdrawn' : t.status === 'present' ? 'present' : ''}`;
+                card.style.setProperty('--tc', t.color);
+                card.style.animationDelay = `${i * 0.1}s`;
+
+                card.innerHTML = `
+                    <div class="team-header">
+                        <div class="team-emoji">${t.emoji}</div>
+                        <div class="team-name">${t.name}</div>
+                        <div class="team-badge ${statusClass[t.status]}">
+                            <div class="badge-dot"></div>
+                            ${statusLabel[t.status]}
+                        </div>
+                    </div>
+                    <div class="members-list">${membersHTML}</div>
+                `;
+                grid.appendChild(card);
+            }
+
+            document.getElementById('counterText').textContent =
+                `${presentCount} / ${numTeams} انضموا`;
+        }
+
+        buildTeams();
+    </script>
+</body>
+
+</html>

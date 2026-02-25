@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>المنصة - الترتيب</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-lt: #ffe8a0;
+            --gold-dk: #c0a060;
+            --navy: #060f22;
+            --teal: #003443;
+            --teal-lt: #005566;
+            --card-bg: rgba(0, 25, 50, 0.82);
+
+            --rank1-clr: #ffd700;
+            --rank2-clr: #c0c0c0;
+            --rank3-clr: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: var(--navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        /* ── Animated background ── */
+        .bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% -10%, rgba(232, 203, 154, 0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 70%, rgba(0, 52, 67, 0.55) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 30%, rgba(10, 35, 72, 0.6) 0%, transparent 55%),
+                var(--navy);
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            animation: twinkle var(--dur, 3s) ease-in-out infinite alternate;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: scale(1.3);
+            }
+        }
+
+        /* ── Nav ── */
+        .back-btn {
+            position: fixed;
+            z-index: 9999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 38px;
+            cursor: pointer;
+        }
+
+        /* ── Page header ── */
+        .page-header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 52px 20px 10px;
+        }
+
+        .logo {
+            width: 60px;
+            display: block;
+            margin: 0 auto 8px;
+        }
+
+        .page-title {
+            font-size: clamp(1.6rem, 6vw, 2.4rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(232, 203, 154, 0.35);
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-dk), var(--gold), var(--gold-dk), transparent);
+            margin: 8px auto 0;
+        }
+
+        .page-sub {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.78rem;
+            margin-top: 6px;
+            letter-spacing: 2px;
+        }
+
+        /* ── Podium (top 3) ── */
+        .podium-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 420px;
+            margin: 28px auto 0;
+            padding: 0 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .podium-slot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            /* Reduced gap */
+            max-width: 120px;
+        }
+
+        .podium-avatar-wrap {
+            position: relative;
+        }
+
+        .podium-avatar {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--ring-clr, var(--teal));
+            box-shadow: 0 0 18px color-mix(in srgb, var(--ring-clr, var(--teal)) 50%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--teal);
+            font-size: 2.2rem;
+        }
+
+        .podium-slot.rank-1 .podium-avatar {
+            width: 82px;
+            height: 82px;
+            --ring-clr: var(--rank1-clr);
+        }
+
+        .podium-slot.rank-2 .podium-avatar {
+            --ring-clr: var(--rank2-clr);
+        }
+
+        .podium-slot.rank-3 .podium-avatar {
+            --ring-clr: var(--rank3-clr);
+        }
+
+        .crown {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.4rem;
+            animation: crownFloat 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.6));
+            z-index: 2;
+        }
+
+        @keyframes crownFloat {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(-5px) rotate(5deg);
+            }
+        }
+
+        .flag-sm {
+            position: absolute;
+            bottom: 0;
+            left: -4px;
+            font-size: 1rem;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .podium-name {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            margin-top: 4px;
+        }
+
+        /* ── New Level style for Podium ── */
+        .podium-level {
+            font-size: 0.6rem;
+            color: var(--gold);
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-bottom: 2px;
+        }
+
+        .podium-wins {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .podium-base {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .podium-base::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+        }
+
+        .podium-slot.rank-1 .podium-base {
+            height: 90px;
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.3), rgba(180, 140, 0, 0.2));
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: var(--rank1-clr);
+            box-shadow: 0 -4px 24px rgba(255, 215, 0, 0.2);
+        }
+
+        .podium-slot.rank-2 .podium-base {
+            height: 66px;
+            background: linear-gradient(180deg, rgba(192, 192, 192, 0.25), rgba(130, 130, 130, 0.15));
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            color: var(--rank2-clr);
+        }
+
+        .podium-slot.rank-3 .podium-base {
+            height: 50px;
+            background: linear-gradient(180deg, rgba(205, 127, 50, 0.25), rgba(140, 80, 20, 0.15));
+            border: 1px solid rgba(205, 127, 50, 0.3);
+            color: var(--rank3-clr);
+        }
+
+        /* ── Rank list (4th onwards) ── */
+        .list-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 420px;
+            margin: 18px auto 0;
+            padding: 0 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .list-section-title {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 4px 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .rank-row {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.25s, border-color 0.25s;
+            animation: rowIn 0.4s ease both;
+        }
+
+        .rank-row:hover {
+            transform: translateX(-4px);
+            border-color: rgba(232, 203, 154, 0.15);
+        }
+
+        @keyframes rowIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rank-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 52, 67, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            flex-shrink: 0;
+        }
+
+        .rank-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: var(--teal);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .rank-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .rank-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .rank-name {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .rank-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(232, 203, 154, 0.07);
+            border: 1px solid rgba(232, 203, 154, 0.15);
+            border-radius: 8px;
+            padding: 1px 7px;
+            font-size: 0.65rem;
+            color: rgba(232, 203, 154, 0.7);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .rank-wins {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .wins-val {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #4ade80;
+            line-height: 1;
+        }
+
+        .wins-lbl {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ── Filter tabs ── */
+        .filter-tabs {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 6px;
+            padding: 18px 14px 0;
+            max-width: 420px;
+            margin: 0 auto;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(232, 203, 154, 0.18);
+            background: rgba(0, 52, 67, 0.3);
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.76rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: rgba(0, 52, 67, 0.8);
+            border-color: rgba(232, 203, 154, 0.5);
+            color: var(--gold);
+        }
+
+        .splash-top {
+            position: fixed;
+            width: 100%;
+            height: 22%;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            object-fit: cover;
+        }
+
+        .splash-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg"></div>
+    <div class="stars" id="stars"></div>
+
+    <img class="splash-top" src="images/splash-22.png" alt="" onerror="this.style.display='none'">
+    <img class="splash-bg" src="images/splash-2.png" alt="" onerror="this.style.display='none'">
+
+    <div class="back-btn">
+        <a href="home.html">
+            <img src="images/next.png" class="back-img" alt="" onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <div class="page-header">
+        <img src="images/animated-logo-ii.gif" class="logo" alt="" onerror="this.style.display='none'">
+        <div class="page-title">منصة المغامرين</div>
+        <div class="page-sub">ترتيب المغامرين</div>
+    </div>
+
+    <div class="filter-tabs">
+        <button class="tab-btn active" onclick="applyFilter('all', this)">الكل</button>
+        <button class="tab-btn" onclick="applyFilter('eg', this)"><img src="https://flagcdn.com/w160/eg.png" width="18"
+                alt=""> مصر</button>
+        <button class="tab-btn" onclick="applyFilter('sa', this)"><img src="https://flagcdn.com/w160/sa.png" width="18"
+                alt=""> السعودية</button>
+        <button class="tab-btn" onclick="applyFilter('ae', this)"><img src="https://flagcdn.com/w160/ae.png" width="18"
+                alt=""> الإمارات</button>
+        <button class="tab-btn" onclick="applyFilter('kw', this)"><img src="https://flagcdn.com/w160/kw.png" width="18"
+                alt=""> الكويت</button>
+    </div>
+
+    <div class="podium-wrap" id="podiumWrap"></div>
+
+    <div class="list-wrap">
+        <div class="list-section-title">— باقي الترتيب —</div>
+        <div id="rankList"></div>
+    </div>
+
+    <script>
+        const starsEl = document.getElementById('stars');
+        for (let i = 0; i < 60; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            const size = Math.random() * 2.5 + 0.5;
+            s.style.cssText = `width:${size}px; height:${size}px; top:${Math.random() * 100}%; left:${Math.random() * 100}%; --dur:${(Math.random() * 3 + 2).toFixed(1)}s; animation-delay:${(Math.random() * 4).toFixed(1)}s;`;
+            starsEl.appendChild(s);
+        }
+
+        const players = [
+            { name: 'أحمد محمد', avatar: 'assets/بديح.png', level: 'المغامر الأسطوري', wins: 124, country: 'eg' },
+            { name: 'سارة الأحمدي', avatar: '', level: 'المغامر الذهبي', wins: 98, country: 'sa' },
+            { name: 'خالد العتيبي', avatar: '', level: 'المغامر الفضي', wins: 87, country: 'kw' },
+            { name: 'نورة السالم', avatar: '', level: 'المغامر الشرقي', wins: 75, country: 'ae' },
+            { name: 'عمر الزهراني', avatar: '', level: 'المغامر البرونزي', wins: 63, country: 'sa' },
+            { name: 'ريم الشمري', avatar: '', level: 'المغامر الشرقي', wins: 58, country: 'kw' },
+            { name: 'يوسف حسن', avatar: '', level: 'المغامر البرونزي', wins: 51, country: 'eg' },
+            { name: 'منى العنزي', avatar: '', level: 'المغامر الجديد', wins: 44, country: 'ae' },
+            { name: 'كريم الجابر', avatar: '', level: 'المغامر الجديد', wins: 38, country: 'eg' },
+            { name: 'لمى الدوسري', avatar: '', level: 'المغامر الجديد', wins: 29, country: 'sa' },
+        ];
+
+        const avatarFallbacks = ['🦸', '🧙', '⚔️', '🏹', '🛡️', '🔮', '🦊', '🐉', '🌙', '⚡'];
+        let currentFilter = 'all';
+
+        function applyFilter(country, btn) {
+            currentFilter = country;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAll();
+        }
+
+        function filtered() {
+            return currentFilter === 'all' ? players : players.filter(p => p.country === currentFilter);
+        }
+
+        function renderPodium(data) {
+            const wrap = document.getElementById('podiumWrap');
+            wrap.innerHTML = '';
+            const order = [
+                { idx: 1, cls: 'rank-2', num: '2', baseH: 66 },
+                { idx: 0, cls: 'rank-1', num: '1', baseH: 90 },
+                { idx: 2, cls: 'rank-3', num: '3', baseH: 50 },
+            ];
+
+            order.forEach(o => {
+                const p = data[o.idx];
+                if (!p) return;
+                const slot = document.createElement('div');
+                slot.className = `podium-slot ${o.cls}`;
+                const avatarContent = p.avatar
+                    ? `<img src="${p.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.textContent='${avatarFallbacks[players.indexOf(p) % avatarFallbacks.length]}'">`
+                    : avatarFallbacks[players.indexOf(p) % avatarFallbacks.length];
+
+                slot.innerHTML = `
+                    <div class="podium-avatar-wrap">
+                        ${o.cls === 'rank-1' ? '<div class="crown">👑</div>' : ''}
+                        <div class="podium-avatar">${avatarContent}</div>
+                        <div class="flag-sm"><img src="https://flagcdn.com/w160/${p.country}.png" width="20" style="border-radius:2px;"></div>
+                    </div>
+                    <div class="podium-name">${p.name}</div>
+                    <div class="podium-level">${p.level}</div>
+                    <div class="podium-wins">${p.wins} فوز</div>
+                    <div class="podium-base" style="height:${o.baseH}px">${o.num}</div>
+                `;
+                wrap.appendChild(slot);
+            });
+        }
+
+        function renderList(data) {
+            const list = document.getElementById('rankList');
+            list.innerHTML = '';
+            if (data.length <= 3) {
+                list.innerHTML = `<div style="text-align:center;color:rgba(255,255,255,0.25);font-size:0.85rem;padding:20px 0;">لا يوجد مزيد من اللاعبين</div>`;
+                return;
+            }
+            data.slice(3).forEach((p, i) => {
+                const row = document.createElement('div');
+                row.className = 'rank-row';
+                row.style.animationDelay = (i * 0.06) + 's';
+                const avatarContent = p.avatar
+                    ? `<img src="${p.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.textContent='${avatarFallbacks[players.indexOf(p) % avatarFallbacks.length]}'">`
+                    : avatarFallbacks[players.indexOf(p) % avatarFallbacks.length];
+
+                row.innerHTML = `
+                    <div class="rank-num">${i + 4}</div>
+                    <div class="rank-avatar-wrap">
+                        <div class="rank-avatar">${avatarContent}</div>
+                        <div class="flag-sm" style="bottom:-2px; left:-2px; width:18px; height:18px;"><img src="https://flagcdn.com/w160/${p.country}.png" width="16" style="border-radius:1px;"></div>
+                    </div>
+                    <div class="rank-info">
+                        <span class="rank-name">${p.name}</span>
+                        <span class="rank-level">✨ ${p.level}</span>
+                    </div>
+                    <div class="rank-wins">
+                        <div class="wins-val">${p.wins}</div>
+                        <div class="wins-lbl">فوز</div>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function renderAll() {
+            const data = filtered();
+            renderPodium(data);
+            renderList(data);
+        }
+
+        renderAll();
+    </script>
+</body>
+
+</html>

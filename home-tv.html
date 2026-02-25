@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رمز المغامرة - TV</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #myVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        #accessCode {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.55);
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 50px 80px;
+            text-align: center;
+        }
+
+        #accessCode .label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 5px;
+            margin-bottom: 18px;
+        }
+
+        #accessCode .code {
+            color: #fff;
+            font-size: 90px;
+            font-weight: 900;
+            letter-spacing: 20px;
+            animation: codeGlow 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes codeGlow {
+            from {
+                text-shadow: 0 0 30px rgba(99, 200, 255, 0.6), 0 0 60px rgba(99, 200, 255, 0.3);
+            }
+
+            to {
+                text-shadow: 0 0 60px rgba(99, 200, 255, 1), 0 0 120px rgba(99, 200, 255, 0.6);
+            }
+        }
+
+        .lantern {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99;
+            width: 80px;
+            opacity: 0.6;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ctrl-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: unset;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s, transform 0.2s;
+            padding: 0;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(0, 0, 0, 0.75);
+            transform: scale(1.1);
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.95);
+        }
+
+        .ctrl-btn img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        #closeBtn:hover {
+            background: rgba(180, 30, 30, 0.8) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="images/animated-logo2.gif" class="lantern" alt="">
+
+    <div class="controls">
+        <button class="ctrl-btn" id="closeBtn" title="إغلاق">
+            <img src="images/logout-kh.png" alt="إغلاق">
+        </button>
+        <button class="ctrl-btn" id="soundBtn" title="الصوت">
+            <img id="soundIcon" src="images/sound-off.png" alt="الصوت">
+        </button>
+    </div>
+
+    <video id="myVideo" autoplay playsinline muted>
+        <source id="videoSource" src="./assets/start.mp4" type="video/mp4">
+    </video>
+
+    <audio id="myAudio" src="./images/sound.ogg" preload="auto" loop></audio>
+
+    <div id="accessCode">
+        <div class="label">رمز ساحة المغامرة</div>
+        <div class="code" id="codeDisplay"></div>
+    </div>
+
+    <script>
+        const code = localStorage.getItem('game_code') || 'XK9P2M';
+        document.getElementById('codeDisplay').textContent = code;
+
+        const video = document.getElementById('myVideo');
+        const source = document.getElementById('videoSource');
+        const audio = document.getElementById('myAudio');
+
+        const playlist = ['./assets/start.mp4', './assets/background.mp4'];
+        let currentTrack = 0;
+        let soundOn = false;
+
+        video.addEventListener('ended', () => {
+            currentTrack++;
+            if (currentTrack < playlist.length) {
+                source.src = playlist[currentTrack];
+                video.load();
+                video.play();
+                if (currentTrack === 1) {
+                    video.loop = true;
+                    audio.play().then(() => { soundOn = true; updateSoundIcon(); }).catch(() => { });
+                }
+            }
+        });
+
+        function updateSoundIcon() {
+            document.getElementById('soundIcon').src = soundOn ? 'images/sound-on.png' : 'images/sound-off.png';
+        }
+        document.getElementById('soundBtn').addEventListener('click', () => {
+            soundOn = !soundOn;
+            soundOn ? audio.play() : audio.pause();
+            updateSoundIcon();
+        });
+
+        // ── إغلاق التاب ──
+        function closeTab() {
+            // redirect لصفحة about:blank ثم إغلاق — يشتغل حتى لو التاب اتفتح مباشرة
+            window.location.replace('about:blank');
+            setTimeout(() => window.close(), 100);
+        }
+
+        document.getElementById('closeBtn').addEventListener('click', closeTab);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTab(); });
+    </script>
+</body>
+
+</html>

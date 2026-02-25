@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خراريف | الإشتراكات</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="header">
+        <div class="controlls-video">
+            <button class="nav-btn" aria-label="الرجوع">
+                <img src="./assets/next.png" alt="رجوع">
+                <span class="btn-text">رجوع</span>
+            </button>
+        </div>
+
+        <div class="center-wrapper-fixed">
+            <div class="menu-cont">
+                <nav>
+                    <label for="drop" class="toggle first"><span>القائمة</span></label>
+                    <input type="checkbox" id="drop">
+                    <ul class="menu">
+                        <li style="color: white;">تسجيل حساب جديد</li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="registration-form">
+                <div class="input-group">
+                    <input autofocus type="text" placeholder="الاسم بالكامل" />
+                </div>
+
+                <div class="input-group">
+                    <div
+                        style="display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border: 1px solid #006c80; border-radius: 8px; padding: 5px 12px; width: 94%; margin: 0 auto 10px auto;">
+                        <img id="country-flag" src="" alt="علم"
+                            style="width: 30px; height: 20px; display: none; border: 1px solid #eee;">
+                        <select id="country-list"
+                            style="border: none; width: 100%; font-family: 'Cairo'; background: transparent; outline: none; text-align: center;">
+                            <option value="">جاري تحديد الدولة...</option>
+                            <option value="EG" data-name="مصر">مصر</option>
+                            <option value="SA" data-name="السعودية">السعودية</option>
+                            <option value="AE" data-name="الإمارات">الإمارات</option>
+                            <option value="KW" data-name="الكويت">الكويت</option>
+                            <option value="QA" data-name="قطر">قطر</option>
+                            <option value="BH" data-name="البحرين">البحرين</option>
+                            <option value="OM" data-name="عمان">عمان</option>
+                            <option value="JO" data-name="الأردن">الأردن</option>
+                            <option value="LB" data-name="لبنان">لبنان</option>
+                            <option value="SY" data-name="سوريا">سوريا</option>
+                            <option value="IQ" data-name="العراق">العراق</option>
+                            <option value="PS" data-name="فلسطين">فلسطين</option>
+                            <option value="LY" data-name="ليبيا">ليبيا</option>
+                            <option value="DZ" data-name="الجزائر">الجزائر</option>
+                            <option value="MA" data-name="المغرب">المغرب</option>
+                            <option value="TN" data-name="تونس">تونس</option>
+                            <option value="SD" data-name="السودان">السودان</option>
+                            <option value="YE" data-name="اليمن">اليمن</option>
+                            <option value="SO" data-name="الصومال">الصومال</option>
+                            <option value="MR" data-name="موريتانيا">موريتانيا</option>
+                            <option value="DJ" data-name="جيبوتي">جيبوتي</option>
+                            <option value="KM" data-name="جزر القمر">جزر القمر</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" placeholder="البريد الإلكتروني" />
+                </div>
+
+                <div class="input-group">
+                    <label>رمز المرور</label>
+                    <div class="passcode-wrapper">
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                    </div>
+                </div>
+
+                <button class="submit-btn">تسجيل</button>
+
+                <div class="login-redirect" style="margin-top: 20px; text-align: center;">
+                    <span style="font-size: 14px;">لديك حساب بالفعل؟</span>
+                    <a href="login.html"
+                        style="color: #006c80; font-weight: bold; margin-right: 5px; font-size: 14px;">تسجيل
+                        الدخول</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-cont">
+            <div class="logo">
+                <img src="images/animated-logo-ii.gif" width="258" height="303" />
+            </div>
+            <div class="acc">
+                <img src="images/acc.png" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.code-input');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const data = e.clipboardData.getData('text').split('');
+
+                inputs.forEach((textInput, i) => {
+                    if (data[i]) {
+                        textInput.value = data[i];
+                        if (inputs[i + 1]) inputs[i + 1].focus();
+                    }
+                });
+            });
+        });
+        const countryList = document.getElementById('country-list');
+        const countryFlag = document.getElementById('country-flag');
+
+        // دالة لتحديث العلم بناءً على كود الدولة
+        function updateFlag(countryCode) {
+            if (countryCode) {
+                countryFlag.src = `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
+                countryFlag.style.display = 'block';
+            }
+        }
+
+        // 1. جلب الدولة تلقائياً عن طريق الـ IP
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                const detectedCode = data.country_code; // مثلاً EG
+                // التأكد إذا كانت الدولة المكتشفة موجودة في القائمة العربية
+                const option = countryList.querySelector(`option[value="${detectedCode}"]`);
+                if (option) {
+                    countryList.value = detectedCode;
+                    updateFlag(detectedCode);
+                } else {
+                    // إذا لم تكن دولة عربية، اجعل القيمة الافتراضية مصر مثلاً
+                    countryList.value = "EG";
+                    updateFlag("EG");
+                }
+            })
+            .catch(err => {
+                console.error("خطأ في جلب الموقع:", err);
+                countryList.value = "EG"; // افتراضي في حال الخطأ
+                updateFlag("EG");
+            });
+
+        // 2. تحديث العلم يدوياً عند تغيير المستخدم للدولة
+        countryList.addEventListener('change', (e) => {
+            updateFlag(e.target.value);
+        });
+    </script>
+</body>
+
+</html>

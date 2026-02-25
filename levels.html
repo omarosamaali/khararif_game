@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستويات الأبطال</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-light: #ffe8a0;
+            --dark-navy: #0a2348;
+            --darker-navy: #060f22;
+            --teal: #003443;
+            --card-bg: rgba(0, 30, 60, 0.85);
+            --row-bg: rgba(0, 52, 67, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: var(--darker-navy);
+            min-height: 100vh;
+            color: white;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        /* الخلفية المتحركة المماثلة لتصميمك */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(0, 52, 67, 0.4) 0%, transparent 80%);
+            z-index: -1;
+        }
+
+        /* ── Header ── */
+        .header-container {
+            text-align: center;
+            position: relative;
+            z-index: 99999;
+            padding: 40px 20px 20px;
+        }
+
+        .header-container h1 {
+            color: var(--gold);
+            font-size: 2rem;
+            text-shadow: 0 0 15px rgba(232, 203, 154, 0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* ── Table Container ── */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .levels-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 20px;
+            position: relative;
+            z-index: 999999999999;
+            backdrop-filter: blur(15px);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Table Header */
+        .levels-header {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.2fr;
+            background: rgba(232, 203, 154, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.2);
+            font-weight: bold;
+            color: var(--gold);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* Table Rows */
+        .level-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.2fr;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .level-row:hover {
+            background: rgba(232, 203, 154, 0.05);
+        }
+
+        .level-name {
+            font-weight: 600;
+            color: #fff;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .win-count {
+            font-family: 'Cairo', sans-serif;
+            color: #4ade80;
+            /* أخضر للفوز */
+            font-weight: 700;
+        }
+
+        .reward-tag {
+            background: rgba(232, 203, 154, 0.15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* ── Icons ── */
+        .level-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--teal);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 1px solid var(--gold);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+                .back-btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+                .splash-top {
+            position: fixed;
+            width: 100%;
+            height: 26%;
+            z-index: 99;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .splash-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="back-btn">
+    <a href="my-game.html">
+        <img src="images/next.png" class="back-img" alt="">
+    </a>
+</div>
+    <div class="header-container">
+        <h1>مستويات الأبطال</h1>
+        <div class="subtitle">طريقك نحو المجد والجريمة</div>
+    </div>
+
+        <!-- <img class="splash-top" src="images/splash-22.png" alt=""> -->
+        <img class="splash-bg" src="images/splash-2.png" alt="">
+
+    <div class="container">
+        <div class="levels-card">
+            <div class="levels-header">
+                <div>المستوى</div>
+                <div>مرات الفوز</div>
+                <div>الجائزة</div>
+            </div>
+
+            <div id="levelsList">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const levelsData = [
+            { name: 'مغامر مبتدئ', wins: 5, reward: '١٠٠ نقطة', icon: '🌱' },
+            { name: 'محارب برونزي', wins: 15, reward: 'صندوق خشبي', icon: '⚔️' },
+            { name: 'فارس فضي', wins: 30, reward: 'درع المتحدث', icon: '🛡️' },
+            { name: 'بطل ذهبي', wins: 50, reward: 'مفتاح الكنز', icon: '🏆' },
+            { name: 'أسطورة حكيم', wins: 100, reward: 'وسام الشرف', icon: '💎' },
+            { name: 'تنين المعرفة', wins: 200, reward: 'لقب ملكي', icon: '🐉' }
+        ];
+
+        function renderLevels() {
+            const container = document.getElementById('levelsList');
+            container.innerHTML = levelsData.map(lvl => `
+                <div class="level-row">
+                    <div class="level-name">
+                        <span class="level-icon">${lvl.icon}</span>
+                        ${lvl.name}
+                    </div>
+                    <div class="win-count">${lvl.wins} فوز</div>
+                    <div>
+                        <span class="reward-tag">${lvl.reward}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // تشغيل الوظيفة عند التحميل
+        renderLevels();
+    </script>
+</body>
+
+</html>

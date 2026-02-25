@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تواصل معنا</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-light: #ffe8a0;
+            --gold-dark: #c0a060;
+            --dark-navy: #0a2348;
+            --darker-navy: #060f22;
+            --teal: #003443;
+            --teal-light: #005566;
+            --card-bg: rgba(0, 30, 60, 0.85);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: var(--darker-navy);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 80, 120, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(10, 35, 72, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 52, 67, 0.3) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 10%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 45% 55%, rgba(232, 203, 154, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 70px 20px 0;
+        }
+
+        .header h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(232, 203, 154, 0.4);
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 10px auto 0;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ── Demo toggle (remove in production) ── */
+        .demo-toggle {
+            background: rgba(232, 203, 154, 0.08);
+            border: 1px dashed rgba(232, 203, 154, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .demo-toggle span {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.78rem;
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-label {
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+
+        .switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .switch-track {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 999px;
+            transition: background 0.3s;
+        }
+
+        .switch input:checked~.switch-track {
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-color: var(--gold-dark);
+        }
+
+        .switch-thumb {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .switch input:checked~.switch-track .switch-thumb {
+            transform: translateX(-20px);
+            background: var(--gold);
+        }
+
+        /* ── User info card (auth state) ── */
+        .user-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            padding: 16px 18px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border: 2px solid rgba(232, 203, 154, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .user-email {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.78rem;
+            margin-top: 2px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 84, 102, 0.5);
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            color: var(--gold);
+        }
+
+        .user-badge i {
+            font-size: 0.65rem;
+        }
+
+        /* ── Form card ── */
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            padding: 20px 18px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Field group */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.65);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field label i {
+            color: var(--gold);
+            font-size: 0.75rem;
+        }
+
+        .field label .required {
+            color: #ff6b6b;
+            font-size: 0.75rem;
+        }
+
+        /* Input / select / textarea */
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            background: rgba(0, 20, 45, 0.6);
+            border: 1px solid rgba(232, 203, 154, 0.18);
+            border-radius: 10px;
+            padding: 11px 14px;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.88rem;
+            color: white;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            -webkit-appearance: none;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: rgba(232, 203, 154, 0.5);
+            box-shadow: 0 0 0 3px rgba(232, 203, 154, 0.08);
+        }
+
+        .field select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8cb9a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 14px center;
+            padding-left: 36px;
+        }
+
+        .field select option {
+            background: #0a2348;
+            color: white;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 1.7;
+        }
+
+        /* Read-only field */
+        .field input[readonly] {
+            background: rgba(232, 203, 154, 0.05);
+            border-color: rgba(232, 203, 154, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+
+        .readonly-note {
+            font-size: 0.7rem;
+            color: rgba(232, 203, 154, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: -4px;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(232, 203, 154, 0.1);
+            margin: 4px 0;
+        }
+
+        /* ── Auth state hidden fields ── */
+        .guest-only {
+            display: flex;
+        }
+
+        .auth-only {
+            display: none;
+        }
+
+        body.is-auth .guest-only {
+            display: none;
+        }
+
+        body.is-auth .auth-only {
+            display: flex;
+        }
+
+        /* ── Submit button ── */
+        .btn-submit {
+            width: 100%;
+            margin-top: 6px;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 10px;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            color: var(--gold);
+            transition: background 0.25s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #004d62;
+        }
+
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+            transform: skewX(-20deg);
+            animation: btnShine 3.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes btnShine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        /* Back button link */
+        .btn-back {
+            width: 80%;
+            margin: 4px auto 0;
+            background: transparent;
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 10px;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 11px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.45);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .btn-back:hover {
+            color: var(--gold);
+            border-color: rgba(232, 203, 154, 0.4);
+        }
+
+        /* ── Success message ── */
+        .success-msg {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .success-msg.show {
+            display: flex;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border: 2px solid rgba(232, 203, 154, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--gold);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-msg h3 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .success-msg p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        /* ── Guest note banner ── */
+        .guest-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: rgba(232, 203, 154, 0.06);
+            border: 1px solid rgba(232, 203, 154, 0.18);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .guest-banner i {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .guest-banner p {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+
+        .guest-banner a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .guest-banner a:hover {
+            text-decoration: underline;
+        }
+
+        body.is-auth .guest-banner {
+            display: none;
+        }
+
+        .ornament {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: rgba(232, 203, 154, 0.3);
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            margin-top: 4px;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back-btn">
+        <a href="home.html">
+            <img src="images/next.png" class="back-img" alt="" onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <div class="header">
+        <h1>تواصل معنا</h1>
+        <p class="subtitle">نحن هنا للمساعدة — راسلنا في أي وقت</p>
+    </div>
+
+    <div class="container">
+
+        <!-- ══ DEMO TOGGLE — remove in production ══ -->
+        <div class="demo-toggle">
+            <span><i class="fa-solid fa-flask" style="margin-left:4px;color:rgba(232,203,154,0.4)"></i> عرض تجريبي —
+                تبديل حالة المستخدم</span>
+            <label class="switch">
+                <input type="checkbox" id="authToggle">
+                <div class="switch-track">
+                    <div class="switch-thumb"></div>
+                </div>
+            </label>
+            <span class="toggle-label" id="toggleLabel">زائر</span>
+        </div>
+
+        <!-- ══ AUTH state: user info card ══ -->
+        <div class="user-card auth-only">
+            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="user-info">
+                <div class="user-name">أحمد محمد</div>
+                <div class="user-email">ahmed@example.com</div>
+            </div>
+            <div class="user-badge"><i class="fa-solid fa-circle-check"></i> مسجّل</div>
+        </div>
+
+        <!-- ══ GUEST state: info banner ══ -->
+        <div class="guest-banner">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>أنت تتواصل كزائر. يُرجى إدخال اسمك وبريدك لنتمكن من الرد عليك. أو <a href="#">سجّل دخولك</a> للمتابعة
+                بحسابك.</p>
+        </div>
+
+        <!-- ══ FORM CARD ══ -->
+        <div class="form-card">
+            <form id="contactForm" novalidate>
+                <div class="field-group">
+
+                    <!-- Guest-only: name -->
+                    <div class="field guest-only" id="fieldName">
+                        <label for="guestName">
+                            <i class="fa-solid fa-user"></i>
+                            الاسم الكامل
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" id="guestName" placeholder="أدخل اسمك الكامل" autocomplete="name">
+                    </div>
+
+                    <!-- Guest-only: email -->
+                    <div class="field guest-only" id="fieldEmail">
+                        <label for="guestEmail">
+                            <i class="fa-solid fa-envelope"></i>
+                            البريد الإلكتروني
+                            <span class="required">*</span>
+                        </label>
+                        <input type="email" id="guestEmail" placeholder="example@email.com" autocomplete="email"
+                            dir="ltr">
+                    </div>
+
+                    <!-- Auth-only: readonly name -->
+                    <div class="field auth-only" id="fieldAuthName">
+                        <label>
+                            <i class="fa-solid fa-user"></i>
+                            الاسم
+                        </label>
+                        <input type="text" value="أحمد محمد" readonly>
+                        <span class="readonly-note"><i class="fa-solid fa-lock"></i> مأخوذ من حسابك</span>
+                    </div>
+
+                    <!-- Auth-only: readonly email -->
+                    <div class="field auth-only" id="fieldAuthEmail">
+                        <label>
+                            <i class="fa-solid fa-envelope"></i>
+                            البريد الإلكتروني
+                        </label>
+                        <input type="email" value="ahmed@example.com" readonly dir="ltr">
+                        <span class="readonly-note"><i class="fa-solid fa-lock"></i> مأخوذ من حسابك</span>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- Category -->
+                    <div class="field">
+                        <label for="category">
+                            <i class="fa-solid fa-tag"></i>
+                            الموضوع
+                            <span class="required">*</span>
+                        </label>
+                        <select id="category">
+                            <option value="" disabled selected>اختر موضوع رسالتك</option>
+                            <option value="support">دعم فني</option>
+                            <option value="billing">الدفع والفواتير</option>
+                            <option value="account">مشكلة في الحساب</option>
+                            <option value="complaint">شكوى</option>
+                            <option value="suggestion">اقتراح</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="field">
+                        <label for="subject">
+                            <i class="fa-solid fa-pen-nib"></i>
+                            عنوان الرسالة
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" id="subject" placeholder="لخّص موضوع رسالتك">
+                    </div>
+
+                    <!-- Message -->
+                    <div class="field">
+                        <label for="message">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            الرسالة
+                            <span class="required">*</span>
+                        </label>
+                        <textarea id="message" placeholder="اكتب رسالتك هنا بالتفصيل..."></textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-submit">
+                        <span class="btn-shine"></span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                        إرسال الرسالة
+                    </button>
+
+                </div>
+            </form>
+
+            <!-- Success state -->
+            <div class="success-msg" id="successMsg">
+                <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                <h3>تم إرسال رسالتك بنجاح!</h3>
+                <p>شكراً لتواصلك معنا. سيرد عليك فريق الدعم خلال 24 ساعة في أيام العمل.</p>
+            </div>
+        </div>
+
+        <div class="ornament">✦ ✦ ✦</div>
+
+    </div>
+
+    <script>
+        // ── Demo toggle ──
+        const authToggle = document.getElementById('authToggle');
+        const toggleLabel = document.getElementById('toggleLabel');
+
+        authToggle.addEventListener('change', () => {
+            if (authToggle.checked) {
+                document.body.classList.add('is-auth');
+                toggleLabel.textContent = 'مسجّل';
+            } else {
+                document.body.classList.remove('is-auth');
+                toggleLabel.textContent = 'زائر';
+            }
+        });
+
+        // ── Form submit ──
+        const form = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMsg');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const isAuth = document.body.classList.contains('is-auth');
+
+            // Validate guest fields
+            if (!isAuth) {
+                const name = document.getElementById('guestName').value.trim();
+                const email = document.getElementById('guestEmail').value.trim();
+                if (!name || !email) {
+                    shake(name ? null : document.getElementById('guestName'));
+                    shake(email ? null : document.getElementById('guestEmail'));
+                    return;
+                }
+            }
+
+            const category = document.getElementById('category').value;
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!category) { shake(document.getElementById('category')); return; }
+            if (!subject) { shake(document.getElementById('subject')); return; }
+            if (!message) { shake(document.getElementById('message')); return; }
+
+            // Show success
+            form.style.display = 'none';
+            successMsg.classList.add('show');
+        });
+
+        function shake(el) {
+            if (!el) return;
+            el.style.borderColor = '#ff6b6b';
+            el.style.animation = 'shake 0.4s ease';
+            el.addEventListener('animationend', () => el.style.animation = '', { once: true });
+            setTimeout(() => el.style.borderColor = '', 1500);
+        }
+    </script>
+
+    <style>
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+    </style>
+</body>
+
+</html>

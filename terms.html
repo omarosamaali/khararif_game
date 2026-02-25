@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشروط والأحكام وسياسة الخصوصية</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=El+Messiri:wght@400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #0a2348;
+            font-family: 'El Messiri', sans-serif;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* Background */
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .bg-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 35, 72, 0.75) 0%, rgba(0, 20, 50, 0.92) 100%);
+        }
+
+        /* Header */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: #092143;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 20px;
+            padding-top: 10px !important;
+            padding-bottom: 41px !important;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.15);
+        }
+
+        .back-btn {
+            position: absolute;
+            right: 16px;
+            cursor: pointer;
+        }
+
+        .back-btn img {
+            width: 36px;
+        }
+
+        .header-logo img {
+            width: 64px;
+            filter: drop-shadow(0 2px 10px rgba(232, 203, 154, 0.4));
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #dfa888;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            top: 90px;
+        }
+
+        /* Page */
+        .page {
+            position: relative;
+            z-index: 1;
+            padding: 160px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Tab switcher */
+        .tab-switcher {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(0, 30, 60, 0.6);
+            border: 1px solid rgba(232, 203, 154, 0.18);
+            border-radius: 12px;
+            padding: 5px;
+            gap: 5px;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.45);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(223, 168, 136, 0.18), rgba(223, 168, 136, 0.08));
+            border: 1px solid rgba(223, 168, 136, 0.35);
+            color: #dfa888;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(0, 30, 60, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 16px;
+            padding: 28px 22px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .card-panel {
+            display: none;
+        }
+
+        .card-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Last updated badge */
+        .last-updated {
+            display: inline-block;
+            background: rgba(232, 203, 154, 0.1);
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 20px;
+            color: rgba(232, 203, 154, 0.7);
+            font-size: 12px;
+            padding: 4px 14px;
+            margin-bottom: 24px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(223, 168, 136, 0.12);
+            border: 1px solid rgba(223, 168, 136, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .section-title {
+            color: #dfa888;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .section-body {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 14px;
+            line-height: 2;
+            padding-right: 46px;
+        }
+
+        .section-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-body ul li {
+            position: relative;
+            padding-right: 18px;
+            margin-bottom: 6px;
+        }
+
+        .section-body ul li::before {
+            content: '◈';
+            position: absolute;
+            right: 0;
+            color: #dfa888;
+            font-size: 10px;
+            top: 5px;
+        }
+
+        /* Divider */
+        .sec-divider {
+            border: none;
+            border-top: 1px solid rgba(232, 203, 154, 0.1);
+            margin: 0 0 28px 0;
+        }
+
+        /* Agree button */
+        .agree-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .agree-row img {
+            width: 26px;
+            opacity: 0.85;
+        }
+
+        .btn-agree {
+            flex: 1;
+            max-width: 260px;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 9px;
+            color: #dfa888;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 12px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        .btn-agree:hover {
+            opacity: 0.85;
+        }
+
+        .btn-agree:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-wrapper">
+        <img src="images/splash-2.png" alt="">
+    </div>
+
+    <!-- Header -->
+    <div class="top-header">
+        <div class="back-btn" onclick="history.back()">
+            <img src="images/next.png" alt="رجوع" onerror="this.style.display='none'">
+        </div>
+        <div class="header-logo">
+            <img src="images/animated-logo-ii.gif" alt="logo" onerror="this.style.display='none'">
+        </div>
+        <div class="header-title">الشروط والأحكام وسياسة الخصوصية</div>
+    </div>
+
+    <div class="page">
+
+        <!-- Tab Switcher -->
+        <div class="tab-switcher">
+            <button class="tab-btn active" onclick="switchTab('terms', this)">الشروط والأحكام</button>
+            <button class="tab-btn" onclick="switchTab('privacy', this)">سياسة الخصوصية</button>
+        </div>
+
+        <div class="card">
+
+            <!-- ===== TERMS PANEL ===== -->
+            <div id="terms" class="card-panel active">
+
+                <div style="text-align:center;">
+                    <span class="last-updated">آخر تحديث: 10-2-2026</span>
+                </div>
+
+                <!-- 1 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <div class="section-title">1. القبول بالشروط</div>
+                    </div>
+                    <div class="section-body">
+                        باستخدامك لهذا التطبيق أو التسجيل فيه، فإنك توافق على الالتزام بجميع الشروط والأحكام الواردة في
+                        هذه
+                        الوثيقة. إذا كنت لا توافق على أي من هذه الشروط، يُرجى عدم استخدام التطبيق.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 2 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 8v4l3 3" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٢. شروط الاستخدام</div>
+                    </div>
+                    <div class="section-body">
+                        <ul>
+                            <li>يجب أن يكون عمر المستخدم ١٨ عامًا أو أكثر للتسجيل والمشاركة.</li>
+                            <li>يُمنع استخدام التطبيق لأي أغراض غير مشروعة أو مخالفة للقوانين المحلية.</li>
+                            <li>يتحمل المستخدم المسؤولية الكاملة عن أي نشاط يتم من خلال حسابه.</li>
+                            <li>لا يجوز مشاركة بيانات الدخول مع أي طرف ثالث.</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 3 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <path d="M9 9h6M9 12h6M9 15h4" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٣. الحسابات والتسجيل</div>
+                    </div>
+                    <div class="section-body">
+                        يجب تقديم معلومات دقيقة وصحيحة عند التسجيل. نحتفظ بالحق في تعليق أو إلغاء أي حساب يثبت تقديمه
+                        معلومات مضللة أو مخالفة لهذه الشروط، دون أي إشعار مسبق.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 4 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٤. المحتوى والملكية الفكرية</div>
+                    </div>
+                    <div class="section-body">
+                        جميع المحتويات داخل التطبيق — بما تشمل النصوص والصور والشعارات والتصاميم — هي ملك حصري للمنصة
+                        ومحمية
+                        بموجب قوانين حقوق الملكية الفكرية. يُحظر نسخها أو توزيعها أو استخدامها تجاريًا دون إذن كتابي
+                        مسبق.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 5 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٥. إخلاء المسؤولية</div>
+                    </div>
+                    <div class="section-body">
+                        لا تتحمل المنصة أي مسؤولية عن الأضرار المباشرة أو غير المباشرة الناجمة عن استخدام التطبيق أو عدم
+                        القدرة على الوصول إليه. يتم تقديم الخدمة "كما هي" دون أي ضمانات صريحة أو ضمنية.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 6 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4M12 8h.01" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٦. التعديلات على الشروط</div>
+                    </div>
+                    <div class="section-body">
+                        نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعار المستخدمين بأي تغييرات جوهرية عبر التطبيق.
+                        استمرار استخدامك للتطبيق بعد أي تعديل يُعدّ موافقةً ضمنية على الشروط الجديدة.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- 7 -->
+                <div class="section" style="margin-bottom:10px;">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٧. التواصل معنا</div>
+                    </div>
+                    <div class="section-body">
+                        إذا كان لديك أي استفسار بشأن هذه الشروط، يُرجى التواصل معنا عبر قسم الدعم داخل التطبيق أو عبر
+                        البريد
+                        الإلكتروني الرسمي للمنصة.
+                    </div>
+                </div>
+
+                <!-- Agree button -->
+                <!-- <div class="agree-row">
+                    <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                    <button class="btn-agree" onclick="history.back()">فهمت وأوافق</button>
+                    <img src="images/left.png" alt="" onerror="this.style.display='none'">
+                </div> -->
+
+            </div>
+            <!-- END TERMS PANEL -->
+
+
+            <!-- ===== PRIVACY PANEL ===== -->
+            <div id="privacy" class="card-panel">
+
+                <div style="text-align:center;">
+                    <span class="last-updated">آخر تحديث: فبراير ٢٠٢٦</span>
+                </div>
+
+                <!-- P1 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <div class="section-title">١. مقدمة</div>
+                    </div>
+                    <div class="section-body">
+                        نلتزم بحماية خصوصيتك وضمان أمان بياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمع معلوماتك
+                        واستخدامها وحمايتها عند استخدامك لتطبيقنا.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P2 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٢. البيانات التي نجمعها</div>
+                    </div>
+                    <div class="section-body">
+                        <ul>
+                            <li>المعلومات الشخصية كالاسم وعنوان البريد الإلكتروني ورقم الهاتف عند التسجيل.</li>
+                            <li>بيانات الاستخدام كالصفحات التي تزورها والمدة الزمنية والتفاعلات داخل التطبيق.</li>
+                            <li>معلومات الجهاز كنوع الجهاز ونظام التشغيل وعنوان IP.</li>
+                            <li>البيانات المالية اللازمة لإتمام عمليات الدفع، وفق معايير الأمان المعتمدة.</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P3 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٣. كيف نستخدم بياناتك</div>
+                    </div>
+                    <div class="section-body">
+                        <ul>
+                            <li>تقديم الخدمات وتشغيل التطبيق وإدارة حسابك.</li>
+                            <li>تحسين تجربة المستخدم وتطوير ميزات جديدة.</li>
+                            <li>إرسال إشعارات تتعلق بالحساب أو العروض (مع إمكانية إلغاء الاشتراك).</li>
+                            <li>الامتثال للمتطلبات القانونية والتنظيمية.</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P4 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٤. مشاركة البيانات مع أطراف ثالثة</div>
+                    </div>
+                    <div class="section-body">
+                        لا نقوم ببيع بياناتك الشخصية أو تأجيرها لأطراف ثالثة. قد نشارك بياناتك فقط في الحالات التالية:
+                        <ul style="margin-top:8px;">
+                            <li>مع مزودي الخدمة الذين يساعدوننا في تشغيل التطبيق وفق اتفاقيات سرية صارمة.</li>
+                            <li>عند الضرورة القانونية أو بموجب أمر قضائي.</li>
+                            <li>في حالات الاندماج أو الاستحواذ، مع إشعارك مسبقًا.</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P5 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٥. أمان البيانات</div>
+                    </div>
+                    <div class="section-body">
+                        نطبق إجراءات أمنية تقنية وتنظيمية متقدمة لحماية بياناتك من الوصول غير المصرح به أو الإفصاح أو
+                        التعديل أو الإتلاف، بما في ذلك تشفير البيانات عبر بروتوكولات SSL/TLS.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P6 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6l-1 14H6L5 6" />
+                                <path d="M10 11v6M14 11v6" />
+                                <path d="M9 6V4h6v2" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٦. الاحتفاظ بالبيانات وحذفها</div>
+                    </div>
+                    <div class="section-body">
+                        نحتفظ ببياناتك طوال فترة نشاط حسابك أو بالقدر اللازم لتقديم الخدمة. يحق لك في أي وقت طلب حذف
+                        حسابك وبياناتك الشخصية عبر قسم الدعم، وسيتم تنفيذ طلبك خلال مدة لا تتجاوز ٣٠ يومًا.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P7 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                                <circle cx="12" cy="12" r="2" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٧. ملفات الارتباط (Cookies)</div>
+                    </div>
+                    <div class="section-body">
+                        قد يستخدم التطبيق ملفات الارتباط وتقنيات مماثلة لتحسين الأداء وتذكر تفضيلاتك. يمكنك التحكم في
+                        إعدادات ملفات الارتباط من خلال إعدادات جهازك أو متصفحك.
+                    </div>
+                </div>
+                <hr class="sec-divider">
+
+                <!-- P8 -->
+                <div class="section" style="margin-bottom:10px;">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                        </div>
+                        <div class="section-title">٨. التواصل معنا</div>
+                    </div>
+                    <div class="section-body">
+                        إذا كان لديك أي استفسار أو طلب يتعلق بخصوصيتك أو بياناتك الشخصية، يُرجى التواصل معنا عبر قسم
+                        الدعم داخل التطبيق أو عبر البريد الإلكتروني الرسمي للمنصة.
+                    </div>
+                </div>
+
+                <!-- Agree button -->
+                <!-- <div class="agree-row">
+                    <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                    <button class="btn-agree" onclick="history.back()">فهمت وأوافق</button>
+                    <img src="images/left.png" alt="" onerror="this.style.display='none'">
+                </div> -->
+
+            </div>
+            <!-- END PRIVACY PANEL -->
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(panel, btn) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Update panels
+            document.querySelectorAll('.card-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(panel).classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>

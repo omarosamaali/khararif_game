@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار التصنيف الفرعي</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --card-bg: rgba(0, 20, 40, 0.88);
+            --teal: #003443;
+            --red: #8b1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: #0d0d0d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(60, 30, 80, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(10, 35, 72, 0.5) 0%, transparent 55%), radial-gradient(ellipse at 80% 50%, rgba(0, 30, 50, 0.4) 0%, transparent 50%), #0d0d0d;
+        }
+
+        #myVideo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.35;
+        }
+
+        .back---btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 36px;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 32px 20px 16px;
+            width: 100%;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #e8c0a0;
+            border-color: #c0a060;
+            box-shadow: 0 0 10px rgba(232, 192, 160, 0.5);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .step-dot.done {
+            background: #003443;
+            border-color: #0b6680;
+        }
+
+        .breadcrumb-trail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .bc-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 52, 67, 0.3);
+            border: 1px solid rgba(11, 102, 128, 0.3);
+            border-radius: 20px;
+            padding: 4px 10px;
+        }
+
+        .bc-label {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.68rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .bc-value {
+            color: #e8c0a0;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .bc-sep {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.8rem;
+        }
+
+        .header-title {
+            font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(200, 150, 50, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c0a060, #e8cb9a, #c0a060, transparent);
+            margin: 10px auto 0;
+        }
+
+        .header-sub {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.78rem;
+            margin-top: 6px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 480px;
+            margin-top: 10px;
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .sub-card.featured {
+            grid-column: span 2;
+        }
+
+        .sub-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(192, 160, 96, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .sub-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 100%, rgba(192, 160, 96, 0.08) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .sub-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(232, 203, 154, 0.6);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 18px rgba(192, 160, 96, 0.15);
+        }
+
+        .sub-card:hover::before {
+            opacity: 1;
+        }
+
+        .sub-card.selected {
+            border-color: #e8cb9a;
+            box-shadow: 0 0 0 3px rgba(192, 160, 96, 0.25), 0 10px 36px rgba(0, 0, 0, 0.6);
+        }
+
+        .sub-card.selected::before {
+            opacity: 1;
+        }
+
+        .sub-img-wrap {
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .sub-card.featured .sub-img-wrap {
+            aspect-ratio: 16/9;
+        }
+
+        .sub-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            transition: transform 0.4s ease;
+        }
+
+        .sub-card:hover .sub-img-wrap img {
+            transform: scale(1.1);
+        }
+
+        .sub-img-placeholder {
+            width: 100%;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, rgba(60, 40, 10, 0.6), rgba(0, 0, 0, 0.6));
+        }
+
+        .sub-card.featured .sub-img-placeholder {
+            aspect-ratio: 16/9;
+            font-size: 3rem;
+        }
+
+        .sub-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            pointer-events: none;
+        }
+
+        .sub-label {
+            padding: 10px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .sub-label-text {
+            color: #e8c0a0;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .sub-card.featured .sub-label-text {
+            font-size: 0.95rem;
+        }
+
+        .check-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 24px;
+            height: 24px;
+            background: #c0a060;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 5;
+            box-shadow: 0 0 12px rgba(192, 160, 96, 0.7);
+        }
+
+        .sub-card.selected .check-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .continue-wrap {
+            margin-top: 20px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #003443, #002233);
+            border: 1px solid rgba(192, 160, 96, 0.3);
+            border-radius: 14px;
+            color: #e8c0a0;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .continue-btn.ready {
+            opacity: 1;
+            pointer-events: all;
+            box-shadow: 0 4px 24px rgba(192, 160, 96, 0.2);
+        }
+
+        .continue-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(192, 160, 96, 0.3);
+            border-color: rgba(232, 203, 154, 0.5);
+        }
+
+        .continue-btn .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%
+            }
+
+            50%,
+            100% {
+                left: 150%
+            }
+        }
+
+        /* ── Summary overlay ── */
+        .summary-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .summary-overlay.active {
+            display: flex;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #060f22, #0d0d0d);
+            border: 1px solid rgba(232, 203, 154, 0.3);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            max-width: 360px;
+            width: 92%;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 0 60px rgba(192, 160, 96, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .summary-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .summary-title {
+            color: #e8c0a0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .summary-sub {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.84rem;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        /* Section headers inside summary */
+        .summary-section-title {
+            color: rgba(232, 203, 154, 0.55);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-align: right;
+            margin-bottom: 6px;
+            margin-top: 14px;
+            padding-right: 2px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .summary-details {
+            background: rgba(192, 160, 96, 0.07);
+            border: 1px solid rgba(192, 160, 96, 0.2);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: right;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .summary-row span:last-child {
+            color: #e8c0a0;
+            font-weight: 700;
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: rgba(192, 160, 96, 0.15);
+        }
+
+        .summary-go-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 13px 32px;
+            background: #003443;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid rgba(11, 102, 128, 0.5);
+            transition: all 0.25s;
+            letter-spacing: 1px;
+            margin-top: 16px;
+        }
+
+        .summary-go-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 52, 67, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back---btn"><a href="main-category.html"><img src="images/next.png" class="back-img" alt=""></a></div>
+    <div class="back-btn-left"><a href="details.html"><img src="images/home-kh.png" class="back-img" alt=""></a></div>
+    <div style="width:100%;height:100%;"><video id="myVideo" loop autoplay muted playsinline>
+            <source src="./assets/video-2.mp4" type="video/mp4">
+        </video></div>
+    <div class="bg-layer"></div>
+
+    <div class="header">
+        <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
+            <div class="step-dot active"></div>
+        </div>
+        <div class="breadcrumb-trail">
+            <div class="bc-chip"><span class="bc-label">النوع</span><span class="bc-value" id="typeLabel">—</span></div>
+            <span class="bc-sep">›</span>
+            <div class="bc-chip"><span class="bc-label">الرئيسي</span><span class="bc-value" id="catLabel">—</span>
+            </div>
+        </div>
+        <div class="header-title">التصنيف الفرعي</div>
+        <div class="header-sub">حدّد التصنيف الفرعي بدقة أكبر</div>
+    </div>
+
+    <div class="container">
+        <div class="sub-grid" id="subGrid">
+            <div class="sub-card featured" onclick="selectSub(this,'الحضارات القديمة')">
+                <div class="check-badge">✓</div>
+                <div class="sub-img-wrap"><img src="assets/qustion.jpeg" alt="الحضارات القديمة"
+                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\' style=\'aspect-ratio:16/9\'>🏺</div>'">
+                    <div class="sub-img-overlay"></div>
+                </div>
+                <div class="sub-label">
+                    <div class="sub-label-text">الحضارات القديمة</div>
+                </div>
+            </div>
+            <div class="sub-card" onclick="selectSub(this,'العصر الحديث')">
+                <div class="check-badge">✓</div>
+                <div class="sub-img-wrap"><img src="images/sub-modern.png" alt="العصر الحديث"
+                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>🌐</div>'">
+                    <div class="sub-img-overlay"></div>
+                </div>
+                <div class="sub-label">
+                    <div class="sub-label-text">العصر الحديث</div>
+                </div>
+            </div>
+            <div class="sub-card" onclick="selectSub(this,'الحروب والمعارك')">
+                <div class="check-badge">✓</div>
+                <div class="sub-img-wrap"><img src="images/sub-wars.png" alt="الحروب"
+                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>⚔️</div>'">
+                    <div class="sub-img-overlay"></div>
+                </div>
+                <div class="sub-label">
+                    <div class="sub-label-text">الحروب والمعارك</div>
+                </div>
+            </div>
+            <div class="sub-card" onclick="selectSub(this,'الملوك والقادة')">
+                <div class="check-badge">✓</div>
+                <div class="sub-img-wrap"><img src="images/sub-kings.png" alt="الملوك"
+                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>👑</div>'">
+                    <div class="sub-img-overlay"></div>
+                </div>
+                <div class="sub-label">
+                    <div class="sub-label-text">الملوك والقادة</div>
+                </div>
+            </div>
+            <div class="sub-card" onclick="selectSub(this,'الدول والإمبراطوريات')">
+                <div class="check-badge">✓</div>
+                <div class="sub-img-wrap"><img src="images/sub-empires.png" alt="الإمبراطوريات"
+                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>🗺️</div>'">
+                    <div class="sub-img-overlay"></div>
+                </div>
+                <div class="sub-label">
+                    <div class="sub-label-text">الإمبراطوريات</div>
+                </div>
+            </div>
+            <div class="sub-card" style="grid-column:span 3;" onclick="selectSub(this,'الاختراعات والاكتشافات')">
+                <div class="check-badge">✓</div>
+                <div style="display:flex;align-items:center;">
+                    <div class="sub-img-wrap" style="width:100px;aspect-ratio:1;flex-shrink:0;"><img
+                            src="images/sub-inventions.png" alt="الاختراعات"
+                            onerror="this.parentElement.innerHTML='<div style=\'width:100px;height:100px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:rgba(0,52,67,0.6)\'>💡</div>'">
+                    </div>
+                    <div class="sub-label"
+                        style="text-align:right;border-top:none;border-right:1px solid rgba(255,255,255,0.05);flex:1;">
+                        <div class="sub-label-text" style="font-size:1rem;">الاختراعات والاكتشافات</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="continue-wrap">
+            <button class="continue-btn" id="continueBtn" onclick="finish()">
+                <span class="btn-shine"></span>
+                إنهاء الإعداد والانطلاق
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ Summary overlay — كل البيانات ══ -->
+    <div class="summary-overlay" id="summaryOverlay">
+        <div class="summary-box">
+            <span class="summary-icon">✨</span>
+            <div class="summary-title">اكتمل إعداد المغامرة!</div>
+            <div class="summary-sub">جميع التفاصيل جاهزة — انطلق الآن</div>
+
+            <!-- قسم 1: إعدادات اللعبة -->
+            <div class="summary-section-title">إعدادات اللعبة</div>
+            <div class="summary-details" id="gameDetails"></div>
+
+            <!-- قسم 2: إعدادات الأسئلة -->
+            <div class="summary-section-title">إعدادات الأسئلة</div>
+            <div class="summary-details" id="questionDetails"></div>
+
+            <a href="challenge-details.html" class="summary-go-btn">اذهب إلى غرفة الانتظار ←</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedSub = null;
+
+        // ── اقرأ كل البيانات من localStorage ──
+        const gameTitle = localStorage.getItem('game_title') || 'بدون عنوان';
+        const gameRounds = localStorage.getItem('game_rounds') || '—';
+        const gameQuestions = localStorage.getItem('game_questions') || '—';
+        const gameTeams = localStorage.getItem('game_teams') || '—';
+        const gamePlayers = localStorage.getItem('game_players') || '—';
+        const gameCode = localStorage.getItem('game_code') || '—';
+        const questionType = localStorage.getItem('game_questionType') || '—';
+        const questionCat = localStorage.getItem('game_questionCategory') || '—';
+
+        // Breadcrumb
+        document.getElementById('typeLabel').textContent = questionType;
+        document.getElementById('catLabel').textContent = questionCat;
+
+        function selectSub(card, sub) {
+            document.querySelectorAll('.sub-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedSub = sub;
+            document.getElementById('continueBtn').classList.add('ready');
+        }
+
+        function finish() {
+            if (!selectedSub) return;
+
+            // ✅ خزّن التصنيف الفرعي
+            localStorage.setItem('game_questionSubCategory', selectedSub);
+
+            // ── اعرض كل البيانات مجمّعة ──
+            document.getElementById('gameDetails').innerHTML = `
+                <div class="summary-row"><span>عنوان المغامرة</span><span>${gameTitle}</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>عدد الجولات</span><span>${gameRounds} جولة</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>عدد الأسئلة</span><span>${gameQuestions} سؤال</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>عدد الفرق</span><span>${gameTeams} فرق</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>عدد المغامرين / فريق</span><span>${gamePlayers}</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>رمز الساحة</span><span>${gameCode}</span></div>
+            `;
+
+            document.getElementById('questionDetails').innerHTML = `
+                <div class="summary-row"><span>نوع الأسئلة</span><span>${questionType}</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>التصنيف الرئيسي</span><span>${questionCat}</span></div>
+                <div class="summary-divider"></div>
+                <div class="summary-row"><span>التصنيف الفرعي</span><span>${selectedSub}</span></div>
+            `;
+
+            document.getElementById('summaryOverlay').classList.add('active');
+        }
+
+        document.getElementById('summaryOverlay').addEventListener('click', function (e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتابع الفيديو - TV</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #myVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        #detailsOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 48px 140px;
+        }
+
+        .details-card {
+            background: rgba(0, 0, 0, 0);
+            border: 1.5px solid rgba(255, 255, 255, 0.13);
+            border-radius: 28px;
+            padding: 40px 48px;
+            width: 100%;
+            max-width: 900px;
+            animation: slideUp 0.7s ease both;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .adventure-title-wrap {
+            text-align: center;
+            margin-bottom: 36px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .adventure-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .adventure-title {
+            color: #fff;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(99, 200, 255, 0.35);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .details-grid-bottom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .detail-label {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-size: clamp(1.4rem, 2vw, 2rem);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .detail-unit {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.7em;
+            font-weight: 400;
+            margin-right: 4px;
+        }
+
+        .icon-blue {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.8), rgba(59, 130, 246, 0.5));
+        }
+
+        .icon-teal {
+            background: linear-gradient(135deg, rgba(0, 52, 67, 0.9), rgba(11, 102, 128, 0.6));
+        }
+
+        .icon-red {
+            background: linear-gradient(135deg, rgba(153, 27, 27, 0.8), rgba(239, 68, 68, 0.5));
+        }
+
+        .icon-green {
+            background: linear-gradient(135deg, rgba(22, 101, 52, 0.8), rgba(34, 197, 94, 0.5));
+        }
+
+        .icon-purple {
+            background: linear-gradient(135deg, rgba(107, 33, 168, 0.8), rgba(168, 85, 247, 0.5));
+        }
+
+        .icon-amber {
+            background: linear-gradient(135deg, rgba(180, 83, 9, 0.8), rgba(245, 158, 11, 0.5));
+        }
+
+        .loader-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 50px 24px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 60;
+        }
+
+        .percent-display {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -2px;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .percent-display span {
+            font-size: 0.45em;
+            font-weight: 300;
+            opacity: 0.7;
+            margin-right: 4px;
+        }
+
+        .progress-track {
+            width: 100%;
+            max-width: 420px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c0a060, #ffe8a0, #c0a060);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            transition: width 0.08s linear;
+            animation: shimmer 1.5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .loading-label {
+            font-size: 0.78rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 2px;
+        }
+
+        .lantern {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99;
+            width: 80px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="images/animated-logo2.gif" class="lantern" alt="">
+
+    <video id="myVideo" autoplay playsinline muted loop>
+        <source src="./assets/background.mp4" type="video/mp4">
+    </video>
+
+    <div id="detailsOverlay">
+        <div class="details-card">
+            <div class="adventure-title-wrap">
+                <div class="adventure-label">اسم المغامرة</div>
+                <div class="adventure-title" id="adventureTitle">—</div>
+            </div>
+            <div class="details-grid" id="gameGrid"></div>
+            <div class="details-grid-bottom" id="questionGrid"></div>
+        </div>
+    </div>
+
+    <div class="loader-overlay">
+        <div class="percent-display" id="percentDisplay">0<span>%</span></div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="loading-label">جارٍ التحميل...</div>
+    </div>
+
+    <script>
+        const gameTitle = localStorage.getItem('game_title') || 'مغامرة بدون اسم';
+        const gameRounds = localStorage.getItem('game_rounds') || '—';
+        const gameQuestions = localStorage.getItem('game_questions') || '—';
+        const gameTeams = localStorage.getItem('game_teams') || '—';
+        const gamePlayers = localStorage.getItem('game_players') || '—';
+        const questionType = localStorage.getItem('game_questionType') || '—';
+        const questionCat = localStorage.getItem('game_questionCategory') || '—';
+        const questionSub = localStorage.getItem('game_questionSubCategory') || '—';
+
+        document.getElementById('adventureTitle').textContent = gameTitle;
+
+        const gameItems = [
+            { icon: '⚔️', iconClass: 'icon-red', label: 'عدد الجولات', value: gameRounds, unit: 'جولة' },
+            { icon: '❓', iconClass: 'icon-teal', label: 'عدد الأسئلة', value: gameQuestions, unit: 'سؤال' },
+            { icon: '👥', iconClass: 'icon-blue', label: 'عدد الفرق', value: gameTeams, unit: 'فرق' },
+            { icon: '🧑', iconClass: 'icon-green', label: 'مغامرون / فريق', value: gamePlayers, unit: 'لاعب' },
+        ];
+
+        const questionItems = [
+            { icon: '📚', iconClass: 'icon-purple', label: 'نوع الأسئلة', value: questionType, unit: '' },
+            { icon: '🗂️', iconClass: 'icon-amber', label: 'التصنيف الرئيسي', value: questionCat, unit: '' },
+            { icon: '🔍', iconClass: 'icon-teal', label: 'التصنيف الفرعي', value: questionSub, unit: '' },
+        ];
+
+        function buildGrid(containerId, items) {
+            const container = document.getElementById(containerId);
+            items.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'detail-item';
+                div.style.animationDelay = `${0.1 + i * 0.1}s`;
+                div.innerHTML = `
+                    <div class="detail-icon ${item.iconClass}">${item.icon}</div>
+                    <div class="detail-label">${item.label}</div>
+                    <div class="detail-value">
+                        ${item.value}
+                        ${item.unit ? `<span class="detail-unit">${item.unit}</span>` : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        buildGrid('gameGrid', gameItems);
+        buildGrid('questionGrid', questionItems);
+
+        const percentDisplay = document.getElementById('percentDisplay');
+        const progressFill = document.getElementById('progressFill');
+
+        let current = 0;
+        const duration = 10000;
+        const interval = 40;
+        const increment = 100 / (duration / interval);
+
+        const timer = setInterval(() => {
+            current += increment + (Math.random() * increment * 0.5 - increment * 0.25);
+            current = Math.min(current, 100);
+            const rounded = Math.floor(current);
+            percentDisplay.innerHTML = `${rounded}<span>%</span>`;
+            progressFill.style.width = `${current}%`;
+
+            if (current >= 100) {
+                clearInterval(timer);
+                percentDisplay.innerHTML = `100<span>%</span>`;
+                progressFill.style.width = '100%';
+                setTimeout(() => { window.location.href = "start-game-tv.html"; }, 1000);
+            }
+        }, interval);
+    </script>
+</body>
+
+</html>

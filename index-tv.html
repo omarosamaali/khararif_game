@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتابع الفيديو</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #0a2348;
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+        }
+
+        .splash-wrapper {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            background: #0a0a0a;
+        }
+
+        .splash img.splash {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        /* Loader overlay at bottom */
+        .loader-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 115px 50px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .percent-display {
+            font-family: 'Cairo', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -2px;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            transition: all 0.1s ease;
+        }
+
+        .percent-display span {
+            font-size: 0.45em;
+            font-weight: 300;
+            opacity: 0.7;
+            margin-right: 4px;
+        }
+
+        .progress-track {
+            width: 100%;
+            max-width: 420px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #c0a060, #ffe8a0, #c0a060);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            transition: width 0.08s linear;
+            animation: shimmer 1.5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .loading-label {
+            font-size: 0.78rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Fade out animation */
+        .splash-wrapper.fade-out {
+            animation: fadeOut 0.6s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.03);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="splash-wrapper" id="splashWrapper">
+        <img src="images/background.gif" class="splash" alt="">
+
+        <div class="loader-overlay">
+            <div class="percent-display" id="percentDisplay">
+                0<span>%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="loading-label">جارٍ التحميل...</div>
+        </div>
+
+        <footer>
+            <img src="images/footer.png" class="footer-img" alt="">
+        </footer>
+    </div>
+
+
+    <script>
+        const percentDisplay = document.getElementById('percentDisplay');
+        const progressFill = document.getElementById('progressFill');
+        const splashWrapper = document.getElementById('splashWrapper');
+
+        let current = 0;
+        const target = 100;
+        const duration = 5000;
+        const interval = 40;
+        const steps = duration / interval;
+        const increment = target / steps;
+
+        const timer = setInterval(() => {
+            current += increment + (Math.random() * increment * 0.5 - increment * 0.25);
+            current = Math.min(current, target);
+
+            const rounded = Math.floor(current);
+            percentDisplay.innerHTML = `${rounded}<span>%</span>`;
+            progressFill.style.width = `${current}%`;
+
+            if (current >= target) {
+                clearInterval(timer);
+                percentDisplay.innerHTML = `100<span>%</span>`;
+                progressFill.style.width = '100%';
+
+                setTimeout(() => {
+                    splashWrapper.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = "home-tv.html";
+                    }, 600);
+                }, 400);
+            }
+        }, interval);
+    </script>
+</body>
+
+</html>

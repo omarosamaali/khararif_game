@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=El+Messiri:wght@400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #0a2348;
+            font-family: 'El Messiri', sans-serif;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* Background gif */
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .bg-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 35, 72, 0.7) 0%, rgba(0, 20, 50, 0.88) 100%);
+        }
+
+        /* Page */
+        .page {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px 50px;
+        }
+
+        /* Logo */
+        .logo-area {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-area img.logo {
+            width: 85px;
+            filter: drop-shadow(0 4px 18px rgba(232, 203, 154, 0.45));
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 4px 18px rgba(232, 203, 154, 0.45));
+            }
+
+            50% {
+                filter: drop-shadow(0 4px 28px rgba(232, 203, 154, 0.8));
+            }
+        }
+
+        .page-title {
+            color: #dfa888;
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            text-align: center;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(0, 30, 60, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            padding: 32px 26px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #dfa888;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .icon {
+            position: absolute;
+            right: 13px;
+            width: 19px;
+            height: 19px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .form-group input {
+            text-align: center;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(232, 203, 154, 0.22);
+            border-radius: 9px;
+            color: #ffffff;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 15px;
+            padding: 13px 44px 13px 14px;
+            outline: none;
+            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.28);
+            font-size: 13px;
+        }
+
+        .form-group input:focus {
+            border-color: #dfa888;
+            background: rgba(255, 255, 255, 0.11);
+            box-shadow: 0 0 0 3px rgba(232, 203, 154, 0.1);
+        }
+
+        /* Password toggle */
+        .toggle-pass {
+            position: absolute;
+            left: 13px;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            user-select: none;
+            font-size: 17px;
+        }
+
+        .toggle-pass:hover {
+            opacity: 0.9;
+        }
+
+        /* Remember + Forgot row */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+            margin-top: -6px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #dfa888;
+            cursor: pointer;
+        }
+
+        .remember label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: #dfa888;
+            font-size: 13px;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .forgot-link:hover {
+            opacity: 1;
+        }
+
+        /* Button */
+        .btn-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-row img {
+            width: 28px;
+            opacity: 0.85;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 9px;
+            color: #dfa888;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 13px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(232, 203, 154, 0.08);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .btn-submit:hover::before {
+            opacity: 1;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(232, 203, 154, 0.15);
+        }
+
+        .divider span {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Register link */
+        .register-link {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #dfa888;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Message */
+        .msg {
+            display: none;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .msg.error {
+            background: rgba(200, 50, 50, 0.18);
+            border: 1px solid rgba(200, 50, 50, 0.38);
+            color: #ff9999;
+        }
+
+        .msg.success {
+            background: rgba(50, 180, 100, 0.18);
+            border: 1px solid rgba(50, 180, 100, 0.38);
+            color: #88ffbb;
+        }
+
+        /* Loading spinner on button */
+        .btn-submit.loading {
+            pointer-events: none;
+            opacity: 0.75;
+        }
+
+        .btn-submit.loading::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(232, 203, 154, 0.3);
+            border-top-color: #dfa888;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+
+        .code-input {
+            height: 46px !important;
+            background-color: #122c49;
+        }
+
+        .passcode-wrapper {
+            display: flex;
+            gap: 19.5px;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            position: fixed;
+            z-index: 99;
+            right: 5%;
+            top: 3%;
+        }
+    </style>
+</head>
+
+<body>
+        <div class="back-btn">
+            <a href="home.html">
+                <img src="images/next.png" class="back-img" alt="">
+            </a>
+        </div>
+        
+    <!-- Background -->
+    <div class="bg-wrapper">
+        <img src="images/splash-2.png" alt="">
+    </div>
+
+    <div class="page">
+
+        <!-- Logo / Title -->
+        <div class="logo-area">
+            <img src="images/animated-logo-ii.gif" class="logo" alt="logo" onerror="this.style.display='none'">
+            <div class="page-title">تسجيل الدخول</div>
+            <div class="page-subtitle">مرحباً بعودتك!</div>
+        </div>
+
+        <!-- Card -->
+        <div class="card">
+
+            <div class="msg" id="formMsg"></div>
+
+            <form id="loginForm" novalidate>
+
+                <!-- اسم المستخدم أو البريد -->
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <div class="input-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" id="identifier" placeholder="البريد الإلكتروني" autocomplete="username">
+                    </div>
+                </div>
+
+                <!-- كلمة المرور -->
+                <div class="form-group">
+                    <label>رمز المرور</label>
+                    <div class="passcode-wrapper">
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                    </div>
+                </div>
+
+
+                <!-- تذكرني + نسيت كلمة المرور -->
+                <div class="options-row">
+                    <div class="remember">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">تذكرني</label>
+                    </div>
+                    <a href="forgot-password.html" class="forgot-link">نسيت كلمة المرور؟</a>
+                </div>
+
+                <!-- زر الدخول -->
+                <div class="btn-row">
+                    <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                    <button type="submit" class="btn-submit" id="loginBtn">دخول</button>
+                    <img src="images/left.png" alt="" onerror="this.style.display='none'">
+                </div>
+
+            </form>
+
+            <!-- فاصل -->
+            <div class="divider"><span>أو</span></div>
+
+            <!-- رابط التسجيل -->
+            <div class="register-link">
+                ليس لديك حساب؟ <a href="register.html">سجّل الآن</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePass(btn) {
+            const input = document.getElementById('password');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        // Show message
+        function showMsg(text, type) {
+            const msg = document.getElementById('formMsg');
+            msg.textContent = text;
+            msg.className = 'msg ' + type;
+            msg.style.display = 'block';
+        }
+
+        // Form submit
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const identifier = document.getElementById('identifier').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+
+            // Validation
+            if (!identifier) return showMsg('يرجى إدخال اسم المستخدم أو البريد الإلكتروني', 'error');
+            if (!password) return showMsg('يرجى إدخال كلمة المرور', 'error');
+            if (password.length < 6) return showMsg('كلمة المرور قصيرة جداً', 'error');
+
+            // Loading state
+            document.getElementById('formMsg').style.display = 'none';
+            btn.classList.add('loading');
+            btn.textContent = '';
+
+            // Simulate login — replace with your real API call
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.textContent = 'دخول';
+
+                // ✅ Success → redirect
+                showMsg('تم تسجيل الدخول بنجاح!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'mobile-index.html';
+                }, 1200);
+
+                // ❌ To show error instead, uncomment:
+                // showMsg('اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

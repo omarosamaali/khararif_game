@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الأسئلة الشائعة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-light: #ffe8a0;
+            --gold-dark: #c0a060;
+            --dark-navy: #0a2348;
+            --darker-navy: #060f22;
+            --teal: #003443;
+            --teal-light: #005566;
+            --card-bg: rgba(0, 30, 60, 0.85);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: var(--darker-navy);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 80, 120, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(10, 35, 72, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 52, 67, 0.3) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 10%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 45% 55%, rgba(232, 203, 154, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 70px 20px 0;
+        }
+
+        .header h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(232, 203, 154, 0.4);
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 10px auto 0;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* FAQ card */
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            margin-top: 14px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+            text-align: right;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.97rem;
+            font-weight: 600;
+            color: white;
+            gap: 12px;
+            transition: color 0.2s;
+        }
+
+        .faq-question:hover {
+            color: var(--gold);
+        }
+
+        .faq-q-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-card-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            flex-shrink: 0;
+            color: var(--gold);
+        }
+
+        .faq-toggle-icon {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            border: 1.5px solid rgba(232, 203, 154, 0.35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            transition: background 0.3s, transform 0.3s, border-color 0.3s;
+            font-size: 0.75rem;
+        }
+
+        /* Default: show question mark, hide xmark */
+        .faq-toggle-icon .icon-question {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        .faq-toggle-icon .icon-close {
+            display: none;
+        }
+
+        /* Open: show xmark, hide question mark */
+        .faq-item.open .faq-toggle-icon .icon-question {
+            display: none;
+        }
+
+        .faq-item.open .faq-toggle-icon .icon-close {
+            display: inline-block;
+        }
+
+        .faq-item.open .faq-toggle-icon {
+            background: var(--gold);
+            color: var(--dark-navy);
+            border-color: var(--gold);
+        }
+
+        .faq-item.open .faq-question {
+            color: var(--gold);
+            border-bottom: 1px solid rgba(232, 203, 154, 0.12);
+        }
+
+        /* Accordion answer */
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .faq-answer-inner {
+            overflow: hidden;
+        }
+
+        .faq-answer-inner p {
+            padding: 14px 18px 18px;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.88rem;
+            line-height: 1.85;
+        }
+
+        /* Main button */
+        .btn-main {
+            width: 80%;
+            margin: 28px auto 10px;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 10px;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            color: #e8cb9a;
+            transition: background 0.25s ease;
+        }
+
+        .btn-main:hover {
+            background-color: #004d62;
+        }
+
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+            transform: skewX(-20deg);
+            animation: btnShine 3.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes btnShine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        .ornament {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: rgba(232, 203, 154, 0.3);
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            margin-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back-btn">
+        <a href="info.html">
+            <img src="images/next.png" class="back-img" alt="" onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <div class="header">
+        <h1>الأسئلة الشائعة</h1>
+        <p class="subtitle">كل ما تحتاج معرفته في مكان واحد</p>
+    </div>
+
+    <div class="container">
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-circle-question"></i></span>
+                    ما هو هذا الموقع؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>هذا الموقع يوفر لك تجربة لعب فريدة ومثيرة، حيث يمكنك الاستمتاع بالألعاب والمسابقات والفعاليات
+                        المتنوعة بأسلوب سهل وممتع.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-user-plus"></i></span>
+                    كيف أسجل حساباً جديداً؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>اضغط على زر "إنشاء حساب" من الصفحة الرئيسية، ثم أدخل بياناتك الشخصية وتأكيد البريد الإلكتروني
+                        لتصبح جاهزاً للمغامرة فوراً.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-gamepad"></i></span>
+                    كيف نلعب؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>اختر الحزمة التي تناسبك، أكمل عملية الدفع، ثم ابدأ اللعب مباشرة. يمكنك الاطلاع على صفحة "كيف
+                        نلعب" لشرح تفصيلي بالخطوات.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                    هل معلوماتي الشخصية آمنة؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>نعم، نحن نستخدم أحدث تقنيات التشفير لحماية بياناتك ولا نشارك معلوماتك مع أي طرف ثالث بأي شكل من
+                        الأشكال.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-wallet"></i></span>
+                    ما هي طرق الدفع المتاحة؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>نقبل الدفع عبر البطاقات الائتمانية، والمحافظ الإلكترونية، وعدة بوابات دفع إلكترونية موثوقة
+                        لراحتك.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-trophy"></i></span>
+                    كيف أحصل على مكافآت الولاء؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>كلما لعبت أكثر، كلما جمعت نقاطاً أكثر. يمكنك استبدال نقاطك بحزم مجانية أو مزايا حصرية عبر بطاقة
+                        الولاء الخاصة بك.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <div class="faq-q-left">
+                    <span class="faq-card-icon"><i class="fa-solid fa-headset"></i></span>
+                    كيف أتواصل مع الدعم؟
+                </div>
+                <span class="faq-toggle-icon">
+                    <i class="fa-solid fa-question icon-question"></i>
+                    <i class="fa-solid fa-xmark icon-close"></i>
+                </span>
+            </button>
+            <div class="faq-answer">
+                <div class="faq-answer-inner">
+                    <p>يمكنك التواصل معنا عبر صفحة "تواصل معنا" وسيرد عليك فريق الدعم خلال 24 ساعة في أيام العمل.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ornament">✦ ✦ ✦</div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+    </script>
+</body>
+
+</html>

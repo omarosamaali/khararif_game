@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار التصنيف الرئيسي</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --card-bg: rgba(0, 20, 40, 0.88);
+            --teal: #003443;
+            --red: #8b1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: #0d0d0d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 52, 67, 0.4) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(10, 35, 72, 0.5) 0%, transparent 55%), radial-gradient(ellipse at 80% 50%, rgba(30, 5, 5, 0.4) 0%, transparent 50%), #0d0d0d;
+        }
+
+        #myVideo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.35;
+        }
+
+        .back---btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 36px;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 32px 20px 16px;
+            width: 100%;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #003443;
+            border-color: #0b6680;
+            box-shadow: 0 0 10px rgba(0, 52, 67, 0.8);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .step-dot.done {
+            background: #8b1a1a;
+            border-color: #c0392b;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 52, 67, 0.3);
+            border: 1px solid rgba(11, 102, 128, 0.3);
+            border-radius: 20px;
+            padding: 5px 14px;
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.72rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .breadcrumb-type {
+            color: #e8c0a0;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .header-title {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(0, 100, 130, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #003443, #0b6680, #003443, transparent);
+            margin: 10px auto 0;
+        }
+
+        .header-sub {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.78rem;
+            margin-top: 6px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 480px;
+            margin-top: 10px;
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .cat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cat-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(0, 52, 67, 0.3);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .cat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 0% 50%, rgba(0, 52, 67, 0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cat-card:hover {
+            transform: translateX(-6px);
+            border-color: rgba(11, 102, 128, 0.7);
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 52, 67, 0.3);
+        }
+
+        .cat-card:hover::before {
+            opacity: 1;
+        }
+
+        .cat-card.selected {
+            border-color: #0b6680;
+            box-shadow: 0 0 0 3px rgba(0, 52, 67, 0.3), 0 10px 36px rgba(0, 0, 0, 0.6);
+            transform: translateX(-4px);
+        }
+
+        .cat-card.selected::before {
+            opacity: 1;
+        }
+
+        .cat-img-wrap {
+            width: 90px;
+            height: 90px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .cat-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            transition: transform 0.4s ease;
+        }
+
+        .cat-card:hover .cat-img-wrap img {
+            transform: scale(1.1);
+        }
+
+        .cat-img-placeholder {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, rgba(0, 52, 67, 0.8), rgba(0, 0, 0, 0.6));
+            flex-shrink: 0;
+        }
+
+        .cat-content {
+            flex: 1;
+            padding: 16px 18px;
+        }
+
+        .cat-name {
+            color: #e8c0a0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .cat-arrow {
+            padding: 0 16px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .cat-card:hover .cat-arrow,
+        .cat-card.selected .cat-arrow {
+            color: #0b6680;
+            transform: translateX(-3px);
+        }
+
+        .check-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 26px;
+            height: 26px;
+            background: #0b6680;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 5;
+            box-shadow: 0 0 12px rgba(11, 102, 128, 0.7);
+        }
+
+        .cat-card.selected .check-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .continue-wrap {
+            margin-top: 22px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px;
+            background: #003443;
+            border: 1px solid rgba(11, 102, 128, 0.5);
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 52, 67, 0.4);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .continue-btn.ready {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .continue-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 52, 67, 0.8);
+        }
+
+        .continue-btn .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%
+            }
+
+            50%,
+            100% {
+                left: 150%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back---btn"><a href="question-type.html"><img src="images/next.png" class="back-img" alt=""></a></div>
+    <div class="back-btn-left"><a href="details.html"><img src="images/home-kh.png" class="back-img" alt=""></a></div>
+    <div style="width:100%;height:100%;"><video id="myVideo" loop autoplay muted playsinline>
+            <source src="./assets/video-2.mp4" type="video/mp4">
+        </video></div>
+    <div class="bg-layer"></div>
+
+    <div class="header">
+        <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+        </div>
+        <div class="breadcrumb" id="breadcrumb">
+            <span class="breadcrumb-text">النوع:</span>
+            <span class="breadcrumb-type" id="typeLabel">—</span>
+        </div>
+        <div class="header-title">التصنيف الرئيسي</div>
+        <div class="header-sub">اختر التصنيف الرئيسي للأسئلة</div>
+    </div>
+
+    <div class="container">
+        <div class="cat-list" id="catList">
+            <div class="cat-card" onclick="selectCat(this,'الجغرافيا والبيئة')">
+                <div class="check-badge">✓</div>
+                <div class="cat-img-wrap"><img src="assets/qustion.jpeg" alt="الجغرافيا"
+                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🗺️</div>'"></div>
+                <div class="cat-content">
+                    <div class="cat-name">الجغرافيا والبيئة</div>
+                </div>
+                <div class="cat-arrow">←</div>
+            </div>
+            <div class="cat-card" onclick="selectCat(this,'الشخصيات والأعلام')">
+                <div class="check-badge">✓</div>
+                <div class="cat-img-wrap"><img src="images/cat-people.png" alt="الشخصيات"
+                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>👑</div>'"></div>
+                <div class="cat-content">
+                    <div class="cat-name">الشخصيات والأعلام</div>
+                </div>
+                <div class="cat-arrow">←</div>
+            </div>
+            <div class="cat-card" onclick="selectCat(this,'الأحداث والمعالم')">
+                <div class="check-badge">✓</div>
+                <div class="cat-img-wrap"><img src="images/cat-events.png" alt="الأحداث"
+                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🏛️</div>'"></div>
+                <div class="cat-content">
+                    <div class="cat-name">الأحداث والمعالم</div>
+                </div>
+                <div class="cat-arrow">←</div>
+            </div>
+            <div class="cat-card" onclick="selectCat(this,'العلوم والاختراعات')">
+                <div class="check-badge">✓</div>
+                <div class="cat-img-wrap"><img src="images/cat-science.png" alt="العلوم"
+                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>💡</div>'"></div>
+                <div class="cat-content">
+                    <div class="cat-name">العلوم والاختراعات</div>
+                </div>
+                <div class="cat-arrow">←</div>
+            </div>
+            <div class="cat-card" onclick="selectCat(this,'الرياضة والألعاب')">
+                <div class="check-badge">✓</div>
+                <div class="cat-img-wrap"><img src="images/cat-sports.png" alt="الرياضة"
+                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🏆</div>'"></div>
+                <div class="cat-content">
+                    <div class="cat-name">الرياضة والألعاب</div>
+                </div>
+                <div class="cat-arrow">←</div>
+            </div>
+        </div>
+
+        <div class="continue-wrap">
+            <button class="continue-btn" id="continueBtn" onclick="goNext()">
+                <span class="btn-shine"></span>
+                التالي — اختيار التصنيف الفرعي ←
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let selectedCat = null;
+
+        // اعرض النوع من الصفحة السابقة
+        const questionType = localStorage.getItem('game_questionType') || '';
+        document.getElementById('typeLabel').textContent = questionType || '—';
+
+        function selectCat(card, cat) {
+            document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedCat = cat;
+            document.getElementById('continueBtn').classList.add('ready');
+        }
+
+        function goNext() {
+            if (!selectedCat) return;
+            // ✅ خزّن التصنيف الرئيسي
+            localStorage.setItem('game_questionCategory', selectedCat);
+            window.location.href = 'sub-category.html';
+        }
+    </script>
+</body>
+
+</html>

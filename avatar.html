@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار الصورة الشخصية</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=El+Messiri:wght@400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #0a2348;
+            font-family: 'El Messiri', sans-serif;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* Background */
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .bg-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 35, 72, 0.75) 0%, rgba(0, 20, 50, 0.92) 100%);
+        }
+
+        /* Header */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: #092143;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px 41px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.15);
+        }
+
+        .back-btn {
+            position: absolute;
+            right: 16px;
+            top: 14px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-logo img {
+            width: 64px;
+            filter: drop-shadow(0 2px 10px rgba(232, 203, 154, 0.4));
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #dfa888;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            top: 90px;
+        }
+
+        /* Page */
+        .page {
+            position: relative;
+            z-index: 1;
+            padding: 150px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Current avatar preview */
+        .preview-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .preview-ring {
+            position: relative;
+            width: 110px;
+            height: 110px;
+        }
+
+        .preview-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(#dfa888, rgba(223, 168, 136, 0.15), #dfa888);
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .preview-inner {
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: rgba(0, 30, 60, 0.95);
+            border: 2px solid #092143;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .preview-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+        }
+
+        .preview-label {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 13px;
+        }
+
+        .preview-name {
+            color: #dfa888;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(0, 30, 60, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 16px;
+            padding: 24px 18px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Category tabs */
+        .cat-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .cat-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-tab {
+            flex-shrink: 0;
+            background: rgba(0, 20, 50, 0.5);
+            border: 1px solid rgba(232, 203, 154, 0.15);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 13px;
+            padding: 6px 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .cat-tab.active {
+            background: rgba(223, 168, 136, 0.14);
+            border-color: rgba(223, 168, 136, 0.45);
+            color: #dfa888;
+        }
+
+        /* Section label */
+        .section-label {
+            color: rgba(223, 168, 136, 0.6);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-right: 4px;
+        }
+
+        /* Avatar grid */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .avatar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 2px solid rgba(232, 203, 154, 0.15);
+            overflow: hidden;
+            transition: all 0.25s;
+            background: rgba(0, 20, 50, 0.6);
+        }
+
+        .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .avatar-item:hover .avatar-wrap {
+            border-color: rgba(223, 168, 136, 0.5);
+            transform: scale(1.06);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .avatar-item:hover .avatar-wrap img {
+            transform: scale(1.08);
+        }
+
+        .avatar-wrap.selected {
+            border-color: #dfa888;
+            box-shadow: 0 0 0 3px rgba(223, 168, 136, 0.25), 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Checkmark overlay */
+        .avatar-wrap .check-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .avatar-wrap.selected .check-overlay {
+            opacity: 1;
+        }
+
+        .check-overlay svg {
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Avatar label */
+        .avatar-item span {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 10px;
+            text-align: center;
+            transition: color 0.2s;
+        }
+
+        .avatar-item.selected-item span {
+            color: #dfa888;
+        }
+
+        /* Locked avatar */
+        .avatar-wrap.locked {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .avatar-wrap.locked::after {
+            content: '🔒';
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            font-size: 12px;
+            line-height: 1;
+        }
+
+        /* Divider */
+        .sec-divider {
+            border: none;
+            border-top: 1px solid rgba(232, 203, 154, 0.1);
+            margin: 4px 0 20px;
+        }
+
+        /* Upload row */
+        .upload-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 20, 50, 0.5);
+            border: 1px dashed rgba(232, 203, 154, 0.25);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-bottom: 22px;
+        }
+
+        .upload-row:hover {
+            border-color: rgba(223, 168, 136, 0.5);
+            background: rgba(223, 168, 136, 0.06);
+        }
+
+        .upload-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(223, 168, 136, 0.1);
+            border: 1px solid rgba(223, 168, 136, 0.25);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upload-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .upload-text h4 {
+            color: #dfa888;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .upload-text p {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+        }
+
+        #customAvatarInput {
+            display: none;
+        }
+
+        /* Confirm button */
+        .btn-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-row img {
+            width: 28px;
+            opacity: 0.85;
+        }
+
+        .btn-confirm {
+            flex: 1;
+            max-width: 280px;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 9px;
+            color: #dfa888;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 13px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-confirm:hover {
+            opacity: 0.88;
+        }
+
+        .btn-confirm:active {
+            transform: scale(0.98);
+        }
+
+        .btn-confirm.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .spinner {
+            width: 17px;
+            height: 17px;
+            border: 2px solid rgba(223, 168, 136, 0.3);
+            border-top-color: #dfa888;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .btn-confirm.loading .spinner {
+            display: block;
+        }
+
+        .btn-confirm.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(5, 25, 55, 0.97);
+            border: 1px solid rgba(76, 175, 138, 0.4);
+            border-radius: 30px;
+            padding: 12px 24px;
+            color: #88ffbb;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 300;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Category panels */
+        .cat-panel {
+            display: none;
+        }
+
+        .cat-panel.active {
+            display: block;
+        }
+
+        /* Shimmer for SVG avatars */
+        .avatar-svg-wrap {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        }
+
+        .avatar-svg-wrap svg {
+            width: 46px;
+            height: 46px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-wrapper">
+        <img src="images/splash-2.png" alt="">
+    </div>
+
+    <!-- Header -->
+    <div class="top-header">
+    <div class="back-btn" onclick="history.back()">
+        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+            <img src="images/next.png" class="back-img" alt="">
+        </div>
+    </div>
+        <div class="header-logo">
+            <img src="images/animated-logo-ii.gif" alt="logo" onerror="this.style.display='none'">
+        </div>
+        <div class="header-title">اختيار الصورة الشخصية</div>
+    </div>
+
+    <div class="page">
+
+        <!-- Current preview -->
+        <div class="preview-area">
+            <div class="preview-ring">
+                <div class="preview-inner" id="bigPreview">
+                    <!-- filled by JS -->
+                </div>
+            </div>
+            <div class="preview-label">الصورة الحالية</div>
+            <div class="preview-name" id="selectedName">اختر صورة</div>
+        </div>
+
+        <div class="card">
+
+            <!-- MEN -->
+            <div class="cat-panel active" id="cat-men">
+                <div class="section-label">اختر شخصية</div>
+                <div class="avatar-grid" id="grid-men"></div>
+            </div>
+
+            <hr class="sec-divider">
+
+            <!-- Upload custom -->
+            <!-- Confirm -->
+            <div class="btn-row">
+                <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                <button class="btn-confirm" id="confirmBtn" onclick="confirmSelection()">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        تأكيد الاختيار
+                    </span>
+                </button>
+                <img src="images/left.png" alt="" onerror="this.style.display='none'">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+            <polyline points="20 6 9 17 4 12" />
+        </svg>
+        تم حفظ الصورة الشخصية بنجاح!
+    </div>
+
+    <script>
+        // ─── Avatar Data ───────────────────────────────────────────────────
+        // Using DiceBear API (free, no auth needed) + SVG inline fallbacks
+        const BASE = 'https://api.dicebear.com/8.x';
+
+        const categories = {
+            men: [
+                { seed: 'Ahmad', label: 'أحمد', style: 'adventurer', locked: false },
+                { seed: 'Khalid', label: 'خالد', style: 'adventurer', locked: false },
+                { seed: 'Omar', label: 'عمر', style: 'adventurer', locked: false },
+                { seed: 'Saeed', label: 'سعيد', style: 'adventurer', locked: false },
+                { seed: 'Faisal', label: 'فيصل', style: 'adventurer', locked: false },
+                { seed: 'Hassan', label: 'حسن', style: 'adventurer', locked: false },
+                { seed: 'Walid', label: 'وليد', style: 'adventurer', locked: false },
+                { seed: 'Nasser', label: 'ناصر', style: 'adventurer', locked: false },
+            ],
+            women: [
+                { seed: 'Layla', label: 'ليلى', style: 'adventurer', locked: false },
+                { seed: 'Nour', label: 'نور', style: 'adventurer', locked: false },
+                { seed: 'Sara', label: 'سارة', style: 'adventurer', locked: false },
+                { seed: 'Rania', label: 'رانيا', style: 'adventurer', locked: false },
+                { seed: 'Hana', label: 'هناء', style: 'adventurer', locked: false },
+                { seed: 'Dina', label: 'دينا', style: 'adventurer', locked: false },
+                { seed: 'Ghada', label: 'غادة', style: 'adventurer', locked: false },
+                { seed: 'Aisha', label: 'عائشة', style: 'adventurer', locked: false },
+            ],
+            animals: [
+                { seed: 'Lion', label: 'أسد', style: 'bottts', locked: false },
+                { seed: 'Fox', label: 'ثعلب', style: 'bottts', locked: false },
+                { seed: 'Wolf', label: 'ذئب', style: 'bottts', locked: false },
+                { seed: 'Tiger', label: 'نمر', style: 'bottts', locked: false },
+                { seed: 'Eagle', label: 'نسر', style: 'bottts', locked: false },
+                { seed: 'Bear', label: 'دب', style: 'bottts', locked: false },
+                { seed: 'Falcon', label: 'صقر', style: 'bottts', locked: false },
+                { seed: 'Dragon', label: 'تنين', style: 'bottts', locked: false },
+            ],
+            fantasy: [
+                { seed: 'Wizard', label: 'ساحر', style: 'fun-emoji', locked: false },
+                { seed: 'Knight', label: 'فارس', style: 'fun-emoji', locked: false },
+                { seed: 'Phoenix', label: 'عنقاء', style: 'fun-emoji', locked: false },
+                { seed: 'Elf', label: 'جني', style: 'fun-emoji', locked: false },
+                { seed: 'Mage', label: 'مُشعوذ', style: 'fun-emoji', locked: false },
+                { seed: 'Samurai', label: 'سامورائي', style: 'fun-emoji', locked: false },
+                { seed: 'Ninja', label: 'نينجا', style: 'fun-emoji', locked: false },
+                { seed: 'Demon', label: 'شيطان', style: 'fun-emoji', locked: false },
+            ],
+            minimal: [
+                { seed: 'Alpha', label: 'ألفا', style: 'shapes', locked: false },
+                { seed: 'Beta', label: 'بيتا', style: 'shapes', locked: false },
+                { seed: 'Gamma', label: 'غاما', style: 'shapes', locked: false },
+                { seed: 'Delta', label: 'دلتا', style: 'shapes', locked: false },
+                { seed: 'Sigma', label: 'سيغما', style: 'shapes', locked: false },
+                { seed: 'Omega', label: 'أوميغا', style: 'shapes', locked: false },
+                { seed: 'Zeta', label: 'زيتا', style: 'shapes', locked: false },
+                { seed: 'Theta', label: 'ثيتا', style: 'shapes', locked: false },
+            ]
+        };
+
+        // ─── State ─────────────────────────────────────────────────────────
+        let selectedSrc = null;
+        let selectedLabel = null;
+        let currentCat = 'men';
+
+        // ─── Build grids ───────────────────────────────────────────────────
+        function buildGrid(catKey) {
+            const grid = document.getElementById('grid-' + catKey);
+            grid.innerHTML = '';
+            categories[catKey].forEach(av => {
+                const src = `${BASE}/${av.style}/svg?seed=${av.seed}&backgroundColor=0a2348,0d3060,092143&size=80`;
+                const item = document.createElement('div');
+                item.className = 'avatar-item';
+                item.id = `av-${catKey}-${av.seed}`;
+                item.innerHTML = `
+                    <div class="avatar-wrap${av.locked ? ' locked' : ''}" id="wrap-${catKey}-${av.seed}"
+                         onclick="${av.locked ? "showLockedMsg()" : `selectAvatar('${src}', '${av.label}', '${catKey}', '${av.seed}')`}">
+                        <img src="${src}" alt="${av.label}" loading="lazy" onerror="this.src='https://api.dicebear.com/8.x/identicon/svg?seed=${av.seed}'">
+                        <div class="check-overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>${av.label}${av.locked ? ' 🔒' : ''}</span>`;
+                grid.appendChild(item);
+            });
+        }
+
+        Object.keys(categories).forEach(buildGrid);
+
+        // ─── Select avatar ─────────────────────────────────────────────────
+        function selectAvatar(src, label, catKey, seed) {
+            // Clear all selections
+            document.querySelectorAll('.avatar-wrap').forEach(w => w.classList.remove('selected'));
+            document.querySelectorAll('.avatar-item').forEach(i => i.classList.remove('selected-item'));
+
+            // Mark selected
+            const wrap = document.getElementById(`wrap-${catKey}-${seed}`);
+            const item = document.getElementById(`av-${catKey}-${seed}`);
+            if (wrap) wrap.classList.add('selected');
+            if (item) item.classList.add('selected-item');
+
+            // Update big preview
+            selectedSrc = src;
+            selectedLabel = label;
+            const preview = document.getElementById('bigPreview');
+            preview.innerHTML = `<img src="${src}" alt="${label}" style="width:100%;height:100%;object-fit:cover;">`;
+            document.getElementById('selectedName').textContent = label;
+
+            // Pulse animation on preview
+            preview.style.transform = 'scale(1.08)';
+            setTimeout(() => preview.style.transform = 'scale(1)', 200);
+        }
+
+        // ─── Custom upload ─────────────────────────────────────────────────
+        function handleCustomUpload(input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('حجم الصورة يتجاوز ٥ ميغابايت', false);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                // Clear all
+                document.querySelectorAll('.avatar-wrap').forEach(w => w.classList.remove('selected'));
+                document.querySelectorAll('.avatar-item').forEach(i => i.classList.remove('selected-item'));
+
+                selectedSrc = e.target.result;
+                selectedLabel = 'صورتي';
+                const preview = document.getElementById('bigPreview');
+                preview.innerHTML = `<img src="${e.target.result}" alt="custom" style="width:100%;height:100%;object-fit:cover;">`;
+                document.getElementById('selectedName').textContent = 'صورة مخصصة';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ─── Confirm ───────────────────────────────────────────────────────
+        function confirmSelection() {
+            if (!selectedSrc) {
+                showToast('الرجاء اختيار صورة أولاً', false);
+                return;
+            }
+            const btn = document.getElementById('confirmBtn');
+            btn.classList.add('loading');
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                showToast('تم حفظ الصورة الشخصية بنجاح! ✓', true);
+                setTimeout(() => history.back(), 1800);
+            }, 1400);
+        }
+
+        // ─── Category switch ───────────────────────────────────────────────
+        function switchCat(catKey, btn) {
+            document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('cat-' + catKey).classList.add('active');
+            currentCat = catKey;
+        }
+
+        // ─── Toast ─────────────────────────────────────────────────────────
+        function showToast(msg, success = true) {
+            const t = document.getElementById('toast');
+            t.style.borderColor = success ? 'rgba(76,175,138,0.4)' : 'rgba(200,60,60,0.4)';
+            t.style.color = success ? '#88ffbb' : '#ff9090';
+            t.querySelector('svg').style.stroke = success ? '#88ffbb' : '#ff9090';
+            t.childNodes[1] && (t.childNodes[1].textContent = ' ' + msg);
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        function showLockedMsg() {
+            showToast('هذه الصورة مقفلة — تحتاج إلى رتبة أعلى', false);
+        }
+
+        // ─── Set default on load ───────────────────────────────────────────
+        window.addEventListener('DOMContentLoaded', () => {
+            const first = categories.men[0];
+            const src = `${BASE}/${first.style}/svg?seed=${first.seed}&backgroundColor=0a2348,0d3060,092143&size=80`;
+            selectAvatar(src, first.label, 'men', first.seed);
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل حساب جديد</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=El+Messiri:wght@400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #0a2348;
+            font-family: 'El Messiri', sans-serif;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* Background gif layer */
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        /* Dark overlay */
+        .bg-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 35, 72, 0.7) 0%, rgba(0, 20, 50, 0.88) 100%);
+        }
+
+        /* Page content */
+        .page {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px 50px;
+        }
+
+        /* Title */
+        .page-title {
+            color: #dfa888;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 18px;
+            font-weight: 400;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(0, 30, 60, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 16px;
+            padding: 30px 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Form groups */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .form-group label {
+            display: block;
+            color: #dfa888;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .icon {
+            position: absolute;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 15px;
+            padding: 12px 42px 12px 14px;
+            outline: none;
+            transition: border-color 0.25s, background 0.25s;
+            -webkit-appearance: none;
+            appearance: none;
+            text-align: center !important;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #dfa888;
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        .form-group select option {
+            background: #0a2348;
+            color: #fff;
+        }
+
+        /* Password toggle */
+        .toggle-pass {
+            position: absolute;
+            left: 12px;
+            cursor: pointer;
+            opacity: 0.45;
+            transition: opacity 0.2s;
+            user-select: none;
+            font-size: 17px;
+        }
+
+        .toggle-pass:hover {
+            opacity: 0.9;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(232, 203, 154, 0.15);
+            margin: 22px 0;
+        }
+
+        /* Terms */
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .terms input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            margin-top: 2px;
+            accent-color: #dfa888;
+            cursor: pointer;
+        }
+
+        .terms label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .terms label a {
+            color: #dfa888;
+            text-decoration: none;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 8px;
+            color: #dfa888;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            padding: 13px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(232, 203, 154, 0.08);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .btn-submit:hover::before {
+            opacity: 1;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Decorative side images on button */
+        .btn-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-row img {
+            width: 28px;
+            opacity: 0.85;
+        }
+
+        /* Login link */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 13px;
+        }
+
+        .login-link a {
+            color: #dfa888;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Error / success messages */
+        .msg {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .msg.error {
+            background: rgba(200, 50, 50, 0.2);
+            border: 1px solid rgba(200, 50, 50, 0.4);
+            color: #ff9999;
+        }
+
+        .msg.success {
+            background: rgba(50, 180, 100, 0.2);
+            border: 1px solid rgba(50, 180, 100, 0.4);
+            color: #88ffbb;
+        }
+
+        /* Header logo area */
+        .logo-area {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: fixed;
+            z-index: 9;
+            width: 100%;
+            background: #092143;
+            top: 0px;
+            padding-top: 17px;
+        }
+
+        .logo-area img {
+            width: 80px;
+            filter: drop-shadow(0 4px 15px rgba(232, 203, 154, 0.4));
+        }
+
+        /* Fade-in animation */
+        .card {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-input {
+            height: 46px !important;
+            background-color: #122c49;
+        }
+
+        .passcode-wrapper {
+            display: flex;
+            gap: 19.5px;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            position: fixed;
+            z-index: 99;
+            right: 5%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="bg-wrapper">
+        <a href="login.html">
+            <img src="images/splash-2.png" alt="">
+        </a>
+    </div>
+
+    <div class="page">
+        <div class="back-btn">
+            <a href="login.html">
+                <img src="images/next.png" class="back-img" alt="">
+            </a>
+        </div>
+        <!-- Logo / Title -->
+        <div class="logo-area">
+            <img src="images/animated-logo-ii.gif" alt="logo" onerror="this.style.display='none'">
+            <div class="page-title">إنشاء حساب جديد</div>
+            <div class="page-subtitle">أدخل بياناتك للانضمام إلينا</div>
+        </div>
+
+        <!-- Card -->
+        <div class="card" style="margin-top: 226px;">
+
+            <div class="msg" id="formMsg"></div>
+
+            <form id="registerForm" novalidate>
+
+                <!-- الاسم الكامل -->
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <div class="input-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" id="fullname" placeholder="مثال: أحمد محمد">
+                    </div>
+                </div>
+
+                <div class="input-group ">
+                    <div class="form-group" style="margin-bottom: 0px;">
+                        <label>الدولة</label>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #132c4a;
+                                         border: 1px solid #006c80; border-radius: 8px; padding: 10px 12px; color: gray;
+                                        width: 100%; margin: 0 auto 10px auto;">
+                        <img id="country-flag" src="" alt="علم"
+                            style="width: 30px; height: 20px; display: none; border: 1px solid #eee;">
+                        <select id="country-list"
+                            style="color:gray; border: none; width: 100%;             font-family: 'El Messiri', sans-serif;background: transparent; outline: none; text-align: center;">
+                            <option value="">جاري تحديد الدولة...</option>
+                            <option value="EG" data-name="مصر">مصر</option>
+                            <option value="SA" data-name="السعودية">السعودية</option>
+                            <option value="AE" data-name="الإمارات">الإمارات</option>
+                            <option value="KW" data-name="الكويت">الكويت</option>
+                            <option value="QA" data-name="قطر">قطر</option>
+                            <option value="BH" data-name="البحرين">البحرين</option>
+                            <option value="OM" data-name="عمان">عمان</option>
+                            <option value="JO" data-name="الأردن">الأردن</option>
+                            <option value="LB" data-name="لبنان">لبنان</option>
+                            <option value="SY" data-name="سوريا">سوريا</option>
+                            <option value="IQ" data-name="العراق">العراق</option>
+                            <option value="PS" data-name="فلسطين">فلسطين</option>
+                            <option value="LY" data-name="ليبيا">ليبيا</option>
+                            <option value="DZ" data-name="الجزائر">الجزائر</option>
+                            <option value="MA" data-name="المغرب">المغرب</option>
+                            <option value="TN" data-name="تونس">تونس</option>
+                            <option value="SD" data-name="السودان">السودان</option>
+                            <option value="YE" data-name="اليمن">اليمن</option>
+                            <option value="SO" data-name="الصومال">الصومال</option>
+                            <option value="MR" data-name="موريتانيا">موريتانيا</option>
+                            <option value="DJ" data-name="جيبوتي">جيبوتي</option>
+                            <option value="KM" data-name="جزر القمر">جزر القمر</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- البريد الإلكتروني -->
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <div class="input-wrapper">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        <input type="email" id="email" placeholder="example@email.com" autocomplete="email"
+                            style="direction:ltr; text-align:right;">
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <div class="form-group">
+                    <label>رمز المرور</label>
+                    <div class="passcode-wrapper">
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                        <input type="text" maxlength="1" class="code-input" />
+                    </div>
+                </div>
+
+
+                <!-- الموافقة على الشروط -->
+                <div class="terms">
+                    <input type="checkbox" id="terms">
+                    <label for="terms">
+                        أوافق على <a href="terms.html">الشروط والأحكام</a> وسياسة <a href="terms.html">الخصوصية</a>
+                    </label>
+                </div>
+
+                <!-- زر التسجيل -->
+                <div class="btn-row">
+                    <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                    <button type="submit" class="btn-submit">إنشاء الحساب</button>
+                    <img src="images/left.png" alt="" onerror="this.style.display='none'">
+                </div>
+
+            </form>
+
+            <!-- رابط تسجيل الدخول -->
+            <div class="login-link">
+                لديك حساب بالفعل؟ <a href="login.html">سجّل الدخول</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('.code-input');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const data = e.clipboardData.getData('text').split('');
+
+                inputs.forEach((textInput, i) => {
+                    if (data[i]) {
+                        textInput.value = data[i];
+                        if (inputs[i + 1]) inputs[i + 1].focus();
+                    }
+                });
+            });
+        });
+        const countryList = document.getElementById('country-list');
+        const countryFlag = document.getElementById('country-flag');
+
+        // دالة لتحديث العلم بناءً على كود الدولة
+        function updateFlag(countryCode) {
+            if (countryCode) {
+                countryFlag.src = `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
+                countryFlag.style.display = 'block';
+            }
+        }
+
+        // 1. جلب الدولة تلقائياً عن طريق الـ IP
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                const detectedCode = data.country_code; // مثلاً EG
+                // التأكد إذا كانت الدولة المكتشفة موجودة في القائمة العربية
+                const option = countryList.querySelector(`option[value="${detectedCode}"]`);
+                if (option) {
+                    countryList.value = detectedCode;
+                    updateFlag(detectedCode);
+                } else {
+                    // إذا لم تكن دولة عربية، اجعل القيمة الافتراضية مصر مثلاً
+                    countryList.value = "EG";
+                    updateFlag("EG");
+                }
+            })
+            .catch(err => {
+                console.error("خطأ في جلب الموقع:", err);
+                countryList.value = "EG"; // افتراضي في حال الخطأ
+                updateFlag("EG");
+            });
+
+        // 2. تحديث العلم يدوياً عند تغيير المستخدم للدولة
+        countryList.addEventListener('change', (e) => {
+            updateFlag(e.target.value);
+        });
+    </script>
+
+    <script>
+        // Toggle password visibility
+        function togglePass(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        // Show message
+        function showMsg(text, type) {
+            const msg = document.getElementById('formMsg');
+            msg.textContent = text;
+            msg.className = 'msg ' + type;
+            msg.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form validation & submit
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const fullname = document.getElementById('fullname').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            // Basic validation
+            if (!terms) return showMsg('يجب الموافقة على الشروط والأحكام', 'error');
+
+            // Success
+            showMsg('تم إنشاء الحساب بنجاح! جارٍ التحويل...', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1800);
+        });
+    </script>
+</body>
+
+</html>

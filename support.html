@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدعم الفني — فتح تذكرة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0e14;
+            --surface: #111520;
+            --surface2: #161b27;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hi: rgba(99, 179, 237, 0.35);
+            --accent: #63b3ed;
+            --accent2: #4fd1c5;
+            --text: #e2e8f0;
+            --muted: rgba(226, 232, 240, 0.4);
+            --danger: #fc8181;
+            --success: #68d391;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 16px 60px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ── خلفية شبكية ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(99, 179, 237, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 179, 237, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* نقاط ضوئية */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 179, 237, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-bottom {
+            position: fixed;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(79, 209, 197, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── الهيدر ── */
+        .header {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 680px;
+            margin-bottom: 36px;
+            animation: fadeDown 0.6s ease both;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, rgba(99, 179, 237, 0.2), rgba(79, 209, 197, 0.2));
+            border: 1px solid rgba(99, 179, 237, 0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .brand-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .ticket-id {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        /* ── الكارد الرئيسي ── */
+        .card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 680px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            animation: fadeUp 0.6s 0.1s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* شريط علوي ملون */
+        .card-stripe {
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+            background-size: 200% 100%;
+            animation: stripeMove 3s linear infinite;
+        }
+
+        @keyframes stripeMove {
+            0% {
+                background-position: 0% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .card-body {
+            padding: 32px;
+        }
+
+        /* ── خطوات التقدم ── */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 32px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .step.active .step-num {
+            border-color: var(--accent);
+            background: rgba(99, 179, 237, 0.12);
+            color: var(--accent);
+        }
+
+        .step.done .step-num {
+            border-color: var(--success);
+            background: rgba(104, 211, 145, 0.12);
+            color: var(--success);
+        }
+
+        .step-label {
+            font-size: 0.72rem;
+            color: var(--muted);
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label {
+            color: var(--text);
+        }
+
+        .step.done .step-label {
+            color: var(--success);
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin: 0 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent2), var(--accent));
+            transition: width 0.5s ease;
+        }
+
+        .step-line.filled::after {
+            width: 100%;
+        }
+
+        /* ── حقول النموذج ── */
+        .form-section {
+            display: none;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .form-section.active {
+            display: flex;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(226, 232, 240, 0.7);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field-label .req {
+            color: var(--accent);
+            font-size: 0.7rem;
+        }
+
+        /* ── اختيار المشروع ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .project-option {
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-option::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 179, 237, 0.06), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .project-option:hover {
+            border-color: rgba(99, 179, 237, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .project-option:hover::before {
+            opacity: 1;
+        }
+
+        .project-option.selected {
+            border-color: var(--accent);
+            background: rgba(99, 179, 237, 0.08);
+            box-shadow: 0 0 0 1px rgba(99, 179, 237, 0.15), 0 4px 20px rgba(99, 179, 237, 0.1);
+        }
+
+        .project-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .project-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .project-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .project-type {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .project-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            font-size: 0.6rem;
+        }
+
+        .project-option.selected .project-check {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        /* ── نوع المشكلة ── */
+        .type-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .type-pill {
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--muted);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .type-pill:hover {
+            border-color: rgba(99, 179, 237, 0.3);
+            color: var(--text);
+        }
+
+        .type-pill.selected {
+            border-color: var(--accent);
+            background: rgba(99, 179, 237, 0.1);
+            color: var(--accent);
+        }
+
+        /* ── الأولوية ── */
+        .priority-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .priority-opt {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .priority-opt:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .priority-opt.selected-low {
+            border-color: #68d391;
+            background: rgba(104, 211, 145, 0.08);
+        }
+
+        .priority-opt.selected-medium {
+            border-color: #f6ad55;
+            background: rgba(246, 173, 85, 0.08);
+        }
+
+        .priority-opt.selected-high {
+            border-color: #fc8181;
+            background: rgba(252, 129, 129, 0.08);
+        }
+
+        .priority-icon {
+            font-size: 1.1rem;
+        }
+
+        .priority-name {
+            font-size: 0.72rem;
+            margin-top: 4px;
+            color: var(--muted);
+        }
+
+        /* ── حقل النص ── */
+        .field input,
+        .field textarea {
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 13px 16px;
+            color: var(--text);
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.25s;
+            width: 100%;
+            resize: none;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: rgba(226, 232, 240, 0.2);
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: rgba(99, 179, 237, 0.5);
+            background: rgba(99, 179, 237, 0.04);
+            box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.08);
+        }
+
+        .char-count {
+            font-size: 0.68rem;
+            color: var(--muted);
+            text-align: left;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* ── رفع ملف ── */
+        .upload-zone {
+            border: 1.5px dashed rgba(99, 179, 237, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface2);
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            border-color: rgba(99, 179, 237, 0.4);
+            background: rgba(99, 179, 237, 0.03);
+        }
+
+        .upload-zone input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .upload-text span {
+            color: var(--accent);
+        }
+
+        .upload-files {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .upload-file-tag {
+            background: rgba(99, 179, 237, 0.1);
+            border: 1px solid rgba(99, 179, 237, 0.2);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .upload-file-tag button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            padding: 0;
+        }
+
+        .upload-file-tag button:hover {
+            opacity: 1;
+        }
+
+        /* ── الأزرار ── */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 13px 24px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(99, 179, 237, 0.9), rgba(79, 209, 197, 0.8));
+            color: #0b0e14;
+            box-shadow: 0 4px 20px rgba(99, 179, 237, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%
+            }
+
+            50%,
+            100% {
+                left: 150%
+            }
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px rgba(99, 179, 237, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .btn-secondary:hover {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ── شاشة النجاح ── */
+        .success-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0 8px;
+            gap: 16px;
+        }
+
+        .success-screen.active {
+            display: flex;
+        }
+
+        .success-anim {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(104, 211, 145, 0.15), rgba(79, 209, 197, 0.15));
+            border: 2px solid rgba(104, 211, 145, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .success-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .success-sub {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            max-width: 360px;
+        }
+
+        .ticket-ref {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ticket-ref-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .ticket-ref-code {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .success-info {
+            background: rgba(99, 179, 237, 0.06);
+            border: 1px solid rgba(99, 179, 237, 0.15);
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.7;
+            text-align: right;
+            width: 100%;
+        }
+
+        /* error */
+        .field-error {
+            font-size: 0.72rem;
+            color: var(--danger);
+            display: none;
+        }
+
+        .field.has-error input,
+        .field.has-error textarea {
+            border-color: rgba(252, 129, 129, 0.5);
+        }
+
+        .field.has-error .field-error {
+            display: block;
+        }
+
+        /* ── الفوتر ── */
+        .footer {
+            position: relative;
+            z-index: 10;
+            margin-top: 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            animation: fadeUp 0.6s 0.3s ease both;
+        }
+
+                #bgVideo {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+    </style>
+</head>
+
+<body>
+    <video id="bgVideo" autoplay muted loop playsinline>
+        <source src="./assets/background.mp4" type="video/mp4">
+    </video>
+    <div class="glow-bottom"></div>
+
+    <!-- ── الهيدر ── -->
+    <div class="header">
+        <div class="header-top">
+            <div class="brand">
+                <div class="brand-icon">🎧</div>
+                <div class="brand-name">الدعم الفني</div>
+            </div>
+            <div class="ticket-id" id="ticketIdBadge">#TKT-????</div>
+        </div>
+        <h1>فتح تذكرة دعم جديدة</h1>
+        <p>أخبرنا بمشكلتك وسيتواصل معك فريقنا في أقرب وقت ممكن</p>
+    </div>
+
+    <!-- ── الكارد ── -->
+    <div class="card">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+
+            <!-- خطوات التقدم -->
+            <div class="steps" id="stepsBar">
+                <div class="step active" id="step1">
+                    <div class="step-num">01</div>
+                    <div class="step-label">المشروع</div>
+                </div>
+                <div class="step-line" id="line1"></div>
+                <div class="step" id="step2">
+                    <div class="step-num">02</div>
+                    <div class="step-label">تفاصيل المشكلة</div>
+                </div>
+                <div class="step-line" id="line2"></div>
+                <div class="step" id="step3">
+                    <div class="step-num">03</div>
+                    <div class="step-label">الوصف</div>
+                </div>
+            </div>
+
+            <!-- ════ الخطوة 1: المشروع ════ -->
+            <div class="form-section active" id="section1">
+
+                <div class="field" id="fProject">
+                    <div class="field-label">اختر المشروع <span class="req">*</span></div>
+                    <div class="projects-grid" id="projectsGrid">
+                        <!-- تُبنى ديناميكياً -->
+                    </div>
+                    <div class="field-error">يرجى اختيار مشروع</div>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">نوع المشكلة <span class="req">*</span></div>
+                    <div class="type-pills" id="typePills">
+                        <div class="type-pill" data-val="bug">🐛 خطأ برمجي</div>
+                        <div class="type-pill" data-val="perf">⚡ أداء بطيء</div>
+                        <div class="type-pill" data-val="ui">🎨 مشكلة في الواجهة</div>
+                        <div class="type-pill" data-val="access">🔐 مشكلة وصول</div>
+                        <div class="type-pill" data-val="data">📊 بيانات غير صحيحة</div>
+                        <div class="type-pill" data-val="other">💬 أخرى</div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">الأولوية <span class="req">*</span></div>
+                    <div class="priority-row" id="priorityRow">
+                        <div class="priority-opt" data-val="low">
+                            <div class="priority-icon">🟢</div>
+                            <div class="priority-name">عادية</div>
+                        </div>
+                        <div class="priority-opt" data-val="medium">
+                            <div class="priority-icon">🟡</div>
+                            <div class="priority-name">متوسطة</div>
+                        </div>
+                        <div class="priority-opt" data-val="high">
+                            <div class="priority-icon">🔴</div>
+                            <div class="priority-name">عاجلة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="goStep(2)">التالي ←</button>
+                </div>
+            </div>
+
+            <!-- ════ الخطوة 2: تفاصيل المشكلة ════ -->
+            <div class="form-section" id="section2">
+
+                <div class="field" id="fTitle">
+                    <div class="field-label">عنوان التذكرة <span class="req">*</span></div>
+                    <input type="text" id="titleInput" placeholder="مثال: لا يمكنني تسجيل الدخول إلى النظام"
+                        maxlength="120">
+                    <div class="char-count" id="titleCount">0 / 120</div>
+                    <div class="field-error">العنوان مطلوب (10 أحرف على الأقل)</div>
+                </div>
+
+                <div class="field" id="fUrl">
+                    <div class="field-label">رابط الصفحة المتأثرة</div>
+                    <input type="url" id="urlInput" placeholder="https://...">
+                </div>
+
+                <div class="field" id="fSteps">
+                    <div class="field-label">خطوات إعادة المشكلة</div>
+                    <textarea id="stepsInput" rows="3"
+                        placeholder="1. افتح الصفحة&#10;2. اضغط على ...&#10;3. ظهر الخطأ ..."></textarea>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="goStep(1)">← رجوع</button>
+                    <button class="btn btn-primary" onclick="goStep(3)">التالي ←</button>
+                </div>
+            </div>
+
+            <!-- ════ الخطوة 3: الوصف والمرفقات ════ -->
+            <div class="form-section" id="section3">
+
+                <div class="field" id="fDesc">
+                    <div class="field-label">وصف المشكلة بالتفصيل <span class="req">*</span></div>
+                    <textarea id="descInput" rows="5"
+                        placeholder="اشرح المشكلة بالتفصيل: ماذا حدث؟ ما الذي كنت تتوقعه؟ هل حدث ذلك من قبل؟"
+                        maxlength="2000"></textarea>
+                    <div class="char-count" id="descCount">0 / 2000</div>
+                    <div class="field-error">الوصف مطلوب (30 حرفاً على الأقل)</div>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">إرفاق صور أو ملفات</div>
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.log"
+                            onchange="handleFiles(this.files)">
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-text">اسحب الملفات هنا أو <span>اختر من جهازك</span></div>
+                        <div class="upload-files" id="uploadedFiles"></div>
+                    </div>
+                </div>
+
+                <div class="field" id="fEmail">
+                    <div class="field-label">البريد الإلكتروني للتواصل <span class="req">*</span></div>
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <div class="field-error">يرجى إدخال بريد إلكتروني صحيح</div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="goStep(2)">← رجوع</button>
+                    <button class="btn btn-primary" onclick="submitTicket()">إرسال التذكرة 🚀</button>
+                </div>
+            </div>
+
+            <!-- ════ شاشة النجاح ════ -->
+            <div class="success-screen" id="successScreen">
+                <div class="success-anim">✓</div>
+                <div class="success-title">تم إرسال التذكرة بنجاح!</div>
+                <div class="success-sub">استلمنا طلبك وسيتواصل معك فريق الدعم الفني خلال 24 ساعة على بريدك الإلكتروني
+                </div>
+
+                <div class="ticket-ref">
+                    <div>
+                        <div class="ticket-ref-label">رقم تذكرتك</div>
+                        <div class="ticket-ref-code" id="finalTicketId">—</div>
+                    </div>
+                    <div style="font-size:1.4rem">🎫</div>
+                </div>
+
+                <div class="success-info" id="successSummary">—</div>
+
+                <button class="btn btn-secondary" style="width:100%" onclick="resetForm()">
+                    ＋ فتح تذكرة جديدة
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">جميع الاستفسارات محفوظة وآمنة · متوسط وقت الرد: أقل من 24 ساعة</div>
+
+    <script>
+        // ── المشاريع ──
+        const PROJECTS = [
+            { id: 'khararif', name: 'خراريف', type: 'تطبيق جوال', icon: '🎮' },
+            { id: 'khararif-tv', name: 'خراريف TV', type: 'واجهة التلفزيون', icon: '📺' },
+            { id: 'dashboard', name: 'لوحة التحكم', type: 'ويب', icon: '🖥️' },
+            { id: 'api', name: 'واجهة API', type: 'Backend', icon: '⚙️' },
+        ];
+
+        // ── حالة النموذج ──
+        let state = {
+            project: null,
+            issueType: null,
+            priority: null,
+            currentStep: 1,
+        };
+
+        // ── رقم التذكرة ──
+        const ticketId = 'TKT-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        document.getElementById('ticketIdBadge').textContent = '#' + ticketId;
+
+        // ── بناء المشاريع ──
+        function buildProjects() {
+            const grid = document.getElementById('projectsGrid');
+            PROJECTS.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'project-option';
+                div.dataset.id = p.id;
+                div.innerHTML = `
+                <div class="project-icon">${p.icon}</div>
+                <div class="project-info">
+                    <div class="project-name">${p.name}</div>
+                    <div class="project-type">${p.type}</div>
+                </div>
+                <div class="project-check">✓</div>
+            `;
+                div.addEventListener('click', () => {
+                    document.querySelectorAll('.project-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    state.project = p.id;
+                    document.getElementById('fProject').classList.remove('has-error');
+                });
+                grid.appendChild(div);
+            });
+        }
+
+        // ── نوع المشكلة ──
+        document.querySelectorAll('.type-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('selected'));
+                pill.classList.add('selected');
+                state.issueType = pill.dataset.val;
+            });
+        });
+
+        // ── الأولوية ──
+        document.querySelectorAll('.priority-opt').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.priority-opt').forEach(o => {
+                    o.classList.remove('selected-low', 'selected-medium', 'selected-high');
+                });
+                opt.classList.add('selected-' + opt.dataset.val);
+                state.priority = opt.dataset.val;
+            });
+        });
+
+        // ── عداد الأحرف ──
+        document.getElementById('titleInput').addEventListener('input', function () {
+            document.getElementById('titleCount').textContent = this.value.length + ' / 120';
+        });
+        document.getElementById('descInput').addEventListener('input', function () {
+            document.getElementById('descCount').textContent = this.value.length + ' / 2000';
+        });
+
+        // ── الملفات ──
+        let uploadedFilesList = [];
+        function handleFiles(files) {
+            Array.from(files).forEach(f => {
+                if (uploadedFilesList.find(x => x.name === f.name)) return;
+                uploadedFilesList.push(f);
+            });
+            renderFiles();
+        }
+        function renderFiles() {
+            const wrap = document.getElementById('uploadedFiles');
+            wrap.innerHTML = uploadedFilesList.map((f, i) => `
+            <div class="upload-file-tag">
+                📄 ${f.name}
+                <button onclick="removeFile(${i})">✕</button>
+            </div>`).join('');
+        }
+        function removeFile(i) {
+            uploadedFilesList.splice(i, 1);
+            renderFiles();
+        }
+
+        // ── التنقل بين الخطوات ──
+        function goStep(n) {
+            if (n > state.currentStep) {
+                // التحقق من الخطوة الحالية
+                if (state.currentStep === 1) {
+                    if (!state.project) {
+                        document.getElementById('fProject').classList.add('has-error');
+                        return;
+                    }
+                }
+                if (state.currentStep === 2) {
+                    const title = document.getElementById('titleInput').value.trim();
+                    if (title.length < 10) {
+                        document.getElementById('fTitle').classList.add('has-error');
+                        return;
+                    } else {
+                        document.getElementById('fTitle').classList.remove('has-error');
+                    }
+                }
+            }
+
+            // أخفِ القسم الحالي
+            document.getElementById('section' + state.currentStep).classList.remove('active');
+
+            // حدّث الخطوات
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById('step' + i);
+                stepEl.classList.remove('active', 'done');
+                if (i < n) stepEl.classList.add('done');
+                if (i === n) stepEl.classList.add('active');
+            }
+
+            // خطوط التقدم
+            document.getElementById('line1').classList.toggle('filled', n > 1);
+            document.getElementById('line2').classList.toggle('filled', n > 2);
+
+            state.currentStep = n;
+            document.getElementById('section' + n).classList.add('active');
+
+            // سكرول للأعلى
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── الإرسال ──
+        function submitTicket() {
+            let valid = true;
+
+            const desc = document.getElementById('descInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+
+            if (desc.length < 30) {
+                document.getElementById('fDesc').classList.add('has-error');
+                valid = false;
+            } else {
+                document.getElementById('fDesc').classList.remove('has-error');
+            }
+
+            const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailReg.test(email)) {
+                document.getElementById('fEmail').classList.add('has-error');
+                valid = false;
+            } else {
+                document.getElementById('fEmail').classList.remove('has-error');
+            }
+
+            if (!valid) return;
+
+            // أظهر النجاح
+            document.getElementById('section3').classList.remove('active');
+            document.getElementById('stepsBar').style.display = 'none';
+
+            const projName = PROJECTS.find(p => p.id === state.project)?.name || '—';
+            const priorityLabel = { low: 'عادية 🟢', medium: 'متوسطة 🟡', high: 'عاجلة 🔴' }[state.priority] || '—';
+            const typeLabel = document.querySelector('.type-pill.selected')?.textContent || '—';
+
+            document.getElementById('finalTicketId').textContent = ticketId;
+            document.getElementById('successSummary').innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;justify-content:space-between"><span>المشروع</span><strong style="color:var(--text)">${projName}</strong></div>
+                <div style="display:flex;justify-content:space-between"><span>نوع المشكلة</span><strong style="color:var(--text)">${typeLabel}</strong></div>
+                <div style="display:flex;justify-content:space-between"><span>الأولوية</span><strong style="color:var(--text)">${priorityLabel}</strong></div>
+                <div style="display:flex;justify-content:space-between"><span>البريد</span><strong style="color:var(--accent)">${email}</strong></div>
+            </div>
+        `;
+
+            document.getElementById('successScreen').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── إعادة تعيين ──
+        function resetForm() {
+            location.reload();
+        }
+
+        // ── التهيئة ──
+        buildProjects();
+    </script>
+</body>
+
+</html>

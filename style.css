@@ -1,0 +1,486 @@
+@charset "utf-8";
+
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap");
+
+body {
+    font-family: "Cairo", sans-serif !important;
+    background: #e1decf;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in;
+    animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: rgb(241, 237, 219);
+}
+
+::-webkit-scrollbar-button {
+    background: rgb(220, 215, 193);
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(194, 185, 165);
+}
+
+a:hover {
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.titles {
+    font-family: "Cairo";
+    width: max-content;
+    display: table;
+    margin: -56px auto 0 auto;
+    padding: 0 27px;
+    text-align: center;
+    border-radius: 10px;
+    background: url(images/ornament-I.png) no-repeat center right,
+        url(images/ornament-II.png) no-repeat center left;
+    position: relative;
+    z-index: 2;
+}
+
+.la-title h4 {
+    background: #006c80;
+    border-radius: 10px;
+    padding: 0 20px 5px 20px;
+    color: #eacc9b;
+    font-weight: lighter;
+    font-size: 24px;
+    line-height: 40px;
+    box-shadow: inset 0px 0px 19px #003443;
+}
+
+.th-title h3 {
+    background: #ffe8c2;
+    border-radius: 10px;
+    padding: 0 20px 5px 20px;
+    color: #b83535;
+    font-weight: lighter;
+    font-size: 28px;
+    line-height: 40px;
+    box-shadow: inset 0px 0px 20px #e08f38;
+}
+
+.th-title {
+    margin-top: -20px;
+}
+
+#header {
+    width: 100%;
+    height: 645px;
+    background: url(images/wall-de.png) top 22% left repeat-x,
+        url(images/wall-patt.jpg) top left repeat-x;
+    overflow: hidden;
+    padding-bottom: 50px;
+}
+
+.header-cont {
+    width: 98%;
+    max-width: 1170px;
+    margin: 0 auto;
+    text-align: center;
+    background-size: contain;
+}
+
+.logo {
+    float: right;
+    margin-top: 9px;
+    width: 24%;
+    max-width: 258px;
+}
+
+.logo img {
+    width: 125px;
+    height: 140px;
+    min-width: 100px;
+}
+
+.acc {
+    margin-top: 128px;
+    position: absolute;
+    left: 140px;
+    z-index: 0;
+}
+
+.controlls-video {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    background: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.controlls-video img {
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.btn-text {
+    color: #25221f;
+    margin-top: 8px;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+button:hover,
+button:focus {
+    transform: scale(1.05);
+}
+
+button:hover img,
+button:focus img {
+    opacity: 1;
+    filter: drop-shadow(0 0 38px #e9b868) drop-shadow(0 0 12px #e9b868);
+}
+
+button:hover .btn-text,
+button:focus .btn-text {
+    opacity: 1;
+}
+
+input:focus {
+    outline: 2px solid #006c80;
+}
+
+span {
+    font-family: "Cairo";
+}
+
+.menu-cont {
+    padding: 0 22px;
+    margin: 0px auto;
+    width: 87%;
+    max-width: 695px;
+    margin-bottom: 20px;
+    height: 44px;
+    text-align: center;
+    background: url(images/ornament-I.png) right center no-repeat,
+        url(images/ornament-II.png) left center no-repeat;
+}
+
+.toggle,
+[id^="drop"] {
+    display: none;
+}
+
+nav {
+    font-family: "Cairo";
+    margin: 0;
+    padding: 0;
+    background: #006c80;
+    border-radius: 14px;
+    box-shadow: inset #003443 0px 0px 24px;
+}
+
+nav:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0 auto;
+    list-style: none;
+    position: relative;
+    z-index: 9;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+    text-align: center;
+    display: inline-block;
+}
+
+nav ul li {
+    margin: 0px;
+    display: inline-block;
+    float: right;
+}
+
+nav a {
+    font-family: "Cairo";
+    display: inline;
+    padding: 44px 0 0;
+    color: #fff;
+    margin: 0px 10px;
+    line-height: 44px;
+    font-size: 17px;
+    text-decoration: none;
+    font-weight: lighter;
+    letter-spacing: 1px;
+}
+
+nav ul ul li a {
+    line-height: 3.5;
+}
+
+nav ul li ul li:hover {
+    background: #006c80;
+}
+
+nav ul li ul li a {
+    display: block !important;
+    padding: 0;
+}
+
+nav ul li ul li a:hover {
+    color: #f7a76e;
+    border-bottom: 0;
+}
+
+nav a:hover {
+    color: #f7a76e;
+    background-size: 28px;
+}
+
+nav ul ul {
+    display: none;
+    position: absolute;
+}
+
+nav ul li:hover>ul {
+    display: inherit;
+    background: #005263;
+}
+
+nav ul ul li {
+    width: 220px;
+    float: none;
+    display: list-item;
+    position: relative;
+}
+
+nav ul ul ul li {
+    position: relative;
+    top: -60px;
+    left: 170px;
+}
+
+.center-wrapper-fixed {
+    top: 60%;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    pointer-events: none;
+}
+
+.menu-cont,
+.registration-form {
+    pointer-events: auto;
+}
+
+.registration-form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.input-group input {
+    width: 94%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #006c80;
+    font-family: "Cairo";
+    text-align: center;
+}
+
+.input-group {
+    text-align: center;
+}
+
+.submit-btn {
+    width: 100%;
+    font-family: "Cairo";
+    background: #006c80 !important;
+    color: white !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.passcode-wrapper {
+    display: flex;
+    gap: 56.5px;
+    justify-content: center;
+    direction: ltr;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.code-input {
+    width: 57px !important;
+    height: 28px !important;
+    padding: 5px !important;
+    font-size: 16px !important;
+    text-align: center !important;
+    border-radius: 4px !important;
+    border: 1px solid #006c80 !important;
+    margin-bottom: 0 !important;
+}
+
+.controlls-video {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    background: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.controlls-video img {
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.btn-text {
+    color: #25221f;
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: 900;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+button:hover,
+button:focus {
+    transform: scale(1.05);
+}
+
+button:hover img,
+button:focus img {
+    opacity: 1;
+    filter: drop-shadow(0 0 38px #e9b868) drop-shadow(0 0 12px #e9b868);
+}
+
+button:hover .btn-text,
+button:focus .btn-text {
+    opacity: 1;
+}
+
+video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    height: 101%;
+    transform: translate(-50%, -50%);
+    object-fit: fill;
+    z-index: 1;
+}
+
+.profile-container {
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    padding-bottom: 50px;
+    pointer-events: none;
+}
+
+.splash {
+    width: 100%;
+    height: 100%;
+}
+
+.back---btn {
+    position: fixed;
+    z-index: 99999;
+    right: 5%;
+    top: 3%;
+}
+
+.back-btn-left {
+    position: fixed;
+    z-index: 99999;
+    left: 5%;
+    top: 3%;
+}
+
+.footer-img {
+    position: absolute;
+    width: 140px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    bottom: 30px;
+    left: 50%;
+    z-index: 999999999999999999999999999999999;
+    transform: translateX(-50%);
+}

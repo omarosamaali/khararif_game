@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مغامراتي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-light: #ffe8a0;
+            --gold-dark: #c0a060;
+            --dark-navy: #0a2348;
+            --darker-navy: #060f22;
+            --teal: #003443;
+            --teal-light: #005566;
+            --card-bg: rgba(0, 30, 60, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: var(--darker-navy);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 80, 120, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(10, 35, 72, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 52, 67, 0.3) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 10%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(2px 2px at 45% 55%, rgba(232, 203, 154, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* ── Nav ── */
+        .back-btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* ── Fixed header area ── */
+        .container-lg {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 109;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            padding: 12px 20px 16px;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(232, 203, 154, 0.4);
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 8px auto 0;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Main container ── */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 170px 16px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .card-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.1);
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            border: 1px solid rgba(232, 203, 154, 0.25);
+        }
+
+        .card-title {
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .card-count {
+            background: rgba(232, 203, 154, 0.1);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 20px;
+            padding: 2px 10px;
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ── Summary Strip ── */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .strip-stat {
+            padding: 12px 6px;
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .strip-stat:last-child {
+            border-left: none;
+        }
+
+        .strip-val {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            line-height: 1;
+        }
+
+        .strip-val.gold {
+            color: #ffd700;
+        }
+
+        .strip-val.silver {
+            color: #c0c0c0;
+        }
+
+        .strip-val.bronze {
+            color: #cd7f32;
+        }
+
+        .strip-val.green {
+            color: #4ade80;
+        }
+
+        .strip-lbl {
+            font-size: 0.62rem;
+            color: rgba(255, 255, 255, 0.32);
+            margin-top: 3px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ── Filter Tabs ── */
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            padding: 12px 14px 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 5px 13px;
+            border-radius: 20px;
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            background: rgba(0, 52, 67, 0.3);
+            color: rgba(255, 255, 255, 0.45);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.76rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: rgba(0, 52, 67, 0.75);
+            border-color: rgba(232, 203, 154, 0.5);
+            color: var(--gold);
+        }
+
+        /* ── History Cards (mobile-first) ── */
+        .history-wrap {
+            padding: 12px;
+        }
+
+        /* Each adventure as a card */
+        .history-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            background: rgba(0, 52, 67, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s, border-color 0.2s;
+            animation: rowIn 0.4s ease both;
+        }
+
+        .history-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-row:hover {
+            background: rgba(0, 52, 67, 0.5);
+            border-color: rgba(232, 203, 154, 0.12);
+        }
+
+        @keyframes rowIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Top row: date + badges */
+        .row-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        /* Date */
+        .col-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-day {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-family: 'Cairo', sans-serif;
+            direction: ltr;
+        }
+
+        .date-sep {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.7rem;
+        }
+
+        .date-time {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Badges row on the right */
+        .badges-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        /* Result badge */
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            white-space: nowrap;
+        }
+
+        .result-badge.win {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            color: #4ade80;
+        }
+
+        .result-badge.loss {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #f87171;
+        }
+
+        .result-badge.draw {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.28);
+            color: #fbbf24;
+        }
+
+        /* Rank badge */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            white-space: nowrap;
+        }
+
+        .rank-badge.rank-1 {
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+        }
+
+        .rank-badge.rank-2 {
+            background: rgba(192, 192, 192, 0.1);
+            border: 1px solid rgba(192, 192, 192, 0.35);
+            color: #c0c0c0;
+        }
+
+        .rank-badge.rank-3 {
+            background: rgba(205, 127, 50, 0.12);
+            border: 1px solid rgba(205, 127, 50, 0.35);
+            color: #cd7f32;
+        }
+
+        /* Middle: title */
+        .col-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .title-text {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* Bottom row: category + score */
+        .row-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .cat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 52, 67, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 3px 9px;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .score-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(232, 203, 154, 0.08);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 8px;
+            padding: 3px 9px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Divider between top and title */
+        .row-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 -14px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            opacity: 0.35;
+            margin-bottom: 12px;
+        }
+
+        .empty-text {
+            color: rgba(255, 255, 255, 0.28);
+            font-size: 0.9rem;
+        }
+
+        /* splash */
+        .splash-top {
+            position: fixed;
+            width: 100%;
+            height: 26%;
+            z-index: 99;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .splash-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back-btn">
+        <a href="home.html">
+            <img src="images/next.png" class="back-img" alt="">
+        </a>
+    </div>
+
+    <div class="back-btn-left">
+        <a href="levels.html"> <img src="images/wh.png" class="back-img" alt="رجوع">
+        </a>
+    </div>
+
+    <img class="splash-top" src="images/splash-22.png" alt="">
+    <img class="splash-bg" src="images/splash-2.png" alt="">
+
+    <div class="container-lg">
+        <img src="images/animated-logo-ii.gif" style="padding-top:16px;width:64px;display:block;margin:auto;" alt=""
+            onerror="this.style.display='none'">
+        <div class="header">
+            <h1>مغامراتي</h1>
+            <div class="subtitle">سجل مغامراتك ونتائجك</div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <!-- Card header -->
+            <div class="card-header">
+                <div class="card-icon">📜</div>
+                <span class="card-title">تاريخ المغامرات</span>
+                <span class="card-count" id="totalCount">٠ مغامرة</span>
+            </div>
+
+            <!-- Stats strip -->
+            <div class="stats-strip">
+                <div class="strip-stat">
+                    <div class="strip-val gold" id="goldCount">0</div>
+                    <div class="strip-lbl">
+                        <img src="images/gold.png" alt="" onerror="this.style.display='none'">
+                        أول</div>
+                </div>
+                <div class="strip-stat">
+                    <div class="strip-val silver" id="silverCount">0</div>
+                    <div class="strip-lbl">🥈 ثاني</div>
+                </div>
+                <div class="strip-stat">
+                    <div class="strip-val bronze" id="bronzeCount">0</div>
+                    <div class="strip-lbl">🥉 ثالث</div>
+                </div>
+                <div class="strip-stat">
+                    <div class="strip-val green" id="winCount">0</div>
+                    <div class="strip-lbl">✅ فوز</div>
+                </div>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filter('all',this)">الكل</button>
+                <button class="tab-btn" onclick="filter('win',this)">الفوز ✅</button>
+                <button class="tab-btn" onclick="filter('loss',this)">الخسارة ❌</button>
+                <button class="tab-btn" onclick="filter('rank-1',this)">
+                    <img src="assets/gold.png" style="width: 10px;height: 16px;" alt="" onerror="this.style.display='none'">
+                    أول</button>
+                <button class="tab-btn" onclick="filter('rank-2',this)">
+                    <img src="assets/silver.png" style="width: 10px;height: 16px;" alt="" onerror="this.style.display='none'">
+                    ثاني</button>
+                <button class="tab-btn" onclick="filter('rank-3',this)">
+                    <img src="assets/bronze.png" style="width: 10px;height: 16px;" alt="" onerror="this.style.display='none'">
+                    ثالث</button>
+            </div>
+
+            <!-- Table -->
+            <div class="history-wrap">
+                <div id="historyList"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const adventures = [
+            { date: '23/02/26', time: '08:30م', title: 'تحدي الأبطال الأسطوري', cat: 'معلومات عامة', score: 1850, result: 'win', rank: 1 },
+            { date: '21/02/26', time: '04:15م', title: 'معركة العقول الكبرى', cat: 'تاريخ وحضارة', score: 1420, result: 'loss', rank: 2 },
+            { date: '19/02/26', time: '09:00م', title: 'رحلة المعرفة الخفية', cat: 'علوم وتقنية', score: 2100, result: 'win', rank: 1 },
+            { date: '17/02/26', time: '06:45م', title: 'صراع الحكماء', cat: 'فن وثقافة', score: 980, result: 'loss', rank: 3 },
+            { date: '15/02/26', time: '03:20م', title: 'غموض الأهرامات', cat: 'تاريخ وحضارة', score: 1650, result: 'win', rank: 2 },
+            { date: '12/02/26', time: '07:55م', title: 'ليلة الألغاز', cat: 'معلومات عامة', score: 1200, result: 'draw', rank: 2 },
+            { date: '10/02/26', time: '05:10م', title: 'كنز الحضارات', cat: 'دين وثقافة', score: 2300, result: 'win', rank: 1 },
+            { date: '08/02/26', time: '08:00م', title: 'التحدي الرياضي الكبير', cat: 'رياضة', score: 750, result: 'loss', rank: 3 },
+        ];
+
+        const rankMeta = {
+            1: { cls: 'rank-1', icon: 'assets/gold.png', label: 'الأول' },
+            2: { cls: 'rank-2', icon: 'assets/silver.png', label: 'الثاني' },
+            3: { cls: 'rank-3', icon: 'assets/bronze.png', label: 'الثالث' },
+        };
+
+        const resMeta = {
+            win: { cls: 'win', icon: '✅', label: 'فوز' },
+            loss: { cls: 'loss', icon: '❌', label: 'خسارة' },
+            draw: { cls: 'draw', icon: '🤝', label: 'تعادل' },
+        };
+
+        function buildRows(data) {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+
+            if (!data.length) {
+                list.innerHTML = `<div class="empty-state">
+                    <div class="empty-icon">🗺️</div>
+                    <div class="empty-text">لا توجد مغامرات في هذا التصنيف</div>
+                </div>`;
+                return;
+            }
+
+            data.forEach((a, i) => {
+                const rm = rankMeta[a.rank];
+                const res = resMeta[a.result];
+
+                const row = document.createElement('div');
+                row.className = 'history-row';
+                row.style.animationDelay = (i * 0.07) + 's';
+                row.innerHTML = `
+                    <div class="col-date">
+                        <span class="date-day">${a.date}</span>
+                        <span class="date-time">${a.time}</span>
+                    </div>
+
+                    <div class="col-title">
+                        <span class="title-text">${a.title}</span>
+                        <div class="title-sub">
+                            <span style="color:white;">${a.cat}</span>
+                            <span class="score-chip">⭐ ${a.score.toLocaleString('ar')}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-result">
+                        <span class="result-badge ${res.cls}">
+                            <span class="r-icon">
+                                <img src="assets/${a.result}.png" alt="">
+                                </span>
+                            ${res.label}
+                        </span>
+                    </div>
+
+                    <div class="col-rank">
+                        <span class="rank-badge ${rm.cls}">
+                            <span class="r-icon">
+                                <img src="${rm.icon}" alt="" style="width:16px;height:16px;">
+                                </span>
+                            ${rm.label}
+                        </span>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function updateStats(data) {
+            document.getElementById('totalCount').textContent = data.length + ' مغامرة';
+            document.getElementById('goldCount').textContent = data.filter(a => a.rank === 1).length;
+            document.getElementById('silverCount').textContent = data.filter(a => a.rank === 2).length;
+            document.getElementById('bronzeCount').textContent = data.filter(a => a.rank === 3).length;
+            document.getElementById('winCount').textContent = data.filter(a => a.result === 'win').length;
+        }
+
+        function filter(type, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const map = {
+                all: () => true, win: a => a.result === 'win', loss: a => a.result === 'loss',
+                'rank-1': a => a.rank === 1, 'rank-2': a => a.rank === 2, 'rank-3': a => a.rank === 3
+            };
+            buildRows(adventures.filter(map[type]));
+        }
+
+        // init
+        updateStats(adventures);
+        buildRows(adventures);
+    </script>
+
+</body>
+
+</html>
