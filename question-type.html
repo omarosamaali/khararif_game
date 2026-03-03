@@ -332,6 +332,340 @@
     </style>
 </head>
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار نوع الأسئلة</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #e8cb9a;
+            --card-bg: rgba(0, 20, 40, 0.88);
+            --teal: #003443;
+            --red: #8b1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background: #0d0d0d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(80, 0, 0, 0.35) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(10, 35, 72, 0.5) 0%, transparent 55%), radial-gradient(ellipse at 80% 50%, rgba(30, 5, 5, 0.4) 0%, transparent 50%), #0d0d0d;
+        }
+
+        #myVideo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.35;
+        }
+
+        .back---btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .back-img {
+            width: 36px;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 32px 20px 16px;
+            width: 100%;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #8b1a1a;
+            border-color: #c0392b;
+            box-shadow: 0 0 10px rgba(139, 26, 26, 0.6);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .step-dot.done {
+            background: #003443;
+            border-color: #0b6680;
+        }
+
+        .header-title {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(180, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b1a1a, #c0392b, #8b1a1a, transparent);
+            margin: 10px auto 0;
+        }
+
+        .header-sub {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.78rem;
+            margin-top: 6px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 480px;
+            margin-top: 10px;
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .type-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(139, 26, 26, 0.25);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .type-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(139, 26, 26, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .type-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: rgba(139, 26, 26, 0.7);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 26, 26, 0.2);
+        }
+
+        .type-card:hover::before {
+            opacity: 1;
+        }
+
+        .type-card.selected {
+            border-color: #c0392b;
+            box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.3), 0 12px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .type-card.selected::before {
+            opacity: 1;
+        }
+
+        .card-image-wrap {
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .card-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            transition: transform 0.4s ease;
+        }
+
+        .type-card:hover .card-image-wrap img {
+            transform: scale(1.08);
+        }
+
+        .card-image-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, rgba(0, 52, 67, 0.8), rgba(0, 0, 0, 0.6));
+            transition: transform 0.4s ease;
+        }
+
+        .card-label {
+            padding: 14px 12px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .card-label-text {
+            color: #e8c0a0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .check-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 28px;
+            height: 28px;
+            background: #c0392b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 5;
+            box-shadow: 0 0 12px rgba(192, 57, 43, 0.6);
+        }
+
+        .type-card.selected .check-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .continue-wrap {
+            margin-top: 22px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 16px;
+            background: #003443;
+            border: 1px solid rgba(11, 102, 128, 0.5);
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 52, 67, 0.5);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .continue-btn.ready {
+            opacity: 1;
+            pointer-events: all;
+            box-shadow: 0 4px 24px rgba(0, 52, 67, 0.7);
+        }
+
+        .continue-btn.ready:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 52, 67, 0.8);
+        }
+
+        .continue-btn .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%
+            }
+
+            50%,
+            100% {
+                left: 150%
+            }
+        }
+    </style>
+</head>
+
 <body>
     <div class="back---btn"><a href="index.html"><img src="images/next.png" class="back-img" alt=""></a></div>
     <div class="back-btn-left"><a href="details.html"><img src="images/home-kh.png" class="back-img" alt=""></a></div>
@@ -351,54 +685,8 @@
 
     <div class="container">
         <div class="grid" id="typeGrid">
-            <div class="type-card" onclick="selectType(this,'معلومات عامة')" data-type="معلومات عامة">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="assets/qustion.jpeg" alt="معلومات عامة"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>🌍</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">معلومات عامة</div>
-                </div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'تاريخ')" data-type="تاريخ">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="images/type-history.png" alt="تاريخ"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>📜</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">تاريخ</div>
-                </div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'رياضة')" data-type="رياضة">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="images/type-sport.png" alt="رياضة"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>⚽</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">رياضة</div>
-                </div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'فن وترفيه')" data-type="فن وترفيه">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="images/type-art.png" alt="فن وترفيه"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>🎭</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">فن وترفيه</div>
-                </div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'علوم وتكنولوجيا')" data-type="علوم وتكنولوجيا">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="images/type-science.png" alt="علوم وتكنولوجيا"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>🔬</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">علوم وتكنولوجيا</div>
-                </div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'دين وثقافة')" data-type="دين وثقافة">
-                <div class="check-badge">✓</div>
-                <div class="card-image-wrap"><img src="images/type-religion.png" alt="دين وثقافة"
-                        onerror="this.parentElement.innerHTML='<div class=\'card-image-placeholder\'>☪️</div>'"></div>
-                <div class="card-label">
-                    <div class="card-label-text">دين وثقافة</div>
-                </div>
-            </div>
+            <div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;font-size:13px;grid-column:1/-1;">
+                جارٍ تحميل الأنواع...</div>
         </div>
 
         <div class="continue-wrap">
@@ -410,22 +698,71 @@
     </div>
 
     <script>
+        const API = 'https://kararif.wecan.ae/api';
         let selectedType = null;
+        let selectedTypeId = null;
 
-        function selectType(card, type) {
+        const slugEmoji = {
+            atfal: '👶', mdars: '📚', shabab: '🧑', adults: '👨',
+            general: '🌍', history: '📜', sport: '⚽', art: '🎭',
+            science: '🔬', religion: '☪️'
+        };
+
+        async function loadTypes() {
+            const grid = document.getElementById('typeGrid');
+            const token = localStorage.getItem('auth_token');
+
+            try {
+                const res = await fetch(API + '/game/question-types', {
+                    headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    grid.innerHTML = '';
+                    data.data.forEach(type => {
+                        const emoji = slugEmoji[type.slug] || '❓';
+                        const card = document.createElement('div');
+                        card.className = 'type-card';
+                        card.dataset.type = type.name_ar;
+                        card.dataset.id = type.id;
+                        card.innerHTML = `
+                            <div class="check-badge">✓</div>
+                            <div class="card-image-wrap">
+                                <div class="card-image-placeholder">${emoji}</div>
+                            </div>
+                            <div class="card-label">
+                                <div class="card-label-text">${type.name_ar}</div>
+                            </div>`;
+                        card.addEventListener('click', () => selectType(card, type.name_ar, type.id));
+                        grid.appendChild(card);
+                    });
+                } else {
+                    grid.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;grid-column:1/-1;">لا توجد أنواع متاحة</div>';
+                }
+            } catch (e) {
+                grid.innerHTML = '<div style="text-align:center;color:#e05252;padding:30px;grid-column:1/-1;">تعذر تحميل الأنواع</div>';
+            }
+        }
+
+        function selectType(card, type, id) {
             document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             selectedType = type;
+            selectedTypeId = id;
             document.getElementById('continueBtn').classList.add('ready');
         }
 
         function goNext() {
             if (!selectedType) return;
-            // ✅ خزّن نوع الأسئلة
             localStorage.setItem('game_questionType', selectedType);
+            localStorage.setItem('game_questionTypeId', selectedTypeId);
             window.location.href = 'main-category.html';
         }
+
+        loadTypes();
     </script>
 </body>
 
+</html>
 </html>

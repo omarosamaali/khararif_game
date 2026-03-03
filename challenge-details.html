@@ -1645,17 +1645,16 @@
         <a href="private.html"><img src="images/next.png" class="back-img" alt=""></a>
     </div>
     <div class="back-btn-left">
-        <a href="home.html"><img src="images/home-kh.png" class="back-img" alt=""></a>
+        <a href="index.html"><img src="images/home-kh.png" class="back-img" alt=""></a>
     </div>
 
     <div style="width:100%;height:100%;">
-        <video id="myVideo" loop autoplay>
-            <source id="videoSource" src="./assets/video-2.mp4" type="video/mp4">
+        <video id="myVideo" loop autoplay muted playsinline>
+            <source src="./assets/video-2.mp4" type="video/mp4">
         </video>
     </div>
     <div class="bg-layer"></div>
 
-    <!-- Header -->
     <div class="header">
         <div class="header-title">غرفة الانتظار</div>
         <div class="header-sub">بانتظار دخول جميع المغامرين</div>
@@ -1664,7 +1663,7 @@
         <img src="images/animated-logo2.gif" alt="">
     </span>
 
-    <!-- ── Block 1: Adventure info + code ── -->
+    <!-- Block 1: Adventure info + code -->
     <div class="container">
 
         <div class="control-card">
@@ -1672,26 +1671,9 @@
                 <div class="card-icon">⚔️</div>
                 <span class="card-title">بيانات المغامرة</span>
             </div>
-            <div class="card-body">
-                <div class="counter-row">
-                    <div class="counter-control-container" style="width:100%;">
-                        <span class="counter-label">عنوان المغامرة</span>
-                        <span class="badge-label">تحدي الابطال الاسطوري</span>
-                    </div>
-                </div>
-                <div class="counter-row">
-                    <div class="counter-control-container" style="margin-top:15px;width:100%;">
-                        <span class="counter-label">عدد الفرق</span>
-                        <span class="badge-label">2</span>
-                    </div>
-                </div>
-                <div class="players-visual" id="teamsVisual"></div>
-                <div class="counter-row">
-                    <div class="counter-control-container" style="width:100%;">
-                        <span class="counter-label">عدد الجولات</span>
-                        <span class="badge-label">5</span>
-                    </div>
-                </div>
+            <div class="card-body" id="adventureInfo">
+                <div style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;font-size:13px;">جارٍ تحميل
+                    البيانات...</div>
             </div>
         </div>
 
@@ -1701,14 +1683,10 @@
                     <div class="card-icon">🔑</div>
                     <span class="card-title">رمز المغامرة</span>
                 </div>
-                <button onclick="generateCode()" class="regen-btn" title="إعادة توليد الرمز">
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                </button>
             </div>
             <div class="card-body">
                 <div class="code-input-wrap">
-                    <input class="code-input" value="" id="codeInput" type="text" maxlength="8" placeholder="ادخل رمز المغامرة"
-                        inputmode="text" autocomplete="off">
+                    <input class="code-input" id="codeInput" type="text" readonly placeholder="---">
                     <div class='code-btns'>
                         <button onclick="copyCode()" id="copyBtn" class="copy-btn">📋 نسخ الرمز</button>
                         <button onclick="shareWhatsApp()" class="whatsapp-btn">
@@ -1717,81 +1695,17 @@
                         </button>
                     </div>
                 </div>
-                <div class="code-hint">ارسل رمز المغامرة<br>للانضمام اللاعبين الآخرين</div>
+                <div class="code-hint">ارسل رمز المغامرة<br>للاعبين الآخرين للانضمام</div>
             </div>
         </div>
 
-
     </div>
 
-    <!-- Success overlay -->
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-box">
-            <span class="success-icon">🏆</span>
-            <div class="success-title">تم الإعداد!</div>
-            <div class="success-sub">تم حفظ إعدادات الساحة الخاصة بنجاح</div>
-            <div class="success-details" id="successDetails"></div>
-            <a href="home.html" class="success-go-btn">ابدأ المعركة ⚔️</a>
-        </div>
-    </div>
-
-    <!-- ── Block 2: Teams + Timer + Start button ── -->
+    <!-- Block 2: Teams + Timer + Start -->
     <div class="container">
 
-        <!-- الفريق الأحمر -->
-        <div class="control-card">
-            <div class="card-header">
-                <div class="card-icon">🔴</div>
-                <span class="card-title">الفريق الأحمر</span>
-            </div>
-            <div class="card-body">
-                <div class="teams-grid" id="redTeamGrid"></div>
-                <div class="code-hint">
-                    رمز الفريق <span style="font-weight:bold;">K-1</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- الفريق الأخضر -->
-        <div class="control-card">
-            <div class="card-header">
-                <div class="card-icon">🟢</div>
-                <span class="card-title">الفريق الأخضر</span>
-            </div>
-            <div class="card-body">
-                <div class="teams-grid" id="greenTeamGrid"></div>
-                <div class="code-hint">
-                    رمز الفريق <span style="font-weight:bold;">K-2</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- الفريق الأصفر -->
-        <div class="control-card">
-            <div class="card-header">
-                <div class="card-icon">🟡</div>
-                <span class="card-title">الفريق الأصفر</span>
-            </div>
-            <div class="card-body">
-                <div class="teams-grid" id="yellowTeamGrid"></div>
-                <div class="code-hint">
-                    رمز الفريق <span style="font-weight:bold;">K-3</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- الفريق الأزرق -->
-        <div class="control-card">
-            <div class="card-header">
-                <div class="card-icon">🔵</div>
-                <span class="card-title">الفريق الأزرق</span>
-            </div>
-            <div class="card-body">
-                <div class="teams-grid" id="blueTeamGrid"></div>
-                <div class="code-hint">
-                    رمز الفريق <span style="font-weight:bold;">K-4</span>
-                </div>
-            </div>
+        <div id="teamsContainer">
+            <!-- يتبنى ديناميك -->
         </div>
 
         <!-- عداد الانتظار -->
@@ -1811,7 +1725,6 @@
                         <span class="timer-label">ثانية</span>
                     </div>
                 </div>
-
                 <div class="summary-row" id="timerStatus">
                     <span class="summary-label">الحالة</span>
                     <span class="summary-value">⏸ في الانتظار</span>
@@ -1825,157 +1738,149 @@
         </button>
     </div>
 
-        <script>
-            const state = {
-                rounds: 1,
-                teams: 2,
-                players: 1,
-                questions: 5,
-            };
-
-            const limits = {
-                rounds: { min: 1, max: 10 },
-                teams: { min: 2, max: 4 },
-                players: { min: 1, max: 2 },
-                questions: { min: 5, max: 30 },
-            };
-
-            const teamEmojis = ['🟥', '🟦', '🟩', '🟨'];
-
-            function change(key, delta) {
-                state[key] = Math.min(limits[key].max, Math.max(limits[key].min, state[key] + delta));
-                document.getElementById(key + 'Val').textContent = state[key];
-                if (key === 'teams') renderTeams();
-                if (key === 'questions') updateQuestionsBar();
-            }
-
-            function changePlayers(key, delta) {
-                state[key] = Math.min(limits[key].max, Math.max(limits[key].min, state[key] + delta));
-                document.getElementById(key + 'Val').textContent = state[key];
-            }
-
-            function updateQuestionsBar() {
-                const pct = ((state.questions - 5) / (30 - 5)) * 100;
-                document.getElementById('questionsBar').style.width = pct + '%';
-            }
-
-            function renderTeams() {
-                const visual = document.getElementById('teamsVisual');
-                visual.innerHTML = '';
-                for (let i = 0; i < state.teams; i++) {
-                    const span = document.createElement('span');
-                    span.className = 'player-icon';
-                    span.textContent = teamEmojis[i] || '🔲';
-                    span.style.animationDelay = (i * 0.05) + 's';
-                    visual.appendChild(span);
-                }
-            }
-
-            renderTeams();
-            updateQuestionsBar();
-
-            // ── Code Generator ──
-            function generateCode() {
-                const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
-                let code = '';
-                for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-                document.getElementById('codeInput').value = code;
-                const btn = document.querySelector('.regen-btn');
-                btn.classList.remove('spinning');
-                void btn.offsetWidth;
-                btn.classList.add('spinning');
-                btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
-                return code;
-            }
-
-            window.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('codeInput').value = generateCode();
-            });
-
-            // ── Copy ──
-            function copyCode() {
-                const code = document.getElementById('codeInput').value;
-                const btn = document.getElementById('copyBtn');
-                navigator.clipboard.writeText(code).then(() => {
-                    btn.textContent = '✅ تم النسخ!';
-                    setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
-                }).catch(() => {
-                    const tmp = document.createElement('textarea');
-                    tmp.value = code;
-                    document.body.appendChild(tmp);
-                    tmp.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tmp);
-                    btn.textContent = '✅ تم النسخ!';
-                    setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
-                });
-            }
-
-            // ── WhatsApp ──
-            function shareWhatsApp() {
-                const code = document.getElementById('codeInput').value.trim();
-                if (!code) { shakeInput(); return; }
-                const message =
-                    `*انضم إلى مغامرتي !*\n` +
-                    `👋🏼مرحباً! أنا بانتظارك في الساحة\n` +
-                    `*الخطوات:*\n` +
-                    `🗝️استخدم رمز المغامرة أدناه للانضمام:\n` +
-                    `الرمز *>>> ${code} <<<*\n` +
-                    `ادخل رمز الفريق\n` +
-                    ` ( الفريق الاحمر🔴K1) \n\n` +
-                    ` ( الفريق الاخضر🟢K2)\n\n` +
-                    ` ( الفريق الازرق🔵K3)\n\n` +
-                    ` ( الفريق الاصفر)\n\n` +
-                    `🤴🏼حدد هل انت القائد\n` +
-                    `📺اربط تطبيق التلفزيون وادخل رمز ساحة المغامرة\n` +
-                    `يلا نغامر!\n` +
-                    `تم الارسال من خلال تطبيق خراريف`;
-                    
-                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-            }
-
-            // ── Save → localStorage ──────────────────────────────────
-            function saveSettings() {
-
-                window.location.href = 'tv-code.html';
-            }
-
-            function shakeInput() {
-                const input = document.getElementById('codeInput');
-                input.classList.add('shake');
-                input.style.borderColor = 'rgba(230,50,50,0.8)';
-                setTimeout(() => { input.classList.remove('shake'); input.style.borderColor = ''; }, 500);
-            }
-
-            document.getElementById('successOverlay').addEventListener('click', function (e) {
-                if (e.target === this) this.classList.remove('active');
-            });
-        </script>
-
     <script>
-        /* ── Visual team icons in header ── */
-        const teamEmojis = ['🟥', '🟦', '🟩', '🟨'];
-        (function renderHeaderTeams() {
-            const visual = document.getElementById('teamsVisual');
-            for (let i = 0; i < 2; i++) {
-                const s = document.createElement('span');
-                s.className = 'player-icon';
-                s.textContent = teamEmojis[i];
-                s.style.animationDelay = (i * 0.05) + 's';
-                visual.appendChild(s);
+        const API = 'https://kararif.wecan.ae/api';
+        const token = localStorage.getItem('auth_token');
+        const roomId = localStorage.getItem('game_room_id');
+
+        const teamColors = [
+            { name: 'الفريق الأحمر', icon: '🔴', color: '#c0392b', id: 'redTeamGrid', code: 'K-1' },
+            { name: 'الفريق الأخضر', icon: '🟢', color: '#27ae60', id: 'greenTeamGrid', code: 'K-2' },
+            { name: 'الفريق الأزرق', icon: '🔵', color: '#1a6dc0', id: 'blueTeamGrid', code: 'K-3' },
+            { name: 'الفريق الأصفر', icon: '🟡', color: '#d4ac0d', id: 'yellowTeamGrid', code: 'K-4' },
+        ];
+
+        // ── جلب بيانات الغرفة ──────────────────────────────────────
+        async function loadRoom() {
+            const id = roomId || '1';
+            try {
+                const res = await fetch(`${API}/game/room/${id}`, {
+                    headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+
+                if (data.success && data.data) {
+                    renderRoom(data.data);
+                } else {
+                    renderFromLocalStorage();
+                }
+            } catch (e) {
+                renderFromLocalStorage();
             }
-        })();
-
-        /* ── Code ── */
-        function generateCode() {
-            const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
-            let code = '';
-            for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('codeInput').value = code;
-            return code;
         }
-        window.addEventListener('DOMContentLoaded', () => { document.getElementById('codeInput').value = generateCode(); });
 
+        function renderRoom(room) {
+            const s = room.settings || {};
+
+            // رمز المغامرة
+            document.getElementById('codeInput').value = room.code || localStorage.getItem('game_code') || '---';
+
+            // بيانات المغامرة
+            document.getElementById('adventureInfo').innerHTML = `
+                <div class="counter-row">
+                    <div class="counter-control-container" style="width:100%;">
+                        <span class="counter-label">عنوان المغامرة</span>
+                        <span class="badge-label">${s.gameTitle || localStorage.getItem('game_title') || '—'}</span>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <div class="counter-control-container" style="margin-top:10px;width:100%;">
+                        <span class="counter-label">عدد الفرق</span>
+                        <span class="badge-label">${s.teams || '—'}</span>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <div class="counter-control-container" style="margin-top:10px;width:100%;">
+                        <span class="counter-label">عدد الجولات</span>
+                        <span class="badge-label">${s.rounds || '—'}</span>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <div class="counter-control-container" style="margin-top:10px;width:100%;">
+                        <span class="counter-label">نوع الأسئلة</span>
+                        <span class="badge-label">${s.questionType || '—'}</span>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <div class="counter-control-container" style="margin-top:10px;width:100%;">
+                        <span class="counter-label">التصنيف</span>
+                        <span class="badge-label">${s.questionCategory || '—'} ← ${s.questionSubCategory || '—'}</span>
+                    </div>
+                </div>
+                <div class="counter-row">
+                    <div class="counter-control-container" style="margin-top:10px;width:100%;">
+                        <span class="counter-label">المنضمون</span>
+                        <span class="badge-label">${room.joinedCount || 0} لاعب</span>
+                    </div>
+                </div>
+            `;
+
+            // بناء كروت الفرق
+            const numTeams = parseInt(s.teams) || 2;
+            const numPlayers = parseInt(s.players) || 1;
+            renderTeams(numTeams, numPlayers);
+        }
+
+        function renderFromLocalStorage() {
+            const code = localStorage.getItem('game_code') || '---';
+            const title = localStorage.getItem('game_title') || '—';
+            const teams = localStorage.getItem('game_teams') || 2;
+            const rounds = localStorage.getItem('game_rounds') || 1;
+            const players = localStorage.getItem('game_players') || 1;
+
+            document.getElementById('codeInput').value = code;
+            document.getElementById('adventureInfo').innerHTML = `
+                <div class="counter-row"><div class="counter-control-container" style="width:100%;">
+                    <span class="counter-label">عنوان المغامرة</span>
+                    <span class="badge-label">${title}</span>
+                </div></div>
+                <div class="counter-row"><div class="counter-control-container" style="margin-top:10px;width:100%;">
+                    <span class="counter-label">عدد الفرق</span>
+                    <span class="badge-label">${teams}</span>
+                </div></div>
+                <div class="counter-row"><div class="counter-control-container" style="margin-top:10px;width:100%;">
+                    <span class="counter-label">عدد الجولات</span>
+                    <span class="badge-label">${rounds}</span>
+                </div></div>
+            `;
+            renderTeams(parseInt(teams), parseInt(players));
+        }
+
+        function renderTeams(numTeams, numPlayers) {
+            const container = document.getElementById('teamsContainer');
+            container.innerHTML = '';
+
+            for (let t = 0; t < numTeams; t++) {
+                const team = teamColors[t];
+                const membersHTML = Array.from({ length: numPlayers }, (_, i) => `
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="assets/pocket-watch.gif" alt="انتظار" style="width:74px;height:72px;border-radius:9%;object-fit:cover;">
+                            <div class="avatar-badge">⏳</div>
+                        </div>
+                        <div class="team-name">بالانتظار</div>
+                        <div class="team-level">—</div>
+                        <div class="team-status waiting">
+                            <span class="status-dot"></span>
+                            في الانتظار...
+                        </div>
+                    </div>`).join('');
+
+                container.innerHTML += `
+                    <div class="control-card" style="margin-bottom:14px;">
+                        <div class="card-header">
+                            <div class="card-icon">${team.icon}</div>
+                            <span class="card-title">${team.name}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="teams-grid">${membersHTML}</div>
+                            <div class="code-hint">رمز الفريق <span style="font-weight:bold;">${team.code}</span></div>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        // ── Copy ──
         function copyCode() {
             const code = document.getElementById('codeInput').value;
             const btn = document.getElementById('copyBtn');
@@ -1984,102 +1889,55 @@
                 setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
             }).catch(() => {
                 const tmp = document.createElement('textarea');
-                tmp.value = code; document.body.appendChild(tmp); tmp.select();
-                document.execCommand('copy'); document.body.removeChild(tmp);
+                tmp.value = code;
+                document.body.appendChild(tmp);
+                tmp.select();
+                document.execCommand('copy');
+                document.body.removeChild(tmp);
                 btn.textContent = '✅ تم النسخ!';
                 setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
             });
         }
 
-        /* ── Teams Data ── */
-        window.addEventListener('DOMContentLoaded', function () {
-            const redMembers = [
-                { name: 'احمد محمد', level: 'المغامر الشرقي', img: 'assets/بديح.png', color: '#c0392b', joined: true },
-                { name: 'بالانتظار', level: '-', img: 'assets/pocket-watch.gif', color: '#c0392b', joined: false },
-            ];
+        // ── WhatsApp ──
+        function shareWhatsApp() {
+            const code = document.getElementById('codeInput').value.trim();
+            if (!code || code === '---') return;
+            const message =
+                `*انضم إلى مغامرتي !*\n` +
+                `👋🏼مرحباً! أنا بانتظارك في الساحة\n` +
+                `🗝️ رمز المغامرة: *>>> ${code} <<<*\n\n` +
+                `الفرق:\n` +
+                ` ( الفريق الاحمر 🔴 K-1 )\n` +
+                ` ( الفريق الاخضر 🟢 K-2 )\n` +
+                ` ( الفريق الازرق 🔵 K-3 )\n` +
+                ` ( الفريق الاصفر 🟡 K-4 )\n\n` +
+                `يلا نغامر! 🏆\n` +
+                `تم الارسال من خلال تطبيق خراريف`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
 
-            const greenMembers = [
-                { name: 'احمد محمد', level: 'المغامر الشرقي', img: 'assets/بديح.png', color: '#27ae60', joined: true },
-                { name: 'بالانتظار', level: '-', img: 'assets/pocket-watch.gif', color: '#27ae60', joined: false },
-            ];
-
-            const yellowMembers = [
-                { name: 'احمد محمد', level: 'المغامر الشرقي', img: 'assets/بديح.png', color: '#d4ac0d', joined: true },
-                { name: 'بالانتظار', level: '-', img: 'assets/pocket-watch.gif', color: '#d4ac0d', joined: false },
-            ];
-
-            const blueMembers = [
-                { name: 'احمد محمد', level: 'المغامر الشرقي', img: 'assets/بديح.png', color: '#1a6dc0', joined: true },
-                { name: 'بالانتظار', level: '-', img: 'assets/pocket-watch.gif', color: '#1a6dc0', joined: false },
-            ];
-
-            const allMembers = [
-                { name: 'احمد محمد', level: 'المغامر الشرقي', img: 'assets/بديح.png', color: '#c0392b', joined: true },
-                { name: 'بالانتظار', level: '-', img: 'assets/pocket-watch.gif', color: '#c0392b', joined: false },
-            ];
-
-            function buildGrid(containerId, members) {
-                const grid = document.getElementById(containerId);
-                if (!grid) return;
-                grid.innerHTML = '';
-                members.forEach(t => {
-                    const card = document.createElement('div');
-                    card.className = 'team-card' + (t.joined ? ' joined' : '');
-                    card.style.setProperty('--team-color', t.color);
-                    card.innerHTML = `
-                    <div class="team-avatar">
-                        <img src="${t.img}" alt="${t.name}" style="width:74px;height:72px;border-radius:9%;object-fit:cover;">
-                        <div class="avatar-badge">✓</div>
-                    </div>
-                    <div class="team-name">${t.name}</div>
-                    <div class="team-level">${t.level}</div>
-                    <div class="team-status ${t.joined ? 'joined-status' : 'waiting'}">
-                        <span class="status-dot"></span>
-                        ${t.joined ? 'انضم ✓' : 'في الانتظار...'}
-                    </div>`;
-                    grid.appendChild(card);
-                });
-            }
-
-            buildGrid('redTeamGrid', redMembers);
-            buildGrid('greenTeamGrid', greenMembers);
-            buildGrid('yellowTeamGrid', yellowMembers);
-            buildGrid('blueTeamGrid', blueMembers);
-            buildGrid('statusTeamGrid', allMembers);
-
-            /* update joined count */
-            const allTeams = [...redMembers, ...greenMembers, ...yellowMembers, ...blueMembers];
-            const joined = allTeams.filter(t => t.joined).length;
-            const jc = document.getElementById('joinedCount');
-            if (jc) jc.textContent = joined + ' / ' + allTeams.length;
-
-        }); // end DOMContentLoaded
-
-        /* ── Timer (display only, no buttons) ── */
+        // ── Timer ──
         const TOTAL = 60, circumference = 2 * Math.PI * 55;
         let timeLeft = TOTAL;
         const arc = document.getElementById('timerArc');
         const display = document.getElementById('timerDisplay');
-        const statusBox = document.getElementById('timerStatus');
         arc.style.strokeDasharray = circumference;
         arc.style.strokeDashoffset = 0;
 
         function updateArc() {
-            const offset = circumference * (1 - timeLeft / TOTAL);
-            arc.style.strokeDashoffset = offset;
+            arc.style.strokeDashoffset = circumference * (1 - timeLeft / TOTAL);
             if (timeLeft > 30) { arc.style.stroke = '#003443'; display.style.color = '#ffffff'; }
             else if (timeLeft > 10) { arc.style.stroke = '#b8860b'; display.style.color = '#f0c040'; }
             else { arc.style.stroke = '#8b1a1a'; display.style.color = '#ff6060'; }
         }
-
-        function setStatus(text) { statusBox.querySelector('.summary-value').textContent = text; }
-
         updateArc();
 
-        /* ── Save ── */
+        // ── Save ──
         function saveSettings() { window.location.href = 'tv-code.html'; }
-        document.getElementById('successOverlay').addEventListener('click', function (e) { if (e.target === this) this.classList.remove('active'); });
+
+        // ── تشغيل ──
+        loadRoom();
     </script>
 </body>
-
 </html>

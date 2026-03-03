@@ -1178,65 +1178,63 @@
                     style="padding-top: 16px !important; position: relative; width: 74px; align-items: center; justify-content: center; display: flex; margin: auto;"
                     class="logo" alt="logo" onerror="this.style.display='none'">
             </div>
-            <!-- Header -->
             <div class="header">
-                <h1>
-                    ثلاث خطوات بسيطة لتسمتع بالمغامرة
-
-                </h1>
+                <h1>ثلاث خطوات بسيطة لتستمتع بالمغامرة</h1>
             </div>
         </div>
 
-        <!-- Main -->
-        <div class="container">
-
-            <!-- HTML -->
-
-            <div class="card profile-card">
-                <div class="card-header">
-                    <div class="card-icon">👤</div>
-                    <span class="card-title">الخطوة الاولي</span>
-                </div>
-                <div class="profile-body">
-                    <div class="profile-top">
-                        <div class="profile-info">
-                            <div class="profile-name">ارتبط مع المغامرين الاخرين</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="container" id="stepsContainer">
+            <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:14px;">
+                جارٍ تحميل الخطوات...
             </div>
+        </div>
 
-            <!-- CARD 2: BALANCE -->
-                <div class="card profile-card">
-                    <div class="card-header">
-                        <div class="card-icon">👤</div>
-                        <span class="card-title">الخطوة الثانية</span>
-                    </div>
-                    <div class="profile-body">
-                        <div class="profile-top">
-                            <div class="profile-info">
-                                <div class="profile-name">ادخل ساحة المغامرة</div>
+    </div>
+
+    <script>
+        const stepIcons = ['🧭', '⚔️', '🏆', '🎯', '🔥', '🌟'];
+        const stepLabels = ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة', 'الخطوة الرابعة', 'الخطوة الخامسة', 'الخطوة السادسة'];
+
+        async function loadHowToPlay() {
+            const container = document.getElementById('stepsContainer');
+
+            try {
+                const res = await fetch('https://kararif.wecan.ae/api/content/how-to-play', {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.sections && data.data.sections.length > 0) {
+                    let html = '';
+                    data.data.sections.forEach((section, i) => {
+                        const icon = stepIcons[i] || '✨';
+                        const label = stepLabels[i] || ('الخطوة ' + (i + 1));
+                        html += `
+                        <div class="card profile-card">
+                            <div class="card-header">
+                                <div class="card-icon">${icon}</div>
+                                <span class="card-title">${label}</span>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="profile-body">
+                                <div class="profile-top">
+                                    <div class="profile-info">
+                                        <div class="profile-name">${section.title}</div>
+                                        ${section.content ? `<div style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:6px;line-height:1.6;">${section.content}</div>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:14px;">لا توجد محتوى متاح حالياً</div>';
+                }
+            } catch (e) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#e05252;font-size:14px;">تعذر تحميل المحتوى</div>';
+            }
+        }
 
-
-            <div class="card profile-card">
-                <div class="card-header">
-                    <div class="card-icon">👤</div>
-                    <span class="card-title">الخطوة الثالثة</span>
-                </div>
-                <div class="profile-body">
-                    <div class="profile-top">
-                        <div class="profile-info">
-                            <div class="profile-name">غامر بعالم خراريف</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        loadHowToPlay();
+    </script>
 </body>
-
 </html>

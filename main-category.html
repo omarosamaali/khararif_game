@@ -394,51 +394,7 @@
 
     <div class="container">
         <div class="cat-list" id="catList">
-            <div class="cat-card" onclick="selectCat(this,'الجغرافيا والبيئة')">
-                <div class="check-badge">✓</div>
-                <div class="cat-img-wrap"><img src="assets/qustion.jpeg" alt="الجغرافيا"
-                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🗺️</div>'"></div>
-                <div class="cat-content">
-                    <div class="cat-name">الجغرافيا والبيئة</div>
-                </div>
-                <div class="cat-arrow">←</div>
-            </div>
-            <div class="cat-card" onclick="selectCat(this,'الشخصيات والأعلام')">
-                <div class="check-badge">✓</div>
-                <div class="cat-img-wrap"><img src="images/cat-people.png" alt="الشخصيات"
-                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>👑</div>'"></div>
-                <div class="cat-content">
-                    <div class="cat-name">الشخصيات والأعلام</div>
-                </div>
-                <div class="cat-arrow">←</div>
-            </div>
-            <div class="cat-card" onclick="selectCat(this,'الأحداث والمعالم')">
-                <div class="check-badge">✓</div>
-                <div class="cat-img-wrap"><img src="images/cat-events.png" alt="الأحداث"
-                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🏛️</div>'"></div>
-                <div class="cat-content">
-                    <div class="cat-name">الأحداث والمعالم</div>
-                </div>
-                <div class="cat-arrow">←</div>
-            </div>
-            <div class="cat-card" onclick="selectCat(this,'العلوم والاختراعات')">
-                <div class="check-badge">✓</div>
-                <div class="cat-img-wrap"><img src="images/cat-science.png" alt="العلوم"
-                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>💡</div>'"></div>
-                <div class="cat-content">
-                    <div class="cat-name">العلوم والاختراعات</div>
-                </div>
-                <div class="cat-arrow">←</div>
-            </div>
-            <div class="cat-card" onclick="selectCat(this,'الرياضة والألعاب')">
-                <div class="check-badge">✓</div>
-                <div class="cat-img-wrap"><img src="images/cat-sports.png" alt="الرياضة"
-                        onerror="this.parentElement.outerHTML='<div class=\'cat-img-placeholder\'>🏆</div>'"></div>
-                <div class="cat-content">
-                    <div class="cat-name">الرياضة والألعاب</div>
-                </div>
-                <div class="cat-arrow">←</div>
-            </div>
+            <div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;">جارٍ تحميل التصنيفات...</div>
         </div>
 
         <div class="continue-wrap">
@@ -450,25 +406,72 @@
     </div>
 
     <script>
+        const API = 'https://kararif.wecan.ae/api';
         let selectedCat = null;
+        let selectedCatId = null;
 
         // اعرض النوع من الصفحة السابقة
         const questionType = localStorage.getItem('game_questionType') || '';
         document.getElementById('typeLabel').textContent = questionType || '—';
 
-        function selectCat(card, cat) {
+        const slugEmoji = {
+            test: '📝', alatfal: '👶', geography: '🗺️', people: '👑',
+            events: '🏛️', science: '💡', sports: '🏆', art: '🎭',
+            religion: '☪️', history: '📜', general: '🌍'
+        };
+
+        async function loadCategories() {
+            const list = document.getElementById('catList');
+            const token = localStorage.getItem('auth_token');
+
+            try {
+                const res = await fetch(API + '/game/categories', {
+                    headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    list.innerHTML = '';
+                    data.data.forEach(cat => {
+                        const emoji = slugEmoji[cat.slug] || '📂';
+                        const card = document.createElement('div');
+                        card.className = 'cat-card';
+                        card.innerHTML = `
+                            <div class="check-badge">✓</div>
+                            <div class="cat-img-wrap">
+                                <div class="cat-img-placeholder">${emoji}</div>
+                            </div>
+                            <div class="cat-content">
+                                <div class="cat-name">${cat.name_ar}</div>
+                            </div>
+                            <div class="cat-arrow">←</div>`;
+                        card.addEventListener('click', () => selectCat(card, cat.name_ar, cat.id));
+                        list.appendChild(card);
+                    });
+                } else {
+                    list.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;">لا توجد تصنيفات متاحة</div>';
+                }
+            } catch (e) {
+                list.innerHTML = '<div style="text-align:center;color:#e05252;padding:30px;">تعذر تحميل التصنيفات</div>';
+            }
+        }
+
+        function selectCat(card, cat, id) {
             document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             selectedCat = cat;
+            selectedCatId = id;
             document.getElementById('continueBtn').classList.add('ready');
         }
 
         function goNext() {
             if (!selectedCat) return;
-            // ✅ خزّن التصنيف الرئيسي
             localStorage.setItem('game_questionCategory', selectedCat);
+            localStorage.setItem('game_questionCategoryId', selectedCatId);
             window.location.href = 'sub-category.html';
         }
+
+        loadCategories();
     </script>
 </body>
 

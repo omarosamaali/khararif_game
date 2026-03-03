@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مستويات الأبطال</title>
+        <link rel="icon" type="image/png" href="images/fav.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -127,15 +129,19 @@
             font-weight: 700;
         }
 
-        .reward-tag {
-            background: rgba(232, 203, 154, 0.15);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-        }
-
+      .reward-tag {
+    background: rgba(232, 203, 154, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 4px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+    line-height: 1.4;
+    text-align: center;
+}
         /* ── Icons ── */
         .level-icon {
             width: 24px;
@@ -200,18 +206,18 @@
 </head>
 
 <body>
-<div class="back-btn">
-    <a href="my-game.html">
-        <img src="images/next.png" class="back-img" alt="">
-    </a>
-</div>
+    <div class="back-btn" style="z-index: 9999999999999;">
+        <a href="my-game.html">
+            <img src="images/next.png" class="back-img" alt="">
+        </a>
+    </div>
     <div class="header-container">
         <h1>مستويات الأبطال</h1>
         <div class="subtitle">طريقك نحو المجد والجريمة</div>
     </div>
 
-        <!-- <img class="splash-top" src="images/splash-22.png" alt=""> -->
-        <img class="splash-bg" src="images/splash-2.png" alt="">
+    <!-- <img class="splash-top" src="images/splash-22.png" alt=""> -->
+    <img class="splash-bg" src="images/splash-2.png" alt="">
 
     <div class="container">
         <div class="levels-card">
@@ -222,38 +228,71 @@
             </div>
 
             <div id="levelsList">
+                <div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;font-size:13px;">
+                    جارٍ تحميل المستويات...
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const levelsData = [
-            { name: 'مغامر مبتدئ', wins: 5, reward: '١٠٠ نقطة', icon: '🌱' },
-            { name: 'محارب برونزي', wins: 15, reward: 'صندوق خشبي', icon: '⚔️' },
-            { name: 'فارس فضي', wins: 30, reward: 'درع المتحدث', icon: '🛡️' },
-            { name: 'بطل ذهبي', wins: 50, reward: 'مفتاح الكنز', icon: '🏆' },
-            { name: 'أسطورة حكيم', wins: 100, reward: 'وسام الشرف', icon: '💎' },
-            { name: 'تنين المعرفة', wins: 200, reward: 'لقب ملكي', icon: '🐉' }
-        ];
+        const API = 'https://kararif.wecan.ae/api';
 
-        function renderLevels() {
+        async function loadLevels() {
+            const token = localStorage.getItem('auth_token');
             const container = document.getElementById('levelsList');
-            container.innerHTML = levelsData.map(lvl => `
-                <div class="level-row">
-                    <div class="level-name">
-                        <span class="level-icon">${lvl.icon}</span>
-                        ${lvl.name}
-                    </div>
-                    <div class="win-count">${lvl.wins} فوز</div>
-                    <div>
-                        <span class="reward-tag">${lvl.reward}</span>
-                    </div>
-                </div>
-            `).join('');
+
+            try {
+                const res = await fetch(API + '/ranks', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await res.json();
+
+                if (data.data && data.data.length > 0) {
+                    container.innerHTML = data.data.map((rank, index) => {
+
+                        // الأيقونة
+                        // الجائزة
+                        let rewardText = '---';
+                        if (rank.prize_label) {
+                            rewardText = rank.prize_label;
+                        } else if (rank.prize_value && rank.prize_type) {
+                            rewardText = rank.prize_value + ' ' + rank.prize_type;
+                        } else if (rank.prize_value) {
+                            rewardText = rank.prize_value;
+                        }
+
+                        // عدد الانتصارات المطلوبة
+                        const winsRequired = rank.wins_required ?? rank.start_score ?? 0;
+
+                        return `
+                            <div class="level-row">
+                                <div class="level-name">
+                                    ${rank.name}
+                                </div>
+                                <div class="win-count">${winsRequired} فوز</div>
+                                <div>
+                                    <span class="reward-tag">${rewardText}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                } else {
+                    container.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;font-size:13px;">لا توجد مستويات متاحة</div>';
+                }
+
+            } catch (err) {
+                console.error('Levels error:', err);
+                container.innerHTML = '<div style="text-align:center;color:#ff9090;padding:30px;font-size:13px;">تعذر تحميل المستويات</div>';
+            }
         }
 
-        // تشغيل الوظيفة عند التحميل
-        renderLevels();
+        loadLevels();
     </script>
 </body>
 

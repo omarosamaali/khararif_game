@@ -545,69 +545,8 @@
 
     <div class="container">
         <div class="sub-grid" id="subGrid">
-            <div class="sub-card featured" onclick="selectSub(this,'الحضارات القديمة')">
-                <div class="check-badge">✓</div>
-                <div class="sub-img-wrap"><img src="assets/qustion.jpeg" alt="الحضارات القديمة"
-                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\' style=\'aspect-ratio:16/9\'>🏺</div>'">
-                    <div class="sub-img-overlay"></div>
-                </div>
-                <div class="sub-label">
-                    <div class="sub-label-text">الحضارات القديمة</div>
-                </div>
-            </div>
-            <div class="sub-card" onclick="selectSub(this,'العصر الحديث')">
-                <div class="check-badge">✓</div>
-                <div class="sub-img-wrap"><img src="images/sub-modern.png" alt="العصر الحديث"
-                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>🌐</div>'">
-                    <div class="sub-img-overlay"></div>
-                </div>
-                <div class="sub-label">
-                    <div class="sub-label-text">العصر الحديث</div>
-                </div>
-            </div>
-            <div class="sub-card" onclick="selectSub(this,'الحروب والمعارك')">
-                <div class="check-badge">✓</div>
-                <div class="sub-img-wrap"><img src="images/sub-wars.png" alt="الحروب"
-                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>⚔️</div>'">
-                    <div class="sub-img-overlay"></div>
-                </div>
-                <div class="sub-label">
-                    <div class="sub-label-text">الحروب والمعارك</div>
-                </div>
-            </div>
-            <div class="sub-card" onclick="selectSub(this,'الملوك والقادة')">
-                <div class="check-badge">✓</div>
-                <div class="sub-img-wrap"><img src="images/sub-kings.png" alt="الملوك"
-                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>👑</div>'">
-                    <div class="sub-img-overlay"></div>
-                </div>
-                <div class="sub-label">
-                    <div class="sub-label-text">الملوك والقادة</div>
-                </div>
-            </div>
-            <div class="sub-card" onclick="selectSub(this,'الدول والإمبراطوريات')">
-                <div class="check-badge">✓</div>
-                <div class="sub-img-wrap"><img src="images/sub-empires.png" alt="الإمبراطوريات"
-                        onerror="this.parentElement.innerHTML='<div class=\'sub-img-placeholder\'>🗺️</div>'">
-                    <div class="sub-img-overlay"></div>
-                </div>
-                <div class="sub-label">
-                    <div class="sub-label-text">الإمبراطوريات</div>
-                </div>
-            </div>
-            <div class="sub-card" style="grid-column:span 3;" onclick="selectSub(this,'الاختراعات والاكتشافات')">
-                <div class="check-badge">✓</div>
-                <div style="display:flex;align-items:center;">
-                    <div class="sub-img-wrap" style="width:100px;aspect-ratio:1;flex-shrink:0;"><img
-                            src="images/sub-inventions.png" alt="الاختراعات"
-                            onerror="this.parentElement.innerHTML='<div style=\'width:100px;height:100px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:rgba(0,52,67,0.6)\'>💡</div>'">
-                    </div>
-                    <div class="sub-label"
-                        style="text-align:right;border-top:none;border-right:1px solid rgba(255,255,255,0.05);flex:1;">
-                        <div class="sub-label-text" style="font-size:1rem;">الاختراعات والاكتشافات</div>
-                    </div>
-                </div>
-            </div>
+            <div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;grid-column:1/-1;">جارٍ تحميل
+                التصنيفات الفرعية...</div>
         </div>
 
         <div class="continue-wrap">
@@ -638,9 +577,11 @@
     </div>
 
     <script>
+        const API = 'https://kararif.wecan.ae/api';
         let selectedSub = null;
+        let selectedSubId = null;
 
-        // ── اقرأ كل البيانات من localStorage ──
+        // اقرأ البيانات من localStorage
         const gameTitle = localStorage.getItem('game_title') || 'بدون عنوان';
         const gameRounds = localStorage.getItem('game_rounds') || '—';
         const gameQuestions = localStorage.getItem('game_questions') || '—';
@@ -649,53 +590,154 @@
         const gameCode = localStorage.getItem('game_code') || '—';
         const questionType = localStorage.getItem('game_questionType') || '—';
         const questionCat = localStorage.getItem('game_questionCategory') || '—';
+        const questionCatId = localStorage.getItem('game_questionCategoryId') || '1';
 
         // Breadcrumb
         document.getElementById('typeLabel').textContent = questionType;
         document.getElementById('catLabel').textContent = questionCat;
 
-        function selectSub(card, sub) {
+        const slugEmoji = {
+            test: '📝', ancient: '🏺', modern: '🌐', wars: '⚔️',
+            kings: '👑', empires: '🗺️', inventions: '💡', geography: '🌍',
+            science: '🔬', art: '🎭', sport: '⚽', religion: '☪️'
+        };
+
+        async function loadSubcategories() {
+            const grid = document.getElementById('subGrid');
+            const token = localStorage.getItem('auth_token');
+
+            try {
+                const res = await fetch(`${API}/game/subcategories?categoryId=${questionCatId}`, {
+                    headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    grid.innerHTML = '';
+                    data.data.forEach((sub, i) => {
+                        const emoji = slugEmoji[sub.slug] || '📂';
+                        const card = document.createElement('div');
+                        card.className = 'sub-card' + (i === 0 ? ' featured' : '');
+                        card.innerHTML = `
+                            <div class="check-badge">✓</div>
+                            <div class="sub-img-wrap">
+                                <div class="sub-img-placeholder">${emoji}</div>
+                                <div class="sub-img-overlay"></div>
+                            </div>
+                            <div class="sub-label">
+                                <div class="sub-label-text">${sub.name_ar}</div>
+                            </div>`;
+                        card.addEventListener('click', () => selectSub(card, sub.name_ar, sub.id));
+                        grid.appendChild(card);
+                    });
+                } else {
+                    grid.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:30px;grid-column:1/-1;">لا توجد تصنيفات فرعية</div>';
+                }
+            } catch (e) {
+                grid.innerHTML = '<div style="text-align:center;color:#e05252;padding:30px;grid-column:1/-1;">تعذر تحميل التصنيفات الفرعية</div>';
+            }
+        }
+
+        function selectSub(card, sub, id) {
             document.querySelectorAll('.sub-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             selectedSub = sub;
+            selectedSubId = id;
             document.getElementById('continueBtn').classList.add('ready');
         }
 
-        function finish() {
+        async function finish() {
             if (!selectedSub) return;
 
-            // ✅ خزّن التصنيف الفرعي
             localStorage.setItem('game_questionSubCategory', selectedSub);
+            localStorage.setItem('game_questionSubCategoryId', selectedSubId);
 
-            // ── اعرض كل البيانات مجمّعة ──
-            document.getElementById('gameDetails').innerHTML = `
-                <div class="summary-row"><span>عنوان المغامرة</span><span>${gameTitle}</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>عدد الجولات</span><span>${gameRounds} جولة</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>عدد الأسئلة</span><span>${gameQuestions} سؤال</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>عدد الفرق</span><span>${gameTeams} فرق</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>عدد المغامرين / فريق</span><span>${gamePlayers}</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>رمز الساحة</span><span>${gameCode}</span></div>
-            `;
+            const btn = document.getElementById('continueBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-shine"></span>⏳ جارٍ إنشاء الغرفة...';
 
-            document.getElementById('questionDetails').innerHTML = `
-                <div class="summary-row"><span>نوع الأسئلة</span><span>${questionType}</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>التصنيف الرئيسي</span><span>${questionCat}</span></div>
-                <div class="summary-divider"></div>
-                <div class="summary-row"><span>التصنيف الفرعي</span><span>${selectedSub}</span></div>
-            `;
+            // جرب كل الـ keys الممكنة للتوكن
+            const token = localStorage.getItem('auth_token')
+                || localStorage.getItem('token')
+                || localStorage.getItem('access_token')
+                || localStorage.getItem('userToken')
+                || sessionStorage.getItem('auth_token')
+                || sessionStorage.getItem('token');
 
-            document.getElementById('summaryOverlay').classList.add('active');
+            if (!token) {
+                alert('يجب تسجيل الدخول أولاً للمتابعة');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(API + '/game/create-room', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        questionType: parseInt(localStorage.getItem('game_questionTypeId')) || 1,
+                        mainCategoryId: parseInt(localStorage.getItem('game_questionCategoryId')) || 1,
+                        subCategoryId: selectedSubId,
+                        title: localStorage.getItem('game_title') || 'مغامرة',
+                        rounds: parseInt(localStorage.getItem('game_rounds')) || 1,
+                        teams: parseInt(localStorage.getItem('game_teams')) || 2,
+                        players: parseInt(localStorage.getItem('game_players')) || 1,
+                    })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // خزّن بيانات الغرفة
+                    if (data.data) {
+                        localStorage.setItem('game_room_id', data.data.id || '');
+                        localStorage.setItem('game_code', data.data.code || '');
+                        localStorage.setItem('game_room_data', JSON.stringify(data.data));
+                    }
+
+                    document.getElementById('gameDetails').innerHTML = `
+                        <div class="summary-row"><span>عنوان المغامرة</span><span>${gameTitle}</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>عدد الجولات</span><span>${gameRounds} جولة</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>عدد الأسئلة</span><span>${gameQuestions} سؤال</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>عدد الفرق</span><span>${gameTeams} فرق</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>عدد المغامرين / فريق</span><span>${gamePlayers}</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>رمز الساحة</span><span>${data.data?.code || '—'}</span></div>
+                    `;
+                    document.getElementById('questionDetails').innerHTML = `
+                        <div class="summary-row"><span>نوع الأسئلة</span><span>${questionType}</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>التصنيف الرئيسي</span><span>${questionCat}</span></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row"><span>التصنيف الفرعي</span><span>${selectedSub}</span></div>
+                    `;
+                    document.getElementById('summaryOverlay').classList.add('active');
+
+                } else {
+                    const msg = data.message || 'فشل إنشاء الغرفة';
+                    alert('❌ ' + msg);
+                }
+
+            } catch (e) {
+                alert('تعذر الاتصال بالسيرفر');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-shine"></span>إنهاء الإعداد والانطلاق';
+            }
         }
 
         document.getElementById('summaryOverlay').addEventListener('click', function (e) {
             if (e.target === this) this.classList.remove('active');
         });
+
+        loadSubcategories();
     </script>
 </body>
 

@@ -742,7 +742,7 @@
         </a>
     </div>
     <div class="back-btn-left">
-        <a href="home.html">
+        <a href="index.html">
             <img src="images/home-kh.png" class="back-img" alt="">
         </a>
     </div>
@@ -799,7 +799,7 @@
             </div>
         </div>
 
-        <!-- عدد الأسئلة (جديد) -->
+        <!-- عدد الأسئلة -->
         <div class="control-card">
             <div class="card-header">
                 <div class="card-icon">❓</div>
@@ -814,12 +814,8 @@
                         <button class="counter-btn" onclick="change('questions', 5)">+</button>
                     </div>
                 </div>
-                <!-- شريط التقدم -->
                 <div class="questions-bar-wrap">
-                    <div class="questions-bar-labels">
-                        <span>5</span>
-                        <span>30</span>
-                    </div>
+                    <div class="questions-bar-labels"><span>5</span><span>30</span></div>
                     <div class="questions-bar-bg">
                         <div class="questions-bar-fill" id="questionsBar" style="width: 0%;"></div>
                     </div>
@@ -857,265 +853,81 @@
                 <div class="counter-row">
                     <span class="counter-label">عدد المغامرين</span>
                     <div class="counter-control">
-                        <button class="counter-btn" onclick="changePlayers('players', -1)">−</button>
+                        <button class="counter-btn" onclick="change('players', -1)">−</button>
                         <div class="counter-value" id="playersVal">1</div>
-                        <button class="counter-btn" onclick="changePlayers('players', 1)">+</button>
+                        <button class="counter-btn" onclick="change('players', 1)">+</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- رمز المغامرة -->
-<!-- <div class="control-card code-card">
-    <div class="card-header" style="display:flex; align-items:center; justify-content:space-between;">
-        <div style="display:flex; align-items:center; gap:8px;">
-            <div class="card-icon">🔑</div>
-            <span class="card-title">رمز المغامرة</span>
-        </div>
-        <button onclick="generateCode()" class="regen-btn" title="إعادة توليد الرمز">
-            <i class="fa-solid fa-arrows-rotate"></i>
+        <!-- Save button -->
+        <button class="save-btn" onclick="saveSettings()">
+            <span class="btn-shine"></span>
+            حفظ والمتابعة
         </button>
+
     </div>
-    <div class="card-body">
-        <div class="code-input-wrap">
-            <input class="code-input" value="" id="codeInput" type="text" maxlength="8" placeholder="ادخل رمز المغامرة"
-                inputmode="text" autocomplete="off">
-            <div class='code-btns'>
-                <button onclick="copyCode()" id="copyBtn" class="copy-btn">📋 نسخ الرمز</button>
-                <button onclick="shareWhatsApp()" class="whatsapp-btn">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    مشاركة عبر واتساب
-                </button>
-            </div>
-        </div>
-        <div class="code-hint">ارسل رمز المغامرة<br>للانضمام اللاعبين الآخرين</div>
-    </div>
-</div> -->
 
-<!-- Save button -->
-<button class="save-btn" onclick="saveSettings()">
-    <span class="btn-shine"></span>
-    حفظ والمتابعة
-</button>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-</div>
+    <script>
+        const state = {
+            rounds: 1, teams: 2, players: 1, questions: 5,
+        };
+        const limits = {
+            rounds: { min: 1, max: 10 }, teams: { min: 2, max: 4 },
+            players: { min: 1, max: 2 }, questions: { min: 5, max: 30 },
+        };
+        const teamEmojis = ['🟥', '🟦', '🟩', '🟨'];
 
-<!-- Success overlay -->
-<div class="success-overlay" id="successOverlay">
-    <div class="success-box">
-        <span class="success-icon">🏆</span>
-        <div class="success-title">تم إعداد المغامرة!</div>
-        <div class="success-sub">تم حفظ إعدادات المغامرة الخاصة بنجاح</div>
-        <div class="success-details" id="successDetails"></div>
-        <a href="question-type.html" class="success-go-btn">اذهب الي غرفة الانتظار</a>
-    </div>
-</div>
-
-<!-- Font Awesome (if not already loaded) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<style>
-    /* ── Regen icon button ── */
-    .regen-btn {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 1.5px solid rgba(232, 203, 154, 0.35);
-        background: rgba(0, 52, 67, 0.6);
-        color: #e8cb9a;
-        font-size: 0.85rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.25s, transform 0.3s, border-color 0.25s;
-        flex-shrink: 0;
-    }
-
-    .regen-btn:hover {
-        background: rgba(0, 85, 102, 0.8);
-        border-color: rgba(232, 203, 154, 0.7);
-    }
-
-    .regen-btn.spinning i {
-        animation: spinOnce 0.45s ease;
-    }
-
-    @keyframes spinOnce {
-        from {
-            transform: rotate(0deg);
+        function change(key, delta) {
+            state[key] = Math.min(limits[key].max, Math.max(limits[key].min, state[key] + delta));
+            document.getElementById(key + 'Val').textContent = state[key];
+            if (key === 'teams') renderTeams();
+            if (key === 'questions') updateQuestionsBar();
         }
 
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* ── WhatsApp button ── */
-    .whatsapp-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 9px 14px;
-        border-radius: 10px;
-        border: 1.5px solid rgba(37, 211, 102, 0.45);
-        background: rgba(18, 100, 50, 0.35);
-        color: #4cd97b;
-        font-family: inherit;
-        font-size: 0.82rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.25s, border-color 0.25s, transform 0.15s;
-        white-space: nowrap;
-    }
-
-    .whatsapp-btn i {
-        font-size: 1rem;
-    }
-
-    .whatsapp-btn:hover {
-        background: rgba(18, 140, 60, 0.55);
-        border-color: rgba(37, 211, 102, 0.8);
-        transform: translateY(-1px);
-    }
-
-    .whatsapp-btn:active {
-        transform: scale(0.97);
-    }
-</style>
-
-<script>
-    const state = {
-        rounds: 1,
-        teams: 2,
-        players: 1,
-        questions: 5,
-    };
-
-    const limits = {
-        rounds: { min: 1, max: 10 },
-        teams: { min: 2, max: 4 },
-        players: { min: 1, max: 2 },
-        questions: { min: 5, max: 30 },
-    };
-
-    const teamEmojis = ['🟥', '🟦', '🟩', '🟨'];
-
-    function change(key, delta) {
-        state[key] = Math.min(limits[key].max, Math.max(limits[key].min, state[key] + delta));
-        document.getElementById(key + 'Val').textContent = state[key];
-        if (key === 'teams') renderTeams();
-        if (key === 'questions') updateQuestionsBar();
-    }
-
-    function changePlayers(key, delta) {
-        state[key] = Math.min(limits[key].max, Math.max(limits[key].min, state[key] + delta));
-        document.getElementById(key + 'Val').textContent = state[key];
-    }
-
-    function updateQuestionsBar() {
-        const pct = ((state.questions - 5) / (30 - 5)) * 100;
-        document.getElementById('questionsBar').style.width = pct + '%';
-    }
-
-    function renderTeams() {
-        const visual = document.getElementById('teamsVisual');
-        visual.innerHTML = '';
-        for (let i = 0; i < state.teams; i++) {
-            const span = document.createElement('span');
-            span.className = 'player-icon';
-            span.textContent = teamEmojis[i] || '🔲';
-            span.style.animationDelay = (i * 0.05) + 's';
-            visual.appendChild(span);
-        }
-    }
-
-    renderTeams();
-    updateQuestionsBar();
-
-    // ── Code Generator ──────────────────────────────────────────
-    function generateCode() {
-        const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        document.getElementById('codeInput').value = code;
-
-        // Spin animation on regen button
-        const btn = document.querySelector('.regen-btn');
-        btn.classList.remove('spinning');
-        void btn.offsetWidth; // reflow to restart animation
-        btn.classList.add('spinning');
-        btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
-
-        return code;
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('codeInput').value = generateCode();
-    });
-
-    // ── Copy to Clipboard ───────────────────────────────────────
-    function copyCode() {
-        const code = document.getElementById('codeInput').value;
-        const btn = document.getElementById('copyBtn');
-
-        navigator.clipboard.writeText(code).then(() => {
-            btn.textContent = '✅ تم النسخ!';
-            setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
-        }).catch(() => {
-            const tmp = document.createElement('textarea');
-            tmp.value = code;
-            document.body.appendChild(tmp);
-            tmp.select();
-            document.execCommand('copy');
-            document.body.removeChild(tmp);
-            btn.textContent = '✅ تم النسخ!';
-            setTimeout(() => { btn.textContent = '📋 نسخ الرمز'; }, 2000);
-        });
-    }
-
-    // ── Share via WhatsApp ──────────────────────────────────────
-    function shareWhatsApp() {
-        const code = document.getElementById('codeInput').value.trim();
-        if (!code) {
-            shakeInput();
-            return;
+        function updateQuestionsBar() {
+            const pct = ((state.questions - 5) / (30 - 5)) * 100;
+            document.getElementById('questionsBar').style.width = pct + '%';
         }
 
-        const message =
-            `*انضم إلى مغامرتي !*\n\n` +
-            `مرحباً! أنا بانتظارك في الساحة\n` +
-            `استخدم رمز المغامرة أدناه للانضمام:\n\n` +
-            `*>>> ${code} <<<*\n\n` +
-            `يلا نغامر! \n\n`+
-            `تم الارسال من خلال تطبيق خراريف`;
+        function renderTeams() {
+            const visual = document.getElementById('teamsVisual');
+            visual.innerHTML = '';
+            for (let i = 0; i < state.teams; i++) {
+                const span = document.createElement('span');
+                span.className = 'player-icon';
+                span.textContent = teamEmojis[i] || '🔲';
+                span.style.animationDelay = (i * 0.05) + 's';
+                visual.appendChild(span);
+            }
+        }
 
-        const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-    }
+        renderTeams();
+        updateQuestionsBar();
 
-    // ── Save Settings ───────────────────────────────────────────
-    function saveSettings() {
-        window.location.href = 'question-type.html';
-    }
+        // ── Save Settings → خزّن وانتقل لاختيار نوع الأسئلة ──
+        function saveSettings() {
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                const inp = document.getElementById('title');
+                inp.style.borderColor = 'rgba(230,50,50,0.8)';
+                setTimeout(() => inp.style.borderColor = '', 1500);
+                return;
+            }
 
-    function shakeInput() {
-        const input = document.getElementById('codeInput');
-        input.classList.add('shake');
-        input.style.borderColor = 'rgba(230, 50, 50, 0.8)';
-        setTimeout(() => {
-            input.classList.remove('shake');
-            input.style.borderColor = '';
-        }, 500);
-    }
+            // خزّن كل إعدادات اللعبة
+            localStorage.setItem('game_title', title);
+            localStorage.setItem('game_rounds', state.rounds);
+            localStorage.setItem('game_questions', state.questions);
+            localStorage.setItem('game_teams', state.teams);
+            localStorage.setItem('game_players', state.players);
 
-    document.getElementById('successOverlay').addEventListener('click', function (e) {
-        if (e.target === this) this.classList.remove('active');
-    });
-</script> 
+            window.location.href = 'question-type.html';
+        }
+    </script>
 </body>
 
 </html>

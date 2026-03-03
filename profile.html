@@ -690,7 +690,6 @@
         <div class="back-btn" onclick="history.back()">
             <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
                 <img src="images/next.png" class="back-img" alt="">
-
             </div>
         </div>
         <img class="logo" src="images/animated-logo-ii.gif" alt="logo" onerror="this.style.display='none'">
@@ -701,197 +700,193 @@
     <div class="page" style="margin-top: 190px;">
 
         <!-- Avatar -->
-        <a href="avatar.html">
-
-            <div class="avatar-area">
+        <!-- Avatar -->
+        <div class="avatar-area">
+            <a href="avatar.html" style="text-decoration:none;display:inline-block;position:relative;">
                 <div class="avatar-ring">
-                <div class="avatar-inner">
-                    <img src="assets/بديح.png" alt="avatar">
-                </div>
-                    <div class="avatar-edit" onclick="document.getElementById('avatarInput').click()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#092143" stroke-width="2.5">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
+                    <div class="avatar-inner">
+                        <img src="" alt="avatar" id="avatarImg">
                     </div>
                 </div>
-        </a>
-        <!-- <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(this)"> -->
-        <div class="avatar-name" id="displayName">أحمد محمد</div>
-
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="stat-value">13</div>
-            <div class="stat-label">مرات الربح</div>
+                <div style="position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+                            background:#dfa888; border-radius:20px; padding:3px 10px;
+                            font-size:11px; color:#132c4a; z-index: 999; font-weight:bold; white-space:nowrap;
+                            box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+                    ✏️ تغيير
+                </div>
+            </a>
         </div>
-        <div class="stat-card">
-            <div class="stat-value">53</div>
-            <div class="stat-label">مرات الخسارة</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">12</div>
-            <div class="stat-label">عدد الانسحاب</div>
-        </div>
-    </div>
+        <div class="avatar-name" id="displayName">---</div>
 
-    <div class="card">
-
-        <div class="msg" id="formMsg"></div>
-
-        <!-- Personal Info -->
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-            </svg>
-            المعلومات الشخصية
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value" id="statWins">0</div>
+                <div class="stat-label">مرات الربح</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statLosses">0</div>
+                <div class="stat-label">مرات الخسارة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statWithdraws">0</div>
+                <div class="stat-label">عدد الانسحاب</div>
+            </div>
         </div>
 
-        <!-- الاسم الكامل -->
-        <div class="form-group">
-            <label>بماذا نناديك</label>
-            <div class="input-wrapper">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+        <div class="card">
+
+            <div class="msg" id="formMsg" style="display:none;"></div>
+
+            <!-- Personal Info -->
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                 </svg>
-                <input type="text" id="fullname" value="أحمد محمد" oninput="updateDisplayName(this.value)">
+                المعلومات الشخصية
             </div>
-        </div>
 
-        <!-- البريد -->
-        <div class="form-group">
-            <label>البريد الإلكتروني</label>
-            <div class="input-wrapper">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                </svg>
-                <input type="email" id="email" value="ahmed@example.com" style="direction:ltr;text-align:right;">
-            </div>
-        </div>
-
-        <!-- رقم الهاتف -->
-        <div class="form-group">
-            <label>رقم الهاتف</label>
-            <div class="input-wrapper">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
-                    <path
-                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                <input type="tel" id="phone" value="+20 100 000 0000" style="direction:ltr;text-align:right;">
-            </div>
-        </div>
-
-        <!-- الدولة -->
-        <div class="form-group">
-            <label>الدولة</label>
-            <div class="country-row">
-                <img id="country-flag" src="https://flagcdn.com/w40/eg.png" alt="علم"
-                    style="width:30px;height:20px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;">
-                <select id="country-list">
-                    <option value="EG" selected>مصر</option>
-                    <option value="SA">السعودية</option>
-                    <option value="AE">الإمارات</option>
-                    <option value="KW">الكويت</option>
-                    <option value="QA">قطر</option>
-                    <option value="BH">البحرين</option>
-                    <option value="OM">عمان</option>
-                    <option value="JO">الأردن</option>
-                    <option value="LB">لبنان</option>
-                    <option value="SY">سوريا</option>
-                    <option value="IQ">العراق</option>
-                    <option value="PS">فلسطين</option>
-                    <option value="LY">ليبيا</option>
-                    <option value="DZ">الجزائر</option>
-                    <option value="MA">المغرب</option>
-                    <option value="TN">تونس</option>
-                    <option value="SD">السودان</option>
-                    <option value="YE">اليمن</option>
-                    <option value="SO">الصومال</option>
-                    <option value="MR">موريتانيا</option>
-                    <option value="DJ">جيبوتي</option>
-                    <option value="KM">جزر القمر</option>
-                </select>
-            </div>
-        </div>
-
-        <hr class="divider">
-
-        <!-- Security -->
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            الأمان
-        </div>
-
-        <!-- رمز المرور -->
-        <div class="form-group">
-            <label>رمز المرور</label>
-            <div class="passcode-wrapper">
-                <input type="text" style="padding: 5px 15px 11px 14px;" maxlength="1" class="code-input" value="3">
-                <input type="text" style="padding: 5px 15px 11px 14px;" maxlength="1" class="code-input" value="3">
-                <input type="text" style="padding: 5px 15px 11px 14px;" maxlength="1" class="code-input" value="3">
-                <input type="text" style="padding: 5px 15px 11px 14px;" maxlength="1" class="code-input" value="5">
-            </div>
-        </div>
-
-        <!-- Save button -->
-        <div class="btn-row" style="margin-bottom: 24px;">
-            <img src="images/right.png" alt="" onerror="this.style.display='none'">
-            <button class="btn-submit" id="saveBtn" onclick="saveProfile()">
-                <div class="spinner"></div>
-                <span class="btn-text">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"
-                        style="vertical-align:middle;margin-left:4px;">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                        <polyline points="17 21 17 13 7 13 7 21" />
-                        <polyline points="7 3 7 8 15 8" />
+            <div class="form-group">
+                <label>بماذا نناديك</label>
+                <div class="input-wrapper">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
                     </svg>
-                    حفظ التغييرات
-                </span>
-            </button>
-            <img src="images/left.png" alt="" onerror="this.style.display='none'">
-        </div>
+                    <input type="text" id="fullname" placeholder="الاسم الكامل"
+                        oninput="document.getElementById('displayName').textContent = this.value || '---'">
+                </div>
+            </div>
 
-        <hr class="divider">
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <div class="input-wrapper">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <input type="email" id="email" placeholder="البريد الإلكتروني" readonly
+                        style="direction:ltr;text-align:right;opacity:0.6;cursor:not-allowed;">
+                </div>
+            </div>
 
-        <!-- Danger Zone -->
-        <div class="section-title" style="color:#ff9090;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#ff9090" stroke-width="2">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                <line x1="12" y1="9" x2="12" y2="13" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
-            منطقة الخطر
-        </div>
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <div class="input-wrapper">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <input type="tel" id="phone" placeholder="+966 500 000 000" style="direction:ltr;text-align:right;">
+                </div>
+            </div>
 
-        <div class="danger-row">
-            <button class="btn-danger" onclick="showModal('logout')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
+            <div class="form-group">
+                <label>الدولة</label>
+                <div class="country-row">
+                    <img id="country-flag" src="https://flagcdn.com/w40/eg.png" alt="علم"
+                        style="width:30px;height:20px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;">
+                    <select id="country-list">
+                        <option value="EG" data-name="مصر">مصر</option>
+                        <option value="SA" data-name="السعودية">السعودية</option>
+                        <option value="AE" data-name="الإمارات">الإمارات</option>
+                        <option value="KW" data-name="الكويت">الكويت</option>
+                        <option value="QA" data-name="قطر">قطر</option>
+                        <option value="BH" data-name="البحرين">البحرين</option>
+                        <option value="OM" data-name="عمان">عمان</option>
+                        <option value="JO" data-name="الأردن">الأردن</option>
+                        <option value="LB" data-name="لبنان">لبنان</option>
+                        <option value="SY" data-name="سوريا">سوريا</option>
+                        <option value="IQ" data-name="العراق">العراق</option>
+                        <option value="PS" data-name="فلسطين">فلسطين</option>
+                        <option value="LY" data-name="ليبيا">ليبيا</option>
+                        <option value="DZ" data-name="الجزائر">الجزائر</option>
+                        <option value="MA" data-name="المغرب">المغرب</option>
+                        <option value="TN" data-name="تونس">تونس</option>
+                        <option value="SD" data-name="السودان">السودان</option>
+                        <option value="YE" data-name="اليمن">اليمن</option>
+                        <option value="SO" data-name="الصومال">الصومال</option>
+                        <option value="MR" data-name="موريتانيا">موريتانيا</option>
+                        <option value="DJ" data-name="جيبوتي">جيبوتي</option>
+                        <option value="KM" data-name="جزر القمر">جزر القمر</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Security -->
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#dfa888" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                تسجيل الخروج
-            </button>
-            <button class="btn-danger" onclick="showModal('delete')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                </svg>
-                حذف الحساب
-            </button>
-        </div>
+                الأمان
+            </div>
 
-    </div>
+            <div class="form-group">
+                <label>رمز المرور الجديد (اتركه فارغاً إن لم تريد تغييره)</label>
+                <div class="passcode-wrapper" style="direction: ltr;">
+                    <input type="text" style="padding:5px 15px 11px 14px;" maxlength="1" class="code-input new-pass">
+                    <input type="text" style="padding:5px 15px 11px 14px;" maxlength="1" class="code-input new-pass">
+                    <input type="text" style="padding:5px 15px 11px 14px;" maxlength="1" class="code-input new-pass">
+                    <input type="text" style="padding:5px 15px 11px 14px;" maxlength="1" class="code-input new-pass">
+                </div>
+            </div>
+
+            <!-- Save button -->
+            <div class="btn-row" style="margin-bottom: 24px;">
+                <img src="images/right.png" alt="" onerror="this.style.display='none'">
+                <button class="btn-submit" id="saveBtn" onclick="saveProfile()">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17"
+                            height="17" style="vertical-align:middle;margin-left:4px;">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        حفظ التغييرات
+                    </span>
+                </button>
+                <img src="images/left.png" alt="" onerror="this.style.display='none'">
+            </div>
+
+            <hr class="divider">
+
+            <!-- Danger Zone -->
+            <div class="section-title" style="color:#ff9090;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ff9090" stroke-width="2">
+                    <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                منطقة الخطر
+            </div>
+
+            <div class="danger-row">
+                <button class="btn-danger" onclick="showModal('logout')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    تسجيل الخروج
+                </button>
+                <button class="btn-danger" onclick="showModal('delete')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                    </svg>
+                    حذف الحساب
+                </button>
+            </div>
+
+        </div>
     </div>
 
     <!-- Logout Modal -->
@@ -908,7 +903,7 @@
             <div class="modal-sub">هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟</div>
             <div class="modal-btns">
                 <button class="modal-btn-cancel" onclick="hideModal('logoutModal')">إلغاء</button>
-                <button class="modal-btn-confirm" onclick="hideModal('logoutModal')">تأكيد الخروج</button>
+                <button class="modal-btn-confirm" id="logoutConfirmBtn" onclick="logout()">تأكيد الخروج</button>
             </div>
         </div>
     </div>
@@ -928,50 +923,81 @@
             <div class="modal-sub">هذا الإجراء لا يمكن التراجع عنه. سيتم حذف حسابك وجميع بياناتك نهائياً.</div>
             <div class="modal-btns">
                 <button class="modal-btn-cancel" onclick="hideModal('deleteModal')">إلغاء</button>
-                <button class="modal-btn-confirm" onclick="hideModal('deleteModal')">نعم، احذف حسابي</button>
+                <button class="modal-btn-confirm" id="deleteConfirmBtn" onclick="deleteAccount()">نعم، احذف
+                    حسابي</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Avatar preview
-        function previewAvatar(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const circle = document.getElementById('avatarCircle');
-                    circle.innerHTML = `<img src="${e.target.result}" alt="avatar">
-                        <div class="avatar-edit" onclick="document.getElementById('avatarInput').click()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#092143" stroke-width="2.5" width="13" height="13">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                        </div>`;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+        const BASE_URL = 'https://kararif.wecan.ae/api';
 
-        // Update display name
-        function updateDisplayName(val) {
-            document.getElementById('displayName').textContent = val || 'اسم المستخدم';
-        }
+        // ── حماية + جلب البيانات ──────────────────────
+        window.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('auth_token');
+            if (!token) { window.location.href = 'login.html'; return; }
 
-        // Country flag
-        document.getElementById('country-list').addEventListener('change', e => {
-            const code = e.target.value;
-            const flag = document.getElementById('country-flag');
-            if (code) {
-                flag.src = `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
-                flag.style.display = 'block';
+            try {
+                const res = await fetch(`${BASE_URL}/user/profile`, {
+                    headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                });
+
+                if (res.status === 401) {
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success && data.data) {
+                    const u = data.data;
+
+                    // ملء الحقول
+                    document.getElementById('fullname').value = u.fullName || u.name || '';
+                    document.getElementById('email').value = u.email || '';
+                    document.getElementById('phone').value = u.phone || '';
+                    document.getElementById('displayName').textContent = u.fullName || u.name || u.username || '---';
+
+                    // الدولة
+                    if (u.country?.code) {
+                        const select = document.getElementById('country-list');
+                        const option = select.querySelector(`option[value="${u.country.code}"]`);
+                        if (option) {
+                            select.value = u.country.code;
+                            document.getElementById('country-flag').src =
+                                `https://flagcdn.com/w40/${u.country.code.toLowerCase()}.png`;
+                        }
+                    }
+
+                    // الصورة
+                   const avatarSrc = u.avatar?.image || null;
+                    if (avatarSrc) document.getElementById('avatarImg').src = avatarSrc;
+
+                    // الـ stats
+                    if (u.stats) {
+                        document.getElementById('statWins').textContent = u.stats.wins ?? 0;
+                        document.getElementById('statLosses').textContent = u.stats.losses ?? 0;
+                        document.getElementById('statWithdraws').textContent = u.surrender_count ?? u.stats.withdraws ?? 0;
+                    }
+
+                    // حفظ في localStorage
+                    localStorage.setItem('user', JSON.stringify(u));
+                }
+            } catch (err) {
+                console.error('Profile load error:', err);
             }
         });
 
-        // Passcode inputs
+        // ── Country flag ──────────────────────────────
+        document.getElementById('country-list').addEventListener('change', e => {
+            const code = e.target.value;
+            document.getElementById('country-flag').src = `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
+        });
+
+        // ── Passcode inputs ───────────────────────────
         const codeInputs = document.querySelectorAll('.code-input');
         codeInputs.forEach((inp, i, arr) => {
-            inp.addEventListener('focus', () => { inp.value = ''; inp.type = 'text'; });
-            inp.addEventListener('blur', () => { if (inp.value) inp.type = 'password'; });
             inp.addEventListener('input', () => {
                 inp.value = inp.value.replace(/\D/g, '').slice(0, 1);
                 if (inp.value && i < arr.length - 1) arr[i + 1].focus();
@@ -981,20 +1007,7 @@
             });
         });
 
-        // Toggle password
-        // function togglePw(id, btn) {
-        //     const inp = document.getElementById(id);
-        //     const svg = btn.querySelector('svg');
-        //     if (inp.type === 'password') {
-        //         inp.type = 'text';
-        //         svg.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
-        //     } else {
-        //         inp.type = 'password';
-        //         svg.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
-        //     }
-        // }
-
-        // Show message
+        // ── Show message ──────────────────────────────
         function showMsg(text, type) {
             const msg = document.getElementById('formMsg');
             msg.textContent = text;
@@ -1004,34 +1017,131 @@
             setTimeout(() => { msg.style.display = 'none'; }, 4000);
         }
 
-        // Save profile
-        function saveProfile() {
+        // ── Save profile ──────────────────────────────
+        async function saveProfile() {
+            const token = localStorage.getItem('auth_token');
             const btn = document.getElementById('saveBtn');
-            const pw1 = document.getElementById('newPw').value;
-            const pw2 = document.getElementById('confirmPw').value;
 
-            if (pw1 && pw1 !== pw2) {
-                showMsg('كلمتا المرور غير متطابقتين', 'error');
+            const newPass = Array.from(document.querySelectorAll('.new-pass')).map(i => i.value).join('');
+
+            const select = document.getElementById('country-list');
+            const countryCode = select.value;
+            const countryLabel = select.options[select.selectedIndex]?.getAttribute('data-name') || '';
+
+            const body = {
+                _method: 'PATCH',
+                fullName: document.getElementById('fullname').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                countryCode: countryCode,
+                countryLabel: countryLabel,
+            };
+
+            // لو ملا رمز المرور الجديد
+            if (newPass.length === 4) {
+                body.password = newPass;
+                body.password_confirmation = newPass;
+            } else if (newPass.length > 0 && newPass.length < 4) {
+                showMsg('يرجى إدخال رمز المرور كاملاً (4 أرقام) أو اتركه فارغاً', 'error');
                 return;
             }
 
             btn.classList.add('loading');
-            setTimeout(() => {
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${BASE_URL}/user/profile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // تحديث localStorage
+                    const stored = JSON.parse(localStorage.getItem('user') || '{}');
+                    localStorage.setItem('user', JSON.stringify({ ...stored, ...(data.data || {}) }));
+
+                    showMsg('تم حفظ التغييرات بنجاح ✓', 'success');
+
+                    // مسح حقول الباسكود
+                    document.querySelectorAll('.new-pass').forEach(i => i.value = '');
+
+                } else {
+                    const errors = data.errors ?? {};
+                    const firstErr = Object.values(errors)[0];
+                    const errMsg = Array.isArray(firstErr) ? firstErr[0] : (data.message ?? 'حدث خطأ، يرجى المحاولة مجدداً');
+                    showMsg(errMsg, 'error');
+                }
+
+            } catch (err) {
+                showMsg('تعذر الاتصال بالسيرفر', 'error');
+            } finally {
                 btn.classList.remove('loading');
-                showMsg('تم حفظ التغييرات بنجاح ✓', 'success');
-            }, 1600);
+                btn.disabled = false;
+            }
         }
 
-        // Modals
-        function showModal(type) {
-            document.getElementById(type + 'Modal').classList.add('show');
+        // ── Logout ────────────────────────────────────
+        async function logout() {
+            const token = localStorage.getItem('auth_token');
+            document.getElementById('logoutConfirmBtn').textContent = 'جارٍ الخروج...';
+
+            try {
+                await fetch(`${BASE_URL}/auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+            } catch (e) { }
+
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
         }
 
-        function hideModal(id) {
-            document.getElementById(id).classList.remove('show');
+        // ── Delete account ────────────────────────────
+        async function deleteAccount() {
+            const token = localStorage.getItem('auth_token');
+            document.getElementById('deleteConfirmBtn').textContent = 'جارٍ الحذف...';
+
+            try {
+                const res = await fetch(`${BASE_URL}/user/account`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ _method: 'DELETE' })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                } else {
+                    hideModal('deleteModal');
+                    showMsg(data.message ?? 'فشل حذف الحساب', 'error');
+                }
+            } catch (e) {
+                hideModal('deleteModal');
+                showMsg('تعذر الاتصال بالسيرفر', 'error');
+            }
         }
 
-        // Close modal on overlay click
+        // ── Modals ────────────────────────────────────
+        function showModal(type) { document.getElementById(type + 'Modal').classList.add('show'); }
+        function hideModal(id) { document.getElementById(id).classList.remove('show'); }
+
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', e => {
                 if (e.target === overlay) overlay.classList.remove('show');

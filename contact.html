@@ -584,7 +584,7 @@
 <body>
 
     <div class="back-btn">
-        <a href="home.html">
+        <a href="index.html">
             <img src="images/next.png" class="back-img" alt="" onerror="this.style.display='none'">
         </a>
     </div>
@@ -596,90 +596,48 @@
 
     <div class="container">
 
-        <!-- ══ DEMO TOGGLE — remove in production ══ -->
-        <div class="demo-toggle">
-            <span><i class="fa-solid fa-flask" style="margin-left:4px;color:rgba(232,203,154,0.4)"></i> عرض تجريبي —
-                تبديل حالة المستخدم</span>
-            <label class="switch">
-                <input type="checkbox" id="authToggle">
-                <div class="switch-track">
-                    <div class="switch-thumb"></div>
-                </div>
-            </label>
-            <span class="toggle-label" id="toggleLabel">زائر</span>
-        </div>
-
-        <!-- ══ AUTH state: user info card ══ -->
-        <div class="user-card auth-only">
-            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-            <div class="user-info">
-                <div class="user-name">أحمد محمد</div>
-                <div class="user-email">ahmed@example.com</div>
-            </div>
-            <div class="user-badge"><i class="fa-solid fa-circle-check"></i> مسجّل</div>
-        </div>
-
-        <!-- ══ GUEST state: info banner ══ -->
-        <div class="guest-banner">
+        <!-- بانر الزائر -->
+        <div class="guest-banner" id="guestBanner">
             <i class="fa-solid fa-circle-info"></i>
-            <p>أنت تتواصل كزائر. يُرجى إدخال اسمك وبريدك لنتمكن من الرد عليك. أو <a href="#">سجّل دخولك</a> للمتابعة
-                بحسابك.</p>
+            <p>أنت تتواصل كزائر. يُرجى إدخال اسمك وبريدك لنتمكن من الرد عليك. أو <a href="login.html">سجّل دخولك</a>
+                للمتابعة بحسابك.</p>
         </div>
 
-        <!-- ══ FORM CARD ══ -->
+        <!-- FORM CARD -->
         <div class="form-card">
             <form id="contactForm" novalidate>
                 <div class="field-group">
 
-                    <!-- Guest-only: name -->
+                    <!-- زائر: الاسم -->
                     <div class="field guest-only" id="fieldName">
                         <label for="guestName">
                             <i class="fa-solid fa-user"></i>
-                            الاسم الكامل
-                            <span class="required">*</span>
+                            الاسم الكامل <span class="required">*</span>
                         </label>
                         <input type="text" id="guestName" placeholder="أدخل اسمك الكامل" autocomplete="name">
                     </div>
 
-                    <!-- Guest-only: email -->
+                    <!-- زائر: البريد -->
                     <div class="field guest-only" id="fieldEmail">
                         <label for="guestEmail">
                             <i class="fa-solid fa-envelope"></i>
-                            البريد الإلكتروني
-                            <span class="required">*</span>
+                            البريد الإلكتروني <span class="required">*</span>
                         </label>
                         <input type="email" id="guestEmail" placeholder="example@email.com" autocomplete="email"
                             dir="ltr">
                     </div>
 
-                    <!-- Auth-only: readonly name -->
-                    <div class="field auth-only" id="fieldAuthName">
-                        <label>
-                            <i class="fa-solid fa-user"></i>
-                            الاسم
-                        </label>
-                        <input type="text" value="أحمد محمد" readonly>
-                        <span class="readonly-note"><i class="fa-solid fa-lock"></i> مأخوذ من حسابك</span>
-                    </div>
+                    <!-- hidden inputs for auth user data -->
+                    <input type="hidden" id="authName">
+                    <input type="hidden" id="authEmail">
 
-                    <!-- Auth-only: readonly email -->
-                    <div class="field auth-only" id="fieldAuthEmail">
-                        <label>
-                            <i class="fa-solid fa-envelope"></i>
-                            البريد الإلكتروني
-                        </label>
-                        <input type="email" value="ahmed@example.com" readonly dir="ltr">
-                        <span class="readonly-note"><i class="fa-solid fa-lock"></i> مأخوذ من حسابك</span>
-                    </div>
+                    <hr class="divider" id="topDivider" style="display:none;">
 
-                    <hr class="divider">
-
-                    <!-- Category -->
+                    <!-- الموضوع -->
                     <div class="field">
                         <label for="category">
                             <i class="fa-solid fa-tag"></i>
-                            الموضوع
-                            <span class="required">*</span>
+                            الموضوع <span class="required">*</span>
                         </label>
                         <select id="category">
                             <option value="" disabled selected>اختر موضوع رسالتك</option>
@@ -688,32 +646,35 @@
                             <option value="account">مشكلة في الحساب</option>
                             <option value="complaint">شكوى</option>
                             <option value="suggestion">اقتراح</option>
-                            <option value="other">أخرى</option>
+                            <option value="general">أخرى</option>
                         </select>
                     </div>
 
-                    <!-- Subject -->
+                    <!-- عنوان الرسالة -->
                     <div class="field">
                         <label for="subject">
                             <i class="fa-solid fa-pen-nib"></i>
-                            عنوان الرسالة
-                            <span class="required">*</span>
+                            عنوان الرسالة <span class="required">*</span>
                         </label>
                         <input type="text" id="subject" placeholder="لخّص موضوع رسالتك">
                     </div>
 
-                    <!-- Message -->
+                    <!-- الرسالة -->
                     <div class="field">
                         <label for="message">
                             <i class="fa-solid fa-comment-dots"></i>
-                            الرسالة
-                            <span class="required">*</span>
+                            الرسالة <span class="required">*</span>
                         </label>
                         <textarea id="message" placeholder="اكتب رسالتك هنا بالتفصيل..."></textarea>
                     </div>
 
-                    <!-- Submit -->
-                    <button type="submit" class="btn-submit">
+                    <!-- رسالة خطأ -->
+                    <div id="formError"
+                        style="display:none;color:#e05252;font-size:13px;text-align:center;padding:8px;background:rgba(224,82,82,0.1);border-radius:8px;border:1px solid rgba(224,82,82,0.3);">
+                    </div>
+
+                    <!-- زر الإرسال -->
+                    <button type="submit" class="btn-submit" id="submitBtn">
                         <span class="btn-shine"></span>
                         <i class="fa-solid fa-paper-plane"></i>
                         إرسال الرسالة
@@ -722,7 +683,7 @@
                 </div>
             </form>
 
-            <!-- Success state -->
+            <!-- نجاح -->
             <div class="success-msg" id="successMsg">
                 <div class="success-icon"><i class="fa-solid fa-check"></i></div>
                 <h3>تم إرسال رسالتك بنجاح!</h3>
@@ -735,51 +696,82 @@
     </div>
 
     <script>
-        // ── Demo toggle ──
-        const authToggle = document.getElementById('authToggle');
-        const toggleLabel = document.getElementById('toggleLabel');
+        const API = 'https://kararif.wecan.ae/api';
+        const token = localStorage.getItem('auth_token');
+        const isAuth = !!token;
 
-        authToggle.addEventListener('change', () => {
-            if (authToggle.checked) {
-                document.body.classList.add('is-auth');
-                toggleLabel.textContent = 'مسجّل';
-            } else {
-                document.body.classList.remove('is-auth');
-                toggleLabel.textContent = 'زائر';
+        // ── تحميل بيانات المستخدم ──────────────────
+        window.addEventListener('DOMContentLoaded', () => {
+            if (isAuth) {
+                // إخفاء بانر الزائر وحقول الاسم والبريد
+                document.getElementById('guestBanner').style.display = 'none';
+                document.getElementById('fieldName').style.display = 'none';
+                document.getElementById('fieldEmail').style.display = 'none';
+
+                // تخزين البيانات في hidden inputs لإرسالها مع الفورم
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    document.getElementById('authName').value = user.fullName || user.name || user.username || '';
+                    document.getElementById('authEmail').value = user.email || '';
+                } catch (e) { }
             }
         });
 
-        // ── Form submit ──
-        const form = document.getElementById('contactForm');
-        const successMsg = document.getElementById('successMsg');
-
-        form.addEventListener('submit', (e) => {
+        // ── Form submit ────────────────────────────
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const isAuth = document.body.classList.contains('is-auth');
+            const errEl = document.getElementById('formError');
+            const btn = document.getElementById('submitBtn');
+            errEl.style.display = 'none';
 
-            // Validate guest fields
-            if (!isAuth) {
-                const name = document.getElementById('guestName').value.trim();
-                const email = document.getElementById('guestEmail').value.trim();
-                if (!name || !email) {
-                    shake(name ? null : document.getElementById('guestName'));
-                    shake(email ? null : document.getElementById('guestEmail'));
-                    return;
-                }
-            }
-
+            // جمع البيانات
+            const name = isAuth ? document.getElementById('authName').value.trim()
+                : document.getElementById('guestName').value.trim();
+            const email = isAuth ? document.getElementById('authEmail').value.trim()
+                : document.getElementById('guestEmail').value.trim();
             const category = document.getElementById('category').value;
             const subject = document.getElementById('subject').value.trim();
             const message = document.getElementById('message').value.trim();
 
-            if (!category) { shake(document.getElementById('category')); return; }
-            if (!subject) { shake(document.getElementById('subject')); return; }
-            if (!message) { shake(document.getElementById('message')); return; }
+            // validation
+            if (!isAuth && !name) return shake(document.getElementById('guestName'));
+            if (!isAuth && !email) return shake(document.getElementById('guestEmail'));
+            if (!category) return shake(document.getElementById('category'));
+            if (!subject) return shake(document.getElementById('subject'));
+            if (!message) return shake(document.getElementById('message'));
 
-            // Show success
-            form.style.display = 'none';
-            successMsg.classList.add('show');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-shine"></span>⏳ جارٍ الإرسال...';
+
+            try {
+                const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+                if (isAuth) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch(API + '/contact', {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ name, email, category, subject, message })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    document.getElementById('contactForm').style.display = 'none';
+                    document.getElementById('successMsg').classList.add('show');
+                } else {
+                    const errors = data.errors ?? {};
+                    const firstErr = Object.values(errors)[0];
+                    const msg = Array.isArray(firstErr) ? firstErr[0] : (data.message ?? 'حدث خطأ، يرجى المحاولة مجدداً');
+                    errEl.textContent = msg;
+                    errEl.style.display = 'block';
+                }
+            } catch (err) {
+                errEl.textContent = 'تعذر الاتصال بالسيرفر، تحقق من اتصالك بالإنترنت';
+                errEl.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-shine"></span><i class="fa-solid fa-paper-plane"></i> إرسال الرسالة';
+            }
         });
 
         function shake(el) {

@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تتابع الفيديو</title>
-    <link rel="icon" type="image/png" href="images/fav.png" />
+    <title>تتابع الفيديو - التفاصيل</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
-    <link href="style.css" rel="stylesheet" type="text/css" />
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&family=Cairo:wght@300..900&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --gold: #e8cb9a;
+            --gold-light: #ffe8a0;
+            --gold-dark: #c0a060;
+            --dark-navy: #0a2348;
+            --darker-navy: #060f22;
+            --teal: #003443;
+            --teal-light: #005566;
+            --card-bg: rgba(0, 30, 60, 0.85);
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,173 +30,1689 @@
         }
 
         body {
-            overflow: hidden;
-            background: #0a2348;
-            font-family: 'Cairo', sans-serif;
-            direction: rtl;
+            font-family: 'El Messiri', sans-serif;
+            background: var(--darker-navy);
+            min-height: 100vh;
+            position: relative;
         }
 
-        .splash-wrapper {
+        body::before {
+            content: '';
             position: fixed;
             inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 80, 120, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(10, 35, 72, 0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 52, 67, 0.3) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 10%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 85%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 45% 55%, rgba(232, 203, 154, 0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+            z-index: 0;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 12px 20px 20px;
+        }
+
+        .header h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(232, 203, 154, 0.4);
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 10px auto 0;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 172px 16px 40px;
             display: flex;
             flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.1);
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-radius: 10px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            background: #0a0a0a;
+            font-size: 1.1rem;
+            border: 1px solid rgba(232, 203, 154, 0.25);
         }
 
-        .splash img.splash {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            inset: 0;
+        .card-title {
+            color: var(--gold);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        /* Loader overlay at bottom */
-        .loader-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 115px 50px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+        /* PROFILE */
+        .profile-card .profile-body {
+            padding: 18px;
+        }
+
+        .profile-top {
             display: flex;
-            flex-direction: column;
             align-items: center;
             gap: 14px;
         }
 
-        .percent-display {
-            font-family: 'Cairo', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-name {
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(232, 203, 154, 0.1);
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 0.75rem;
+            color: var(--gold);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .stat-box {
+            background: rgba(0, 52, 67, 0.5);
+            border: 1px solid rgba(232, 203, 154, 0.1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -2px;
             line-height: 1;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-            transition: all 0.1s ease;
         }
 
-        .percent-display span {
-            font-size: 0.45em;
-            font-weight: 300;
-            opacity: 0.7;
-            margin-right: 4px;
+        .stat-value.win {
+            color: #4ade80;
         }
 
-        .progress-track {
-            width: 100%;
-            max-width: 420px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.15);
+        .stat-value.loss {
+            color: #f87171;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+
+        /* NEWS */
+        .news-card .news-body {
+            padding: 14px;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 10px;
             border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .news-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #003443, #004455);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 1px solid rgba(232, 203, 154, 0.15);
             overflow: hidden;
+        }
+
+        .news-headline {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .news-date {
+            color: rgba(232, 203, 154, 0.5);
+            font-size: 0.72rem;
+            margin-top: 4px;
+        }
+
+        .news-see-all {
+            display: block;
+            text-align: center;
+            color: var(--gold);
+            font-size: 0.82rem;
+            padding: 8px;
+            cursor: pointer;
+            border-top: 1px solid rgba(232, 203, 154, 0.1);
+            background: none;
+            border-right: none;
+            border-left: none;
+            border-bottom: none;
+            width: 100%;
+            font-family: 'El Messiri', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .news-see-all:hover {
+            color: var(--gold-light);
+        }
+
+        /* BALANCE */
+        .balance-card {
+            border-radius: 18px;
+            overflow: visible;
             position: relative;
         }
 
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #c0a060, #ffe8a0, #c0a060);
-            background-size: 200% 100%;
-            border-radius: 10px;
-            transition: width 0.08s linear;
-            animation: shimmer 1.5s linear infinite;
+        .balance-card-inner {
+            background: var(--card-bg);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
         }
 
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
+        .balance-top {
+            padding: 22px 18px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.1);
+        }
 
+        .lantern {
+            font-size: 2.4rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(232, 203, 154, 0.5));
+        }
+
+        .lantern img {
+            width: 50px;
+            filter: drop-shadow(0 0 8px rgba(232, 203, 154, 0.5));
+        }
+
+        @keyframes float {
+
+            0%,
             100% {
-                background-position: -200% 0;
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-6px) rotate(5deg);
             }
         }
 
-        .loading-label {
-            font-size: 0.78rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.45);
-            letter-spacing: 2px;
+        .balance-info {
+            flex: 1;
+        }
+
+        .balance-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+
+        .balance-amount {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .balance-currency {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .packages-section {
+            padding: 16px;
+        }
+
+        .packages-title {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             text-transform: uppercase;
         }
 
-        /* Fade out animation */
-        .splash-wrapper.fade-out {
-            animation: fadeOut 0.6s ease forwards;
+        .packages-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        @keyframes fadeOut {
-            0% {
+        .package-row {
+            display: grid;
+            gap: 10px;
+        }
+
+        .package-row.cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .package-row.cols-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .package-row.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .package-item {
+            background: rgba(0, 52, 67, 0.6);
+            border: 1px solid rgba(232, 203, 154, 0.15);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+        }
+
+        .package-item:hover {
+            border-color: rgba(232, 203, 154, 0.5);
+            background: rgba(0, 70, 90, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .package-item.featured {
+            border-color: rgba(232, 203, 154, 0.4);
+            background: linear-gradient(135deg, rgba(0, 60, 80, 0.8), rgba(0, 40, 60, 0.8));
+        }
+
+        .package-item.featured::before {
+            content: 'الأفضل';
+            position: absolute;
+            top: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+            color: #0a2348;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .package-icon {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .package-amount {
+            color: var(--gold);
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .package-games {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.72rem;
+            margin-bottom: 4px;
+        }
+
+        .package-price {
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: rgba(232, 203, 154, 0.12);
+            border-radius: 8px;
+            padding: 2px 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* =================== MODALS =================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #0a2348, #062030);
+            border: 1px solid rgba(232, 203, 154, 0.3);
+            bottom: 0px;
+            position: fixed;
+            width: 100%;
+            max-width: 380px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            animation: slideUp 0.35s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
                 opacity: 1;
-                transform: scale(1);
+            }
+        }
+
+        .modal-top {
+            padding: 20px;
+            border-bottom: 1px solid rgba(232, 203, 154, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        /* NEWS MODAL */
+        .news-modal-content {
+            padding: 16px;
+        }
+
+        .news-modal-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .news-modal-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-modal-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .news-modal-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #003443, #004455);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 1px solid rgba(232, 203, 154, 0.15);
+        }
+
+        .news-modal-title {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .news-modal-date {
+            color: rgba(232, 203, 154, 0.5);
+            font-size: 0.72rem;
+        }
+
+        /* =================== PAYMENT MODAL =================== */
+        #paymentModal .modal {
+            max-width: 420px;
+        }
+
+        .payment-summary {
+            margin: 16px 16px 0;
+            background: linear-gradient(135deg, rgba(0, 52, 67, 0.8), rgba(0, 30, 60, 0.8));
+            border: 1px solid rgba(232, 203, 154, 0.25);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .payment-pkg-icon {
+            font-size: 2.2rem;
+        }
+
+        .payment-pkg-info {
+            flex: 1;
+        }
+
+        .payment-pkg-name {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .payment-pkg-pts {
+            color: var(--gold);
+            font-size: 0.85rem;
+        }
+
+        .payment-pkg-price-badge {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: #0a2348;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding: 8px 14px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .payment-methods {
+            padding: 16px;
+        }
+
+        .payment-methods-title {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .method-btn {
+            background: rgba(0, 52, 67, 0.5);
+            border: 2px solid rgba(232, 203, 154, 0.15);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .method-btn:hover {
+            border-color: rgba(232, 203, 154, 0.5);
+            background: rgba(0, 70, 90, 0.7);
+            color: white;
+        }
+
+        .method-btn.selected {
+            border-color: var(--gold);
+            background: rgba(0, 80, 100, 0.7);
+            color: var(--gold);
+        }
+
+        .method-btn .method-icon {
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+
+        .method-btn .method-name {
+            font-size: 0.78rem;
+        }
+
+        /* Card form */
+        .card-form {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card-form.visible {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(0, 30, 60, 0.6);
+            border: 1px solid rgba(232, 203, 154, 0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: white;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            direction: ltr;
+            text-align: right;
+        }
+
+        .form-input:focus {
+            border-color: rgba(232, 203, 154, 0.5);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            direction: rtl;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .pay-now-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #c0a060, #e8cb9a);
+            border: none;
+            border-radius: 12px;
+            color: #062030;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pay-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(232, 203, 154, 0.35);
+        }
+
+        .pay-now-btn:active {
+            transform: translateY(0);
+        }
+
+        .pay-now-btn .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-20deg);
+            animation: shine 2.5s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            50%,
+            100% {
+                left: 150%;
+            }
+        }
+
+        .secure-note {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.72rem;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Success screen */
+        .success-screen {
+            display: none;
+            padding: 30px 20px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .success-screen.visible {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 12px;
+            animation: pop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
             }
 
             100% {
-                opacity: 0;
-                transform: scale(1.03);
+                transform: scale(1);
             }
         }
+
+        .success-title {
+            color: #4ade80;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .success-sub {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .success-close-btn {
+            margin-top: 20px;
+            padding: 10px 28px;
+            background: rgba(0, 52, 67, 0.6);
+            border: 1px solid rgba(232, 203, 154, 0.3);
+            border-radius: 10px;
+            color: var(--gold);
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .success-close-btn:hover {
+            background: rgba(0, 70, 90, 0.7);
+        }
+
+        /* =================== LOYALTY CARD BTN =================== */
+        .loyalty-card-btn {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1px solid rgba(100, 220, 130, 0.4);
+            border-radius: 20px;
+            padding: 5px 12px;
+            color: #003443;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 12px rgba(34, 168, 85, 0.3);
+        }
+
+        .loyalty-card-btn:hover {
+            background: linear-gradient(135deg, #22a855, #2ecc70);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 18px rgba(34, 168, 85, 0.45);
+        }
+
+        /* =================== LOYALTY CARD MODAL =================== */
+        #loyaltyModal .modal {
+            max-width: 400px;
+            background: linear-gradient(160deg, #272323, #fbe5e5);
+        }
+
+        #loyaltyModal .modal-top {
+            border-bottom-color: rgba(100, 220, 130, 0.15);
+        }
+
+        #loyaltyModal .modal-title {
+            color: #fafafa;
+        }
+
+        .loyalty-card-wrap {
+            padding: 20px 20px 10px;
+        }
+
+        /* The physical card - 3D flip container */
+        .lc-card-scene {
+            width: 100%;
+            perspective: 800px;
+            cursor: pointer;
+        }
+
+        .lc-card {
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .lc-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .lc-card-face {
+            width: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .lc-card-face img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Back face is pre-rotated so it shows correctly when flipped */
+        .lc-card-face.lc-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg);
+        }
+
+        /* Intro spin animation — full spin then settle on front */
+        @keyframes cardIntroSpin {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            40% {
+                transform: rotateY(180deg);
+            }
+
+            65% {
+                transform: rotateY(180deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .lc-card.intro-spin {
+            animation: cardIntroSpin 1.4s ease-in-out forwards;
+            transition: none !important;
+        }
+
+        /* Stats below card */
+        .lc-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 14px 0 6px;
+        }
+
+        .lc-stat {
+            background: black;
+            color: white;
+            border: 1px solid rgba(100, 220, 130, 0.15);
+            border-radius: 12px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+
+        .lc-stat-val {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .lc-stat-lbl {
+            color: rgba(255, 255, 255, 0.993);
+            font-size: 0.65rem;
+            margin-top: 2px;
+        }
+
+        .lc-footer-note {
+            text-align: center;
+            color: rgb(0, 0, 0);
+            font-size: 0.7rem;
+            padding: 0 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .lc-card-info {
+            position: absolute;
+            top: 50%;
+            left: 51%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 13px;
+            width: 90%;
+            color: white;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .btn-main {
+            width: 80%;
+            margin: auto;
+            background: linear-gradient(135deg, #003443, #00556a);
+            border: 1px solid rgba(232, 203, 154, 0.4);
+            border-radius: 10px;
+            font-family: 'El Messiri', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            margin-top: 20px !important;
+            margin-bottom: 20px !important;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            color: #e8cb9a;
+            background-color: #003443;
+            font-size: 17px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-family: 'El Messiri', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 5px 14px;
+            /* display: inline-flex; */
+            align-items: center;
+            justify-content: center;
+            transition: background 5.25s ease;
+        }
+
+        .btn-main:hover {
+            background-color: #004d62;
+        }
+
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.55) 50%,
+                    transparent 100%);
+            transform: skewX(-20deg);
+            animation: btnShine 3.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes btnShine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        .back-img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            position: fixed;
+            z-index: 99999;
+            right: 5%;
+            top: 3%;
+        }
+
+        .back-btn-left {
+            position: fixed;
+            z-index: 99999;
+            left: 5%;
+            top: 3%;
+        }
+
+        .container-lg {
+            position: fixed;
+            align-items: center;
+            margin: auto;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            z-index: 109;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
-    <div class="splash-wrapper" id="splashWrapper">
-        <img src="images/splash-3.gif" class="splash" alt="">
-
-        <div class="loader-overlay">
-            <div class="percent-display" id="percentDisplay">
-                0<span>%</span>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="loading-label">جارٍ التحميل...</div>
-        </div>
-        <footer>
-            <img src="images/footer.png" class="footer-img" alt="">
-        </footer>
+    <div class="back-btn">
+        <a href="info.html">
+            <img src="images/next.png" class="back-img" alt="">
+        </a>
     </div>
 
+    <div class="back-btn-left">
+        <a href="#" onclick="logout(event)">
+            <img src="images/logout-kh.png" class="back-img" alt="">
+        </a>
+    </div>
 
-    <script>
-        const percentDisplay = document.getElementById('percentDisplay');
-        const progressFill = document.getElementById('progressFill');
-        const splashWrapper = document.getElementById('splashWrapper');
+    <div class="splash-wrapper" id="splashWrapper">
 
-        let current = 0;
-        const target = 100;
-        const duration = 5000;
-        const interval = 40;
-        const steps = duration / interval;
-        const increment = target / steps;
+        <img style="position: fixed;width: 100%;height: 26%;z-index: 99;" src="images/splash-22.png" class="splash"
+            alt="">
+        <img style="position: fixed; width: 100%; height: 100%;" src="images/splash-2.png" class="splash" alt="">
 
-        const timer = setInterval(() => {
-            current += increment + (Math.random() * increment * 0.5 - increment * 0.25);
-            current = Math.min(current, target);
+        <div class="container-lg">
+            <div class="logo-area bg-wrapper">
+                <img src="images/animated-logo-ii.gif"
+                    style="padding-top: 16px !important; position: relative; width: 74px; align-items: center; justify-content: center; display: flex; margin: auto;"
+                    class="logo" alt="logo" onerror="this.style.display='none'">
+            </div>
+            <div class="header">
+                <h1>مرحباً أيها المغامر</h1>
+            </div>
+        </div>
 
-            const rounded = Math.floor(current);
-            percentDisplay.innerHTML = `${rounded}<span>%</span>`;
-            progressFill.style.width = `${current}%`;
+        <div class="container">
 
-            if (current >= target) {
-                clearInterval(timer);
-                percentDisplay.innerHTML = `100<span>%</span>`;
-                progressFill.style.width = '100%';
+            <div style="align-items: center; display: flex;">
+                <img src="images/right.png" class="right-img-1" alt="">
+                <a href="play.html" class="btn-main"
+                    style="background: linear-gradient(135deg, #ff5c40, #ffc276); color: black;">
+                    <span class="btn-shine"></span>
+                    ابدء المغامرة
+                </a>
+                <img src="images/left.png" class="left-img-1" alt="">
+            </div>
 
-                setTimeout(() => {
-                    splashWrapper.classList.add('fade-out');
-                    setTimeout(() => {
-                        window.location.href = "home.html";
-                    }, 600);
-                }, 400);
+            <div class="card profile-card">
+                <div class="card-header">
+                    <div class="card-icon">👤</div>
+                    <span class="card-title">بيانات المغامر</span>
+                    <button class="loyalty-card-btn" onclick="openLoyaltyModal()" title="بطاقة الامتيازات">
+                        <i class="fa-solid fa-id-card" style="font-size: 17px;"></i>
+                    </button>
+                    <a href="profile.html" style="margin-right: 0px !important; text-decoration: none;"
+                        class="loyalty-card-btn">
+                        <i class="fa-solid fa-gear" style="font-size: 17px;"></i>
+                    </a>
+                    <a href="my-game.html" style="margin-right: 0px !important; text-decoration: none;"
+                        class="loyalty-card-btn">
+                        <i class="fa-solid fa-trophy" style="font-size: 17px;"></i>
+                    </a>
+                </div>
+                <div class="profile-body">
+                    <div class="profile-top">
+                        <div class="profile-avatar">
+                            <img src="" class="avatar" alt="" id="userAvatar">
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-name" id="userName">---</div>
+                            <div class="profile-badge" id="userBadge">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: BALANCE -->
+            <div class="balance-card">
+                <div style="position:relative; margin-top: 14px;">
+                    <div
+                        style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+                                background: var(--darker-navy); border: 1px solid rgba(232,203,154,0.4);
+                                border-radius: 20px; padding: 3px 20px; color: var(--gold);
+                                font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; z-index: 5; white-space: nowrap;">
+                        رصيد الالعاب
+                    </div>
+                    <div class="balance-card-inner">
+                        <div class="balance-top">
+                            <div class="lantern"><img src="assets/pay.png" alt="lantern"></div>
+                            <div class="balance-info">
+                                <div class="balance-label">رصيدك الحالي</div>
+                                <div class="balance-amount" id="userBalance">--- <span
+                                        class="balance-currency">لعبة</span></div>
+                            </div>
+                        </div>
+                        <button class="btn-main" onclick="openPaymentModal()">تعبئة رصيدك</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3: NEWS -->
+            <div class="card news-card">
+                <div class="card-header">
+                    <div class="card-icon">📰</div>
+                    <span class="card-title">لوحة أخبار النقابة</span>
+                </div>
+                <div class="news-body" id="newsPreview">
+                    <div style="text-align:center;color:rgba(255,255,255,0.3);padding:16px;font-size:13px;">جارٍ تحميل
+                        الأخبار...</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MODAL: NEWS -->
+        <div class="modal-overlay" id="newsModal">
+            <div class="modal">
+                <div class="modal-top">
+                    <span class="modal-title">📰 آخر الأخبار</span>
+                    <button class="modal-close" onclick="closeModal('newsModal')">✕</button>
+                </div>
+                <div class="news-modal-content" id="newsModalContent">
+                    <div style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;font-size:13px;">جارٍ تحميل
+                        الأخبار...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: LOYALTY CARD -->
+        <div class="modal-overlay" id="loyaltyModal">
+            <div class="modal">
+                <div class="modal-top">
+                    <span class="modal-title">🃏 بطاقة مغامر</span>
+                    <button class="modal-close" onclick="closeModal('loyaltyModal')">✕</button>
+                </div>
+                <div class="loyalty-card-wrap">
+                    <div class="lc-card-scene" onclick="flipCard()">
+                        <div class="lc-card" id="lcCard">
+                            <div class="lc-card-face lc-front">
+                                <img src="assets/f1.png" alt="وجه البطاقة">
+                                <div class="lc-card-info">
+                                    <div><img src="assets/بديح.png" style="width: 80px;" alt=""></div>
+                                    <div>
+                                        <h6 style="font-weight: normal !important;">
+                                            <span
+                                                style="display: inline-block; width:18px; font-weight: bold; margin-left: 50px;">الاسم</span>
+                                            <span style="font-size: 14px;" id="cardName">---</span>
+                                        </h6>
+                                        <h6 style="font-weight: normal !important;">
+                                            <span
+                                                style="display: inline-block; width:18px; font-weight: bold; margin-left: 50px;">الدولة</span>
+                                            <span style="font-size: 14px;" id="cardCountry">---</span>
+                                        </h6>
+                                        <h6 style="font-weight: normal !important;">
+                                            <span
+                                                style="display: inline-block; width:18px; font-weight: bold; margin-left: 50px;">مستوي</span>
+                                            <span style="font-size: 14px;" id="cardRank">---</span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lc-card-face lc-back">
+                                <img src="assets/f2.png" alt="ظهر البطاقة">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lc-stats">
+                        <div class="lc-stat">
+                            <div class="lc-stat-val" id="statWins">0</div>
+                            <div class="lc-stat-lbl">ربح</div>
+                        </div>
+                        <div class="lc-stat">
+                            <div class="lc-stat-val" id="statLosses">0</div>
+                            <div class="lc-stat-lbl">خسر</div>
+                        </div>
+                        <div class="lc-stat">
+                            <div class="lc-stat-val" id="statSurrenders">0</div>
+                            <div class="lc-stat-lbl">انسحاب</div>
+                        </div>
+                    </div>
+                    <div class="lc-footer-note">🔄 اضغط على البطاقة لتدويرها</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: PAYMENT -->
+        <div class="modal-overlay" id="paymentModal">
+            <div class="modal">
+                <div class="modal-top">
+                    <span class="modal-title">💳 صفحة الدفع</span>
+                    <button class="modal-close" onclick="closeModal('paymentModal'); resetPayment()">✕</button>
+                </div>
+                <div id="paymentContent">
+
+                    <!-- قائمة الباقات -->
+                    <div id="packagesList" style="margin-bottom:12px;">
+                        <div style="text-align:center;color:rgba(255,255,255,0.4);padding:20px;font-size:13px;">جارٍ
+                            تحميل الباقات...</div>
+                    </div>
+
+                    <!-- فورم الدفع (يظهر بعد اختيار باقة) -->
+                    <div id="paymentForm" style="display:none;">
+                        <div class="payment-summary" id="selectedPkgSummary"></div>
+                        <div class="payment-methods">
+                            <div class="card-form" id="cardForm">
+                                <input class="form-input" type="text" placeholder="رقم البطاقة" maxlength="19"
+                                    oninput="formatCard(this)">
+                                <input class="form-input" type="text" placeholder="اسم حامل البطاقة">
+                                <div class="form-row">
+                                    <input class="form-input" type="text" placeholder="MM / YY" maxlength="7"
+                                        oninput="formatExpiry(this)">
+                                    <input class="form-input" type="text" placeholder="CVV" maxlength="3">
+                                </div>
+                            </div>
+                            <button class="pay-now-btn" onclick="processPayment()">
+                                <span class="btn-shine"></span>ادفع الآن
+                            </button>
+                            <div class="secure-note">🔒 الدفع آمن ومشفر بالكامل</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="success-screen" id="successScreen">
+                    <div class="success-icon">✅</div>
+                    <div class="success-title">تمّ الدفع بنجاح!</div>
+                    <div class="success-sub">تم إضافة نقاطك إلى حسابك<br>استمتع باللعب 🎮</div>
+                    <button class="success-close-btn" onclick="closeModal('paymentModal'); resetPayment()">العودة
+                        للرئيسية</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const API = 'https://kararif.wecan.ae/api';
+
+            window.addEventListener('DOMContentLoaded', async () => {
+                const token = localStorage.getItem('auth_token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // جلب الـ profile
+                try {
+                    const res = await fetch(API + '/user/profile', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+
+                    if (res.status === 401) {
+                        localStorage.removeItem('auth_token');
+                        localStorage.removeItem('user');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    const data = await res.json();
+                    if (data.success && data.data) {
+                        const user = data.data;
+                        localStorage.setItem('user', JSON.stringify(user));
+
+                        // الاسم
+                        const name = user.fullName || user.name || user.username || '---';
+                        document.getElementById('userName').textContent = name;
+                        document.getElementById('cardName').textContent = name;
+
+                        // الرتبة (rank)
+                        const rankName = user.rank?.name || user.badge || '---';
+                        document.getElementById('userBadge').textContent = rankName;
+                        document.getElementById('cardRank').textContent = rankName;
+
+                        // الدولة
+                        const countryLabel = user.country?.label || '---';
+                        document.getElementById('cardCountry').textContent = countryLabel;
+
+                        // الإحصائيات
+                        if (user.stats) {
+                            document.getElementById('statWins').textContent = user.stats.wins ?? 0;
+                            document.getElementById('statLosses').textContent = user.stats.losses ?? 0;
+                        }
+
+                        // عدد الانسحابات
+                        document.getElementById('statSurrenders').textContent = user.surrender_count ?? 0;
+
+                        const avatarSrc = user.avatar?.image || null;
+                        if (avatarSrc) document.getElementById('userAvatar').src = avatarSrc;
+
+                    }
+                } catch (err) {
+                    console.error('Profile error:', err);
+                    try {
+                        const user = JSON.parse(localStorage.getItem('user') || '{}');
+                        const name = user.fullName || user.name || user.username || '---';
+                        document.getElementById('userName').textContent = name;
+                        document.getElementById('cardName').textContent = name;
+                        document.getElementById('userBadge').textContent = user.rank?.name || user.badge || '---';
+                        document.getElementById('cardRank').textContent = user.rank?.name || user.badge || '---';
+                        document.getElementById('cardCountry').textContent = user.country?.label || '---';
+                        document.getElementById('statSurrenders').textContent = user.surrender_count ?? 0;
+                    } catch (e) { }
+                }
+
+                // جلب الرصيد
+                try {
+                    const balRes = await fetch(API + '/user/balance', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                    const balData = await balRes.json();
+                    if (balData.success && balData.data) {
+                        const bal = balData.data.balance ?? 0;
+                        const currency = balData.data.currencyLabel ?? 'لعبة';
+                        document.getElementById('userBalance').innerHTML =
+                            bal + ' <span class="balance-currency">' + currency + '</span>';
+                    }
+                } catch (e) {
+                    console.error('Balance error:', e);
+                }
+
+                // جلب الأخبار
+                loadNews();
+            });
+
+            // ── News ─────────────────────────────────
+            let allNews = [];
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const d = new Date(dateStr);
+                    const now = new Date();
+                    const diff = Math.floor((now - d) / 1000);
+                    if (diff < 3600) return 'منذ ' + Math.floor(diff / 60) + ' دقيقة';
+                    if (diff < 86400) return 'منذ ' + Math.floor(diff / 3600) + ' ساعة';
+                    return 'منذ ' + Math.floor(diff / 86400) + ' يوم';
+                } catch (e) { return ''; }
             }
-        }, interval);
-    </script>
+
+            function newsIcon(index) {
+                const icons = ['🎮', '🏆', '⚡', '🎁', '📣', '🔥', '🎯', '🌟'];
+                return icons[index % icons.length];
+            }
+
+            async function loadNews() {
+                const token = localStorage.getItem('auth_token');
+                try {
+                    const res = await fetch(API + '/news?limit=10', {
+                        headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                    });
+                    const data = await res.json();
+
+                    if (data.success && data.data && data.data.length > 0) {
+                        allNews = data.data;
+                        renderNewsPreview();
+                    } else {
+                        document.getElementById('newsPreview').innerHTML =
+                            '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:16px;font-size:13px;">لا توجد أخبار حالياً</div>';
+                    }
+                } catch (e) {
+                    document.getElementById('newsPreview').innerHTML =
+                        '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:16px;font-size:13px;">تعذر تحميل الأخبار</div>';
+                }
+            }
+
+            function renderNewsPreview() {
+                const preview = document.getElementById('newsPreview');
+                const latest = allNews.slice(0, 2);
+                let html = '';
+                latest.forEach((item, i) => {
+                    html += `
+                        <div class="news-item" onclick="openNewsModal()">
+                            <div class="news-thumb">${newsIcon(i)}</div>
+                            <div>
+                                <div class="news-headline">${item.title}</div>
+                                <div class="news-date">${formatDate(item.date)}</div>
+                            </div>
+                        </div>`;
+                });
+                html += `<button class="news-see-all" onclick="openNewsModal()">عرض جميع الأخبار ←</button>`;
+                preview.innerHTML = html;
+            }
+
+            function openNewsModal() {
+                const modalContent = document.getElementById('newsModalContent');
+                let html = '';
+                allNews.forEach((item, i) => {
+                    html += `
+                        <div class="news-modal-item" style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08);">
+                            <div class="news-modal-img">${newsIcon(i)}</div>
+                            <div style="flex:1;">
+                                <div class="news-modal-title" style="font-weight:600;margin-bottom:4px;">${item.title}</div>
+                                ${item.summary ? `<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;line-height:1.5;">${item.summary}</div>` : ''}
+                                <div class="news-modal-date">${formatDate(item.date)}</div>
+                            </div>
+                        </div>`;
+                });
+                modalContent.innerHTML = html || '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.3);">لا توجد أخبار</div>';
+                openModal('newsModal');
+            }
+
+            // Logout
+            async function logout(e) {
+                e.preventDefault();
+                const token = localStorage.getItem('auth_token');
+                try {
+                    await fetch(API + '/auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        }
+                    });
+                } catch (err) { }
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+
+            // Modal helpers
+            function openModal(id) { document.getElementById(id).classList.add('active'); }
+            function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === this) { this.classList.remove('active'); resetPayment(); }
+                });
+            });
+
+            // Loyalty card
+            const lcCard = document.getElementById('lcCard');
+
+            function openLoyaltyModal() {
+                lcCard.classList.remove('is-flipped', 'intro-spin');
+                openModal('loyaltyModal');
+                setTimeout(() => { void lcCard.offsetWidth; lcCard.classList.add('intro-spin'); }, 150);
+                lcCard.addEventListener('animationend', function handler() {
+                    lcCard.classList.remove('intro-spin', 'is-flipped');
+                    lcCard.removeEventListener('animationend', handler);
+                }, { once: true });
+            }
+
+            function flipCard() {
+                if (lcCard.classList.contains('intro-spin')) return;
+                lcCard.classList.toggle('is-flipped');
+            }
+
+            // ── Payment packages ─────────────────────
+            let selectedPackage = null;
+
+            async function openPaymentModal() {
+                resetPayment();
+                openModal('paymentModal');
+
+                const token = localStorage.getItem('auth_token');
+                const list = document.getElementById('packagesList');
+
+                try {
+                    const res = await fetch(API + '/payment/packages', {
+                        headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
+                    });
+                    const data = await res.json();
+
+                    if (data.success && data.data && data.data.length > 0) {
+                        list.innerHTML = '<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;text-align:center;">اختر باقة</div>';
+                        data.data.forEach(pkg => {
+                            const item = document.createElement('div');
+                            item.className = 'payment-summary';
+                            item.style.cssText = 'cursor:pointer;transition:all 0.2s;border:1px solid transparent;border-radius:12px;margin-bottom:8px;';
+                            item.innerHTML = `
+                                <div class="payment-pkg-icon">${pkg.icon || '🎮'}</div>
+                                <div class="payment-pkg-info">
+                                    <div class="payment-pkg-name">${pkg.name}</div>
+                                    <div class="payment-pkg-pts">${pkg.points} نقطة</div>
+                                </div>
+                                <div class="payment-pkg-price-badge">${pkg.price} ${pkg.currency}</div>
+                            `;
+                            item.addEventListener('click', () => selectPackage(item, pkg));
+                            list.appendChild(item);
+                        });
+                    } else {
+                        list.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.4);padding:20px;font-size:13px;">لا توجد باقات متاحة</div>';
+                    }
+                } catch (e) {
+                    list.innerHTML = '<div style="text-align:center;color:#e05252;padding:20px;font-size:13px;">تعذر تحميل الباقات</div>';
+                }
+            }
+
+            function selectPackage(el, pkg) {
+                document.querySelectorAll('#packagesList .payment-summary').forEach(i => {
+                    i.style.border = '1px solid transparent';
+                    i.style.background = '';
+                });
+                el.style.border = '1px solid rgba(223,168,136,0.6)';
+                el.style.background = 'rgba(223,168,136,0.08)';
+
+                selectedPackage = pkg;
+
+                document.getElementById('selectedPkgSummary').innerHTML = `
+                    <div class="payment-pkg-icon">${pkg.icon || '🎮'}</div>
+                    <div class="payment-pkg-info">
+                        <div class="payment-pkg-name">${pkg.name}</div>
+                        <div class="payment-pkg-pts">${pkg.points} نقطة</div>
+                    </div>
+                    <div class="payment-pkg-price-badge">${pkg.price} ${pkg.currency}</div>
+                `;
+                document.getElementById('paymentForm').style.display = 'block';
+                document.getElementById('paymentForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function processPayment() {
+                if (!selectedPackage) return;
+                const btn = document.querySelector('.pay-now-btn');
+                btn.textContent = '⏳ جاري المعالجة...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    document.getElementById('paymentContent').style.display = 'none';
+                    document.getElementById('successScreen').classList.add('visible');
+                }, 1800);
+            }
+
+            function resetPayment() {
+                selectedPackage = null;
+                const btn = document.querySelector('.pay-now-btn');
+                if (btn) { btn.innerHTML = '<span class="btn-shine"></span>ادفع الآن'; btn.disabled = false; }
+                const pc = document.getElementById('paymentContent');
+                if (pc) pc.style.display = '';
+                const ss = document.getElementById('successScreen');
+                if (ss) ss.classList.remove('visible');
+                const pf = document.getElementById('paymentForm');
+                if (pf) pf.style.display = 'none';
+                const pl = document.getElementById('packagesList');
+                if (pl) pl.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.4);padding:20px;font-size:13px;">جارٍ تحميل الباقات...</div>';
+            }
+
+            function formatCard(el) {
+                let v = el.value.replace(/\D/g, '').substring(0, 16);
+                el.value = v.replace(/(.{4})/g, '$1 ').trim();
+            }
+
+            function formatExpiry(el) {
+                let v = el.value.replace(/\D/g, '').substring(0, 4);
+                if (v.length >= 2) v = v.substring(0, 2) + ' / ' + v.substring(2);
+                el.value = v;
+            }
+        </script>
+
 </body>
 
 </html>
